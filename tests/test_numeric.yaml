@@ -1,0 +1,30 @@
+- case: calling_function_with_unknown_raises
+  main: |
+    from dept.numeric import Natural
+
+    def take_nat(a: Natural) -> Natural:
+        return a
+
+    take_nat(1) # E: Argument 1 to "take_nat" has incompatible type "int"; expected "Natural"
+- case: calling_function_with_known
+  main: |
+    from dept.numeric import Natural
+
+    def take_nat(a: Natural) -> Natural:
+        return a
+
+    b = take_nat(Natural.from_instance(1))
+    reveal_type(b) # N: Revealed type is 'dept.numeric.Natural'
+- case: calling_function_with_known
+  main: |
+    from dept.numeric import Natural
+
+    def from_int(a: int) -> Natural:
+        if not isinstance(a, Natural):
+            raise TypeError
+        reveal_type(a) # N: Revealed type is 'dept.numeric.Natural'
+        return a
+
+    n = from_int(-1)
+    reveal_type(n) # N: Revealed type is 'dept.numeric.Natural'
+

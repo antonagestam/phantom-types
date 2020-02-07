@@ -1,0 +1,24 @@
+- case: test_subtype
+  main: |
+    from dept.sized import NonEmpty
+    from typing import List
+
+    class AtLeastOneInt(List[int], NonEmpty): ...
+
+    def fst(things: AtLeastOneInt) -> int:
+        return things[0]
+
+    f = fst(AtLeastOneInt.from_instance([1, 2]))
+    reveal_type(f)  # N: Revealed type is 'builtins.int'
+
+- case: test_subscripted
+  main: |
+    from dept.sized import NonEmpty
+    from typing import List
+
+    def fst(col: NonEmpty[List[int]]) -> int:
+        return next(iter(col))
+
+    l = NonEmpty.from_instance([0])
+    i = fst(l)
+    reveal_type(i)  # N: Revealed type is 'builtins.int'
