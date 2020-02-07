@@ -1,7 +1,7 @@
 import pytest
 
-from dependent.fixed_size_containers import Empty
-from dependent.fixed_size_containers import NonEmpty
+from dependent import Empty
+from dependent import NonEmpty
 
 
 parametrize_non_empty = pytest.mark.parametrize(

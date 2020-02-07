@@ -47,28 +47,13 @@ class OpenRange(Generic[T], metaclass=BaseInstanceCheck):
         return instance
 
 
-class NegativeInt(OpenRange, max=0, runtime_type=int):
+class NegativeInt(int, OpenRange, max=0, runtime_type=int):
     ...
 
 
-class PositiveInt(OpenRange, min=0, runtime_type=int):
+class PositiveInt(int, OpenRange, min=0, runtime_type=int):
     ...
 
 
-assert not isinstance(1, NegativeInt)
-assert isinstance(-1, NegativeInt)
-
-j = NegativeInt.from_instance(-1)
-assert isinstance(j, NegativeInt)
-assert isinstance(j, int)
-
-
-class CustomRange(OpenRange, min=-1, max=1, runtime_type=int):
+class Portion(float, OpenRange, min=0, max=1, runtime_type=float):
     ...
-
-
-assert not isinstance(-2, CustomRange)
-assert isinstance(-1, CustomRange)
-assert isinstance(1, CustomRange)
-assert not isinstance(1.0, CustomRange)
-assert not isinstance(2, CustomRange)
