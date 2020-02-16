@@ -1,8 +1,8 @@
 import pytest
 
-from dependent import NegativeInt
-from dependent import Portion
-from dependent import PositiveInt
+from dep.numeric import Natural
+from dep.numeric import NegativeInt
+from dep.numeric import Portion
 
 parametrize_negative_ints = pytest.mark.parametrize("i", (-10, -1, -0, +0))
 parametrize_positive_ints = pytest.mark.parametrize("i", (10, 1, +0, -0))
@@ -28,24 +28,24 @@ class TestNegativeInt:
         assert i is NegativeInt.from_instance(i)
 
 
-class TestPositiveInt:
+class TestNat:
     @parametrize_positive_ints
     def test_positive_int_is_instance(self, i):
-        assert isinstance(i, PositiveInt)
+        assert isinstance(i, Natural)
 
     def test_negative_int_is_not_instance(self):
-        assert not isinstance(-1, PositiveInt)
-        assert not isinstance(-10, PositiveInt)
+        assert not isinstance(-1, Natural)
+        assert not isinstance(-10, Natural)
 
     def test_instantiation_raises_for_positive_int(self):
         with pytest.raises(ValueError):
-            PositiveInt.from_instance(-1)
+            Natural.from_instance(-1)
         with pytest.raises(ValueError):
-            PositiveInt.from_instance(-10)
+            Natural.from_instance(-10)
 
     @parametrize_positive_ints
     def test_instantiation_returns_instance(self, i):
-        assert i is PositiveInt.from_instance(i)
+        assert i is Natural.from_instance(i)
 
 
 parametrize_portion_values = pytest.mark.parametrize(
