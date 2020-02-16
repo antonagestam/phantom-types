@@ -5,3 +5,4 @@ mypy
 sorti
 
 pytest
+pytest-mypy-plugins

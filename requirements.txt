@@ -10,6 +10,7 @@ attrs==19.3.0             # via black, pytest
 black==19.10b0
 cached-property==1.5.1    # via aspy.refactor-imports
 click==7.0                # via black
+decorator==4.4.1          # via pytest-mypy-plugins
 entrypoints==0.3          # via flake8
 flake8==3.7.9
 mccabe==0.6.1             # via flake8
@@ -23,7 +24,9 @@ py==1.8.1                 # via pytest
 pycodestyle==2.5.0        # via flake8
 pyflakes==2.1.1           # via flake8
 pyparsing==2.4.6          # via packaging
+pytest-mypy-plugins==1.2.0
 pytest==5.3.5
+pyyaml==5.3               # via pytest-mypy-plugins
 regex==2020.1.8           # via black
 reorder-python-imports==1.9.0  # via sorti
 six==1.14.0               # via packaging

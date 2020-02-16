@@ -36,13 +36,13 @@ class OpenRange(Dependent[T]):
         )
 
 
-class Natural(OpenRange, type=int, min=0):
+class Natural(int, OpenRange, type=int, min=0):
     ...
 
 
-class NegativeInt(OpenRange, type=int, max=0):
+class NegativeInt(int, OpenRange, type=int, max=0):
     ...
 
 
-class Portion(OpenRange, type=float, min=0, max=1):
+class Portion(float, OpenRange, type=float, min=0, max=1):
     ...
