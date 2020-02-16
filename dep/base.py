@@ -25,14 +25,14 @@ class DependentTypeMeta(ABCMeta):
         return self.__instancecheck__(instance)
 
 
-RuntimeType = TypeVar("RuntimeType", bound=Any)
+RuntimeBound = TypeVar("RuntimeBound", bound=Any)
 
 
-class Dependent(Generic[RuntimeType], metaclass=DependentTypeMeta):
+class Dependent(Generic[RuntimeBound], metaclass=DependentTypeMeta):
     Derived = TypeVar("Derived", bound="Dependent")
 
     @classmethod
-    def from_instance(cls: Type[Derived], instance: RuntimeType) -> Derived:
+    def from_instance(cls: Type[Derived], instance: RuntimeBound) -> Derived:
         if not isinstance(instance, cls):
             raise ValueError(f"Can't create {cls.__qualname__} from {instance}")
         return instance
