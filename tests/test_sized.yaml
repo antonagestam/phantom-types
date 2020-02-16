@@ -1,0 +1,13 @@
+- case: test_subtype
+  disable_cache: true
+  main: |
+    from dep.sized import NonEmpty
+    from typing import List
+
+    class AtLeastOneInt(List[int], NonEmpty): ...
+
+    def fst(things: AtLeastOneInt) -> int:
+        return things[0]
+
+    f = fst(AtLeastOneInt.from_instance([1, 2]))
+    reveal_type(f)  # N: Revealed type is 'builtins.int'
