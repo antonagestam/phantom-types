@@ -1,5 +1,4 @@
 - case: test_subtype
-  disable_cache: true
   main: |
     from dep.sized import NonEmpty
     from typing import List
@@ -11,3 +10,15 @@
 
     f = fst(AtLeastOneInt.from_instance([1, 2]))
     reveal_type(f)  # N: Revealed type is 'builtins.int'
+
+- case: test_subscripted
+  main: |
+    from dep.sized import NonEmpty
+    from typing import Sequence, List
+
+    def fst(col: NonEmpty[List[int]]) -> int:
+        return col[0]
+
+    l = NonEmpty.from_instance([0])
+    i = fst(l)
+    reveal_type(i)  # N: Revealed type is 'builtins.int'

@@ -1,15 +1,16 @@
 from typing import Any
+from typing import Generic
 from typing import Optional
-from typing import Sized
+from typing import Sequence
 from typing import TypeVar
 
 from .base import Dependent
 
 
-S = TypeVar("S", bound=Sized)
+T = TypeVar("T", bound=Sequence)
 
 
-class SizeDependent(Dependent[S]):
+class SizedSequence(Sequence, Dependent[T], Generic[T]):
     __min__: int
     __max__: float
 
@@ -25,13 +26,17 @@ class SizeDependent(Dependent[S]):
     @classmethod
     def __instancecheck__(cls, instance: Any) -> bool:
         return (
-            isinstance(instance, Sized) and cls.__min__ <= len(instance) <= cls.__max__
+            isinstance(instance, Sequence)
+            and cls.__min__ <= len(instance) <= cls.__max__
         )
 
+    def __class_getitem__(cls, item):
+        return cls
 
-class NonEmpty(SizeDependent, min=1):
+
+class NonEmpty(SizedSequence[T], Generic[T], min=1):
     ...
 
 
-class Empty(SizeDependent, min=0, max=0):
+class Empty(SizedSequence[T], Generic[T], min=0, max=0):
     ...

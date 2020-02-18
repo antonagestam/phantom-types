@@ -1,5 +1,4 @@
 - case: calling_function_with_unknown_raises
-  disable_cache: true
   main: |
     from dep.numeric import Natural
 
@@ -8,7 +7,6 @@
 
     take_nat(1) # E: Argument 1 to "take_nat" has incompatible type "int"; expected "Natural"
 - case: calling_function_with_known
-  disable_cache: true
   main: |
     from dep.numeric import Natural
 
@@ -18,7 +16,6 @@
     b = take_nat(Natural.from_instance(1))
     reveal_type(b) # N: Revealed type is 'dep.numeric.Natural'
 - case: calling_function_with_known
-  disable_cache: true
   main: |
     from dep.numeric import Natural
 

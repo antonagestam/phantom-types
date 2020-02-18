@@ -4,10 +4,8 @@ from dep.sized import Empty
 from dep.sized import NonEmpty
 
 
-parametrize_non_empty = pytest.mark.parametrize(
-    "container", ([1], (1,), {1}, {"a": "b"})
-)
-parametrize_empty = pytest.mark.parametrize("container", ([], (), set(), {}))
+parametrize_non_empty = pytest.mark.parametrize("container", ([1], (1,)))
+parametrize_empty = pytest.mark.parametrize("container", ([], ()))
 
 
 class TestNonEmpty:
@@ -23,13 +21,13 @@ class TestNonEmpty:
     def test_instantiation_raises_for_empty_container(self, container):
         with pytest.raises(ValueError):
             NonEmpty.from_instance(container)
-        with pytest.raises(ValueError):
-            NonEmpty(container)
 
     @parametrize_non_empty
     def test_instantiation_returns_instance(self, container):
         assert container is NonEmpty.from_instance(container)
-        assert container is NonEmpty(container)
+
+    def test_subscription_returns_type(self):
+        assert NonEmpty[tuple] is NonEmpty
 
 
 class TestEmpty:
@@ -45,10 +43,10 @@ class TestEmpty:
     def test_instantiation_raises_for_non_empty_container(self, container):
         with pytest.raises(ValueError):
             Empty.from_instance(container)
-        with pytest.raises(ValueError):
-            Empty(container)
 
     @parametrize_empty
     def test_instantiation_returns_instance(self, container):
         assert container is Empty.from_instance(container)
-        assert container is Empty(container)
+
+    def test_subscription_returns_type(self):
+        assert Empty[list] is Empty
