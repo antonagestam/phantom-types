@@ -13,8 +13,9 @@ Dependent types in Python using `__instancecheck__` and type-guards.
 
 ```python
 from dep.sized import NonEmpty
+from typing import List
 
 
-def fst(col: NonEmpty[int]) -> int:
+def fst(col: NonEmpty[List[int]]) -> int:
     return col[0]
 ```
