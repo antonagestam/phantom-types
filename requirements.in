@@ -1,8 +1,0 @@
-black
-flake8
-mypy
-# python3 -m pip install -U git+git://github.com/python/mypy.git
-sorti
-
-pytest
-pytest-mypy-plugins
