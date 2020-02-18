@@ -10,7 +10,7 @@ from typing import TypeVar
 
 
 @runtime_checkable
-class ImplementsInstanceCheck(Protocol):
+class InstanceCheckable(Protocol):
     @classmethod
     def __instancecheck__(cls, instance: Any) -> bool:
         ...
@@ -20,7 +20,7 @@ class DependentTypeMeta(ABCMeta):
     """Metaclass that defers __instancecheck__ to derived classes."""
 
     def __instancecheck__(self, instance: Any) -> bool:
-        if not issubclass(self, ImplementsInstanceCheck):
+        if not issubclass(self, InstanceCheckable):
             return False
         return self.__instancecheck__(instance)
 
@@ -39,6 +39,8 @@ class Dependent(Generic[RuntimeBound], metaclass=DependentTypeMeta):
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         """
-        We only override __init_subclass__  to suppress the mypy error in one place.
+        We only override __init_subclass__ to suppress the mypy error in one
+        place instead of in every subclass. See
+        https://github.com/python/mypy/issues/4660
         """
         super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
