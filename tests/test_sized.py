@@ -23,10 +23,13 @@ class TestNonEmpty:
     def test_instantiation_raises_for_empty_container(self, container):
         with pytest.raises(ValueError):
             NonEmpty.from_instance(container)
+        with pytest.raises(ValueError):
+            NonEmpty(container)
 
     @parametrize_non_empty
     def test_instantiation_returns_instance(self, container):
         assert container is NonEmpty.from_instance(container)
+        assert container is NonEmpty(container)
 
 
 class TestEmpty:
@@ -42,7 +45,10 @@ class TestEmpty:
     def test_instantiation_raises_for_non_empty_container(self, container):
         with pytest.raises(ValueError):
             Empty.from_instance(container)
+        with pytest.raises(ValueError):
+            Empty(container)
 
     @parametrize_empty
     def test_instantiation_returns_instance(self, container):
         assert container is Empty.from_instance(container)
+        assert container is Empty(container)

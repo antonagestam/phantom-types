@@ -28,7 +28,7 @@ class TestNegativeInt:
         assert i is NegativeInt.from_instance(i)
 
 
-class TestNat:
+class TestNatural:
     @parametrize_positive_ints
     def test_positive_int_is_instance(self, i):
         assert isinstance(i, Natural)
@@ -42,10 +42,13 @@ class TestNat:
             Natural.from_instance(-1)
         with pytest.raises(ValueError):
             Natural.from_instance(-10)
+        with pytest.raises(ValueError):
+            Natural(-1)
 
     @parametrize_positive_ints
     def test_instantiation_returns_instance(self, i):
         assert i is Natural.from_instance(i)
+        assert i is Natural(i)
 
 
 parametrize_portion_values = pytest.mark.parametrize(
@@ -67,8 +70,11 @@ class TestPortion:
     @parametrize_portion_values
     def test_instantiation_returns_instance(self, i):
         assert i is Portion.from_instance(i)
+        assert i is Portion(i)
 
     @parametrize_non_portion_values
     def test_instantiation_raises_for_non_portion_values(self, i):
         with pytest.raises(ValueError):
             Portion.from_instance(i)
+        with pytest.raises(ValueError):
+            Portion(i)

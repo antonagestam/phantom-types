@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from abc import ABCMeta
 from typing import Any
 from typing import Generic
@@ -15,19 +17,25 @@ class InstanceCheckable(Protocol):
 
 
 class DependentTypeMeta(ABCMeta):
-    """Metaclass that defers __instancecheck__ to derived classes."""
+    """
+    Metaclass that defers __instancecheck__ to derived classes and prevents actual
+    instance creation.
+    """
 
     def __instancecheck__(self, instance: Any) -> bool:
         if not issubclass(self, InstanceCheckable):
             return False
         return self.__instancecheck__(instance)
 
+    def __call__(cls, instance):
+        return cls.from_instance(instance)  # type: ignore[attr-defined]
 
-RuntimeBound = TypeVar("RuntimeBound", bound=Any)
+
+RuntimeBound = TypeVar("RuntimeBound", contravariant=True)
 
 
 class Dependent(Generic[RuntimeBound], metaclass=DependentTypeMeta):
-    Derived = TypeVar("Derived", bound="Dependent")
+    Derived = TypeVar("Derived")
 
     @classmethod
     def from_instance(cls: Type[Derived], instance: RuntimeBound) -> Derived:
