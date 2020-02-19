@@ -18,3 +18,6 @@ lint:
 	sorti --check .
 	black --check .
 	mypy .
+
+test:
+	pytest

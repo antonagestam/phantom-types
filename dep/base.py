@@ -40,7 +40,7 @@ class Dependent(Generic[RuntimeBound], metaclass=DependentTypeMeta):
     @classmethod
     def from_instance(cls: Type[Derived], instance: RuntimeBound) -> Derived:
         if not isinstance(instance, cls):
-            raise ValueError(f"Can't create {cls.__qualname__} from {instance}")
+            raise ValueError(f"Can't create {cls!r} from {instance!r}")
         return instance
 
     def __init_subclass__(cls, **kwargs: Any) -> None:

@@ -14,7 +14,7 @@
 - case: test_subscripted
   main: |
     from dep.sized import NonEmpty
-    from typing import Sequence, List
+    from typing import List
 
     def fst(col: NonEmpty[List[int]]) -> int:
         return col[0]
