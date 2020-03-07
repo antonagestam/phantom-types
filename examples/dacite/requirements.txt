@@ -1,2 +1,2 @@
--e ..
+-e ../..
 https://github.com/antonagestam/dacite/archive/a57b31b34c83759d80e15a964573569d8122e485.zip

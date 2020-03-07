@@ -2,7 +2,7 @@ SHELL := /usr/bin/env bash
 
 .PHONY: test
 test:
-	pytest
+	pytest --ignore=examples
 
 .PHONY: lint
 lint:

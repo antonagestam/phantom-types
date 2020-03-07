@@ -22,3 +22,13 @@
     l = NonEmpty.from_instance([0])
     i = fst(l)
     reveal_type(i)  # N: Revealed type is 'builtins.int'
+
+- case: test_str
+  main: |
+    from dept.sized import NonEmpty
+
+    def name_length(name: NonEmpty[str]) -> int:
+        return len(name)
+
+    i = name_length(NonEmpty.from_instance("foo"))
+    reveal_type(i)  # N: Revealed type is 'builtins.int'

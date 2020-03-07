@@ -7,9 +7,9 @@ from dept.sized import NonEmpty
 
 
 parametrize_non_empty: Final = pytest.mark.parametrize(
-    "container", ((1,), frozenset({1}))
+    "container", ((1,), frozenset({1}), "foo")
 )
-parametrize_empty: Final = pytest.mark.parametrize("container", ((), frozenset()))
+parametrize_empty: Final = pytest.mark.parametrize("container", ((), frozenset(), ""))
 parametrize_mutable: Final = pytest.mark.parametrize("container", ([], set(), {}))
 
 
