@@ -17,11 +17,47 @@ python3 -m pip install dependent-types
 - Make illegal states unrepresentable.
 - Abuse `__instancecheck__` and type-guards.
 
-## Todo
+## Usage
 
-- [ ] Add `Matches[r"^he(llo|j)$"]`.
-- [ ] Generic of sized types should variate on `Iterable[T]`, not the type of
-  the container. Syntax: `NonEmpty[int]`.
-- [ ] Support e.g. `class NonEmptyTuple(NonEmpty, Tuple): ...`.
-- [ ] Document discouragement and runtime check of mutable containers for Empty
-  and NonEmpty.
+### Builtin types
+
+#### `dept.datetime`
+
+- `TZAware`
+- `TZNaive`
+
+#### `dept.numeric`
+
+- `Natural`
+- `NegativeInt`
+- `Portion`
+
+#### `dept.sized`
+
+- `NonEmpty`
+- `Empty`
+
+### Creating dependent types
+
+To create new dependent types, subclass `dept.base.Dependent` and define a
+`__instancecheck__` method:
+
+```python
+from typing import Any
+from dept.base import Dependent
+
+
+class StartsWithHello(str, Dependent[str]):
+    def __instancecheck__(self, instance: Any) -> bool:
+        return isinstance(instance, str) and instance.startswith("Hello")
+
+
+isinstance("Hello there", StartsWithHello)  # True
+isinstance("Hi there", StartsWithHello)  # False
+```
+
+Checkout out the [dacite example] for how to create dataclasses with rich
+dependently typed fields without duplicating type definitions or losing parsed
+information.
+
+[dacite example]: examples/dacite/test_dacite.py

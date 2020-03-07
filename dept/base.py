@@ -18,8 +18,8 @@ class InstanceCheckable(Protocol):
 
 class DependentTypeMeta(ABCMeta):
     """
-    Metaclass that defers __instancecheck__ to derived classes and prevents actual
-    instance creation.
+    Metaclass that defers __instancecheck__ to derived classes and prevents
+    actual instance creation.
     """
 
     def __instancecheck__(self, instance: Any) -> bool:
