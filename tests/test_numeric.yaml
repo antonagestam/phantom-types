@@ -6,6 +6,7 @@
         return a
 
     take_nat(1) # E: Argument 1 to "take_nat" has incompatible type "int"; expected "Natural"
+
 - case: calling_function_with_known
   main: |
     from dept.numeric import Natural
@@ -15,6 +16,7 @@
 
     b = take_nat(Natural.from_instance(1))
     reveal_type(b) # N: Revealed type is 'dept.numeric.Natural'
+
 - case: calling_function_with_known
   main: |
     from dept.numeric import Natural
@@ -28,3 +30,23 @@
     n = from_int(-1)
     reveal_type(n) # N: Revealed type is 'dept.numeric.Natural'
 
+- case: test_overload
+  main: |
+    from typing import overload
+    from dept.numeric import Natural, NegativeInt
+
+    @overload
+    def add(a: Natural, b: Natural) -> Natural: ...
+    @overload
+    def add(a: NegativeInt, b: NegativeInt) -> NegativeInt: ...
+    @overload
+    def add(a: int, b: int) -> int: ...
+    def add(a, b): return a + b
+
+    a = Natural.from_instance(1)
+    b = NegativeInt.from_instance(-1)
+
+    reveal_type(add(a, a)) # N: Revealed type is 'dept.numeric.Natural'
+    reveal_type(add(b, b)) # N: Revealed type is 'dept.numeric.NegativeInt'
+    reveal_type(add(a, b)) # N: Revealed type is 'builtins.int'
+    reveal_type(add(b, a)) # N: Revealed type is 'builtins.int'
