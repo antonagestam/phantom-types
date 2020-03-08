@@ -1,29 +1,18 @@
-from __future__ import annotations
-
-from abc import ABCMeta
+import abc
 from typing import Any
 from typing import Generic
-from typing import Protocol
-from typing import runtime_checkable
 from typing import Type
 from typing import TypeVar
 
 
-@runtime_checkable
-class InstanceCheckable(Protocol):
-    @classmethod
-    def __instancecheck__(cls, instance: Any) -> bool:
-        ...
-
-
-class DependentTypeMeta(ABCMeta):
+class DependentTypeMeta(abc.ABCMeta):
     """
     Metaclass that defers __instancecheck__ to derived classes and prevents
     actual instance creation.
     """
 
     def __instancecheck__(self, instance: Any) -> bool:
-        if not issubclass(self, InstanceCheckable):
+        if not issubclass(self, Dependent):
             return False
         return self.__instancecheck__(instance)
 
@@ -49,3 +38,8 @@ class Dependent(Generic[RuntimeBound], metaclass=DependentTypeMeta):
         https://github.com/python/mypy/issues/4660
         """
         super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
+
+    @classmethod
+    @abc.abstractmethod
+    def __instancecheck__(cls, instance: Any) -> bool:
+        ...
