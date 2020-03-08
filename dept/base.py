@@ -5,7 +5,7 @@ from typing import Type
 from typing import TypeVar
 
 
-class DependentTypeMeta(abc.ABCMeta):
+class DependentMeta(abc.ABCMeta):
     """
     Metaclass that defers __instancecheck__ to derived classes and prevents
     actual instance creation.
@@ -24,7 +24,7 @@ RuntimeBound = TypeVar("RuntimeBound", contravariant=True)
 Derived = TypeVar("Derived")
 
 
-class Dependent(Generic[RuntimeBound], metaclass=DependentTypeMeta):
+class Dependent(Generic[RuntimeBound], metaclass=DependentMeta):
     @classmethod
     def from_instance(cls: Type[Derived], instance: RuntimeBound) -> Derived:
         if not isinstance(instance, cls):

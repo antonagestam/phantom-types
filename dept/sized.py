@@ -6,15 +6,22 @@ from typing import MutableMapping
 from typing import MutableSequence
 from typing import MutableSet
 from typing import Optional
-from typing import Sequence
+from typing import Protocol
+from typing import runtime_checkable
 from typing import Sized
+from typing import Type
 from typing import TypeVar
 
 from .base import Dependent
 
 
+@runtime_checkable
+class SizedIterable(Sized, Iterable, Protocol):
+    ...
+
+
 Mutable: Final = (MutableSequence, MutableSet, MutableMapping)
-T = TypeVar("T", bound=Sequence)
+T = TypeVar("T", bound=SizedIterable)
 
 
 class DependentSized(Iterable, Sized, Dependent[T], Generic[T]):
@@ -33,13 +40,12 @@ class DependentSized(Iterable, Sized, Dependent[T], Generic[T]):
     @classmethod
     def __instancecheck__(cls, instance: Any) -> bool:
         return (
-            isinstance(instance, Iterable)  # type: ignore[misc]
-            and isinstance(instance, Sized)
+            isinstance(instance, SizedIterable)
             and not isinstance(instance, Mutable)
             and cls.__min__ <= len(instance) <= cls.__max__
         )
 
-    def __class_getitem__(cls, item):
+    def __class_getitem__(cls: Type[T], item: Type[SizedIterable]) -> Type[T]:
         return cls
 
 
