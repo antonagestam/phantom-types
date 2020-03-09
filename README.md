@@ -54,7 +54,7 @@ class StartsWithHello(str, Dependent[str]):
 
 hello = "Hello there"
 assert isinstance(hello, StartsWithHello)
-assert type(hello) == str
+assert type(hello) is str
 
 
 assert not isinstance("Hi there", StartsWithHello)
