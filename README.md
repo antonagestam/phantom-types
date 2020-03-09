@@ -52,8 +52,12 @@ class StartsWithHello(str, Dependent[str]):
         return isinstance(instance, str) and instance.startswith("Hello")
 
 
-isinstance("Hello there", StartsWithHello)  # True
-isinstance("Hi there", StartsWithHello)  # False
+hello = "Hello there"
+assert isinstance(hello, StartsWithHello)
+assert type(hello) == str
+
+
+assert not isinstance("Hi there", StartsWithHello)
 ```
 
 Checkout out the [dacite example] for how to create dataclasses with rich
