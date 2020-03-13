@@ -15,9 +15,12 @@ python3 -m pip install dependent-types
 ## Abstract
 
 - Make illegal states unrepresentable.
+- [Parse, don't validate]
 - Abuse `__instancecheck__` and type-guards.
 - Values are checked at runtime but no extra instances/subclasses are
   instantiated.
+
+[Parse, don't validate]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
 
 ## Usage
 
@@ -71,7 +74,7 @@ assert type(hello) is str
 assert type(hi) is str
 
 # But their static types will be Greeting, retaining the information that our
-# strings our not just any str
+# strings are not just any strs
 if TYPE_CHECKING:
     reveal_type(hello)
     reveal_type(hi)

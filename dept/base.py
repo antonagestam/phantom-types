@@ -29,14 +29,6 @@ class Dependent(metaclass=DependentMeta):
             raise TypeError(f"Can't create {cls.__qualname__} from {instance!r}")
         return instance
 
-    def __init_subclass__(cls) -> None:
-        """
-        We only override __init_subclass__ to suppress the mypy error in one
-        place instead of in every subclass. See
-        https://github.com/python/mypy/issues/4660
-        """
-        super().__init_subclass__()
-
     @classmethod
     @abc.abstractmethod
     def __instancecheck__(cls, instance: Any) -> bool:
