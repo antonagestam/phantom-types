@@ -1,3 +1,6 @@
+# This is the closest I could find to documentation of _ProtocolMeta ...
+# https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
+from typing import _ProtocolMeta  # type: ignore[attr-defined]
 from typing import Any
 from typing import Final
 from typing import Generic
@@ -13,25 +16,39 @@ from typing import Type
 from typing import TypeVar
 
 from .base import Dependent
+from .base import DependentMeta
+
+
+__all__ = (
+    "DependentSized",
+    "NonEmpty",
+    "Empty",
+)
+
+
+mutable: Final = (MutableSequence, MutableSet, MutableMapping)
+T = TypeVar("T", bound=Any, covariant=True)
 
 
 @runtime_checkable
-class SizedIterable(Sized, Iterable, Protocol):
+class SizedIterable(Sized, Iterable[T], Protocol[T]):
     ...
 
 
-Mutable: Final = (MutableSequence, MutableSet, MutableMapping)
-T = TypeVar("T", bound=SizedIterable)
+class SizedIterableDependentMeta(DependentMeta, _ProtocolMeta):
+    ...
 
 
-class DependentSized(Iterable, Sized, Dependent[T], Generic[T]):
+class DependentSized(
+    SizedIterable[T], Dependent, Generic[T], metaclass=SizedIterableDependentMeta
+):
     __min__: int
     __max__: float
 
     def __init_subclass__(
-        cls, *, min: Optional[int] = None, max: Optional[float] = None, **kwargs: Any
+        cls, *, min: Optional[int] = None, max: Optional[float] = None
     ):
-        super().__init_subclass__(**kwargs)
+        super().__init_subclass__()
         # Resolve __min__ and __max__ in the order: class argument, inherited
         # value, default.
         cls.__min__ = getattr(cls, "__min__", 0) if min is None else min
@@ -41,7 +58,7 @@ class DependentSized(Iterable, Sized, Dependent[T], Generic[T]):
     def __instancecheck__(cls, instance: Any) -> bool:
         return (
             isinstance(instance, SizedIterable)
-            and not isinstance(instance, Mutable)
+            and not isinstance(instance, mutable)
             and cls.__min__ <= len(instance) <= cls.__max__
         )
 

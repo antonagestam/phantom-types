@@ -8,23 +8,23 @@ from .base import Dependent
 T = TypeVar("T", bound=float)
 
 
-class OpenRange(Dependent[T]):
+class OpenRange(Dependent):
     __min__: float
     __max__: float
-    __type__: Type[T]
+    __type__: Type[float]
 
     def __init_subclass__(
-        cls,
-        *,
-        type: Type[T],
-        min: float = float("-inf"),
-        max: float = float("inf"),
-        **kwargs: Any
+        cls, *, min: float = float("-inf"), max: float = float("inf")
     ):
+        super().__init_subclass__()
         cls.__min__ = min
         cls.__max__ = max
-        cls.__type__ = type
-        super().__init_subclass__(**kwargs)
+        if not issubclass(cls.__bases__[0], (int, float)):
+            raise TypeError(
+                "The first base of subclasses of OpenRange must be a subclass "
+                "of either int or float."
+            )
+        cls.__type__ = cls.__bases__[0]
 
     @classmethod
     def __instancecheck__(cls, instance: Any) -> bool:
@@ -34,13 +34,13 @@ class OpenRange(Dependent[T]):
         )
 
 
-class Natural(int, OpenRange, type=int, min=0):
+class Natural(int, OpenRange, min=0):
     ...
 
 
-class NegativeInt(int, OpenRange, type=int, max=0):
+class NegativeInt(int, OpenRange, max=0):
     ...
 
 
-class Portion(float, OpenRange, type=float, min=0, max=1):
+class Portion(float, OpenRange, min=0, max=1):
     ...

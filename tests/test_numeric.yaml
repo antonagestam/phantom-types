@@ -5,7 +5,7 @@
     def take_nat(a: Natural) -> Natural:
         return a
 
-    take_nat(1) # E: Argument 1 to "take_nat" has incompatible type "int"; expected "Natural"
+    take_nat(1) # E: Argument 1 to "take_nat" has incompatible type "int"; expected "Natural"  [arg-type]
 
 - case: calling_function_with_known
   main: |

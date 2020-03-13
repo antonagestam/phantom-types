@@ -9,13 +9,13 @@ def is_tz_aware(dt: datetime.datetime) -> bool:
     return dt.tzinfo is not None and dt.tzinfo.utcoffset(dt) is not None
 
 
-class TZAware(datetime.datetime, Dependent[datetime.datetime]):
+class TZAware(datetime.datetime, Dependent):
     @classmethod
     def __instancecheck__(cls, instance: Any) -> bool:
         return isinstance(instance, datetime.datetime) and is_tz_aware(instance)
 
 
-class TZNaive(datetime.datetime, Dependent[datetime.datetime]):
+class TZNaive(datetime.datetime, Dependent):
     @classmethod
     def __instancecheck__(cls, instance: Any) -> bool:
         return isinstance(instance, datetime.datetime) and not is_tz_aware(instance)

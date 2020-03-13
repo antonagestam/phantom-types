@@ -16,6 +16,8 @@ python3 -m pip install dependent-types
 
 - Make illegal states unrepresentable.
 - Abuse `__instancecheck__` and type-guards.
+- Values are checked at runtime but no extra instances/subclasses are
+  instantiated.
 
 ## Usage
 
@@ -47,7 +49,7 @@ from typing import Any
 from dept.base import Dependent
 
 
-class StartsWithHello(str, Dependent[str]):
+class StartsWithHello(str, Dependent):
     def __instancecheck__(self, instance: Any) -> bool:
         return isinstance(instance, str) and instance.startswith("Hello")
 

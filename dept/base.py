@@ -1,6 +1,5 @@
 import abc
 from typing import Any
-from typing import Generic
 from typing import Type
 from typing import TypeVar
 
@@ -20,24 +19,23 @@ class DependentMeta(abc.ABCMeta):
         return cls.from_instance(instance)  # type: ignore[attr-defined]
 
 
-RuntimeBound = TypeVar("RuntimeBound", contravariant=True)
 Derived = TypeVar("Derived")
 
 
-class Dependent(Generic[RuntimeBound], metaclass=DependentMeta):
+class Dependent(metaclass=DependentMeta):
     @classmethod
-    def from_instance(cls: Type[Derived], instance: RuntimeBound) -> Derived:
+    def from_instance(cls: Type[Derived], instance: Any) -> Derived:
         if not isinstance(instance, cls):
             raise TypeError(f"Can't create {cls.__qualname__} from {instance!r}")
         return instance
 
-    def __init_subclass__(cls, **kwargs: Any) -> None:
+    def __init_subclass__(cls) -> None:
         """
         We only override __init_subclass__ to suppress the mypy error in one
         place instead of in every subclass. See
         https://github.com/python/mypy/issues/4660
         """
-        super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
+        super().__init_subclass__()
 
     @classmethod
     @abc.abstractmethod

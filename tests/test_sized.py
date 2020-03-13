@@ -55,7 +55,7 @@ class TestEmpty:
             Empty.from_instance(container)
 
     @parametrize_mutable
-    def test_instantiation_raises_mutable(self, container):
+    def test_instantiation_raises_for_mutable(self, container):
         with pytest.raises(TypeError):
             Empty.from_instance(container)
 
