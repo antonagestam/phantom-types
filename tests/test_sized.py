@@ -1,6 +1,7 @@
 from typing import Final
 
 import pytest
+
 from dept.sized import Empty
 from dept.sized import NonEmpty
 

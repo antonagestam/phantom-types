@@ -1,4 +1,5 @@
 import pytest
+
 from dept.numeric import Natural
 from dept.numeric import NegativeInt
 from dept.numeric import Portion

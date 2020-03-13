@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 import pytest
 from dacite import Config
 from dacite import from_dict
+
 from dept.base import Dependent
 from dept.datetime import TZAware
 from dept.numeric import Natural
