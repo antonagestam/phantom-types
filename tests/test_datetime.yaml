@@ -6,7 +6,7 @@
     def take_aware(a: TZAware) -> TZAware:
         return a
 
-    take_aware(datetime.datetime.now()) # E: Argument 1 to "take_aware" has incompatible type "datetime"; expected "TZAware"
+    take_aware(datetime.datetime.now()) # E: Argument 1 to "take_aware" has incompatible type "datetime"; expected "TZAware"  [arg-type]
 - case: calling_function_with_known
   main: |
     import datetime
