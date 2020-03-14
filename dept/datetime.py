@@ -14,6 +14,12 @@ class TZAware(datetime.datetime, Dependent):
     def __instancecheck__(cls, instance: Any) -> bool:
         return isinstance(instance, datetime.datetime) and is_tz_aware(instance)
 
+    @classmethod
+    def __subclasscheck__(cls, subclass):
+        if subclass is datetime.datetime:
+            return True
+        return False
+
 
 class TZNaive(datetime.datetime, Dependent):
     @classmethod

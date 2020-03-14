@@ -15,6 +15,11 @@ class DependentMeta(abc.ABCMeta):
             return False
         return self.__instancecheck__(instance)
 
+    def __subclasscheck__(self, subclass):
+        if hasattr(self, "__subclasscheck__"):
+            return self.__subclasscheck__(subclass)
+        return False
+
     def __call__(cls, instance):
         return cls.from_instance(instance)  # type: ignore[attr-defined]
 
