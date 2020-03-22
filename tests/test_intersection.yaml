@@ -1,0 +1,12 @@
+- case: asserting_twice_results_in_intersection_type
+  main: |
+    from dept.numeric import Portion, OpenRange
+
+    class Positive(float, OpenRange, min=0): ...
+
+    n = .5
+
+    assert isinstance(n, Positive)
+    assert isinstance(n, Portion)
+
+    reveal_type(n)  # N: Revealed type is 'main.<subclass of "Positive" and "Portion">'
