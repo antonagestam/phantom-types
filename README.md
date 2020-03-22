@@ -37,6 +37,10 @@ python3 -m pip install dependent-types
 - `NegativeInt`
 - `Portion`
 
+#### `dept.re`
+
+- `Match`
+
 #### `dept.sized`
 
 - `NonEmpty`

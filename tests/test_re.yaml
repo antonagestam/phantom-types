@@ -1,0 +1,27 @@
+- case: calling_function_with_unknown_raises
+  main: |
+    import re
+    from dept.datetime import TZAware
+    from dept.re import Match
+
+    class A(Match, pattern=re.compile(r"^abc$")):
+        ...
+
+    def take_a(a: A) -> A:
+        return a
+
+    take_a("c") # E: Argument 1 to "take_a" has incompatible type "str"; expected "A"  [arg-type]
+- case: can_call_function_with_known
+  main: |
+    import re
+    from dept.datetime import TZAware
+    from dept.re import Match
+
+    class A(Match, pattern=re.compile(r"^abc$")):
+        ...
+
+    def take_a(a: A) -> A:
+        return a
+
+    a = take_a(A.from_instance("abc"))
+    reveal_type(a)  # N: Revealed type is 'main.A'
