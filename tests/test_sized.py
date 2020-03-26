@@ -2,8 +2,8 @@ from typing import Final
 
 import pytest
 
-from dept.sized import Empty
-from dept.sized import NonEmpty
+from phantom.sized import Empty
+from phantom.sized import NonEmpty
 
 
 parametrize_non_empty: Final = pytest.mark.parametrize(

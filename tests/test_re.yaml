@@ -1,8 +1,8 @@
 - case: calling_function_with_unknown_raises
   main: |
     import re
-    from dept.datetime import TZAware
-    from dept.re import Match
+    from phantom.datetime import TZAware
+    from phantom.re import Match
 
     class A(Match, pattern=re.compile(r"^abc$")):
         ...
@@ -14,8 +14,8 @@
 - case: can_call_function_with_known
   main: |
     import re
-    from dept.datetime import TZAware
-    from dept.re import Match
+    from phantom.datetime import TZAware
+    from phantom.re import Match
 
     class A(Match, pattern=re.compile(r"^abc$")):
         ...

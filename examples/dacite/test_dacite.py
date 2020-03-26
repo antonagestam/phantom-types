@@ -11,11 +11,11 @@ import pytest
 from dacite import Config
 from dacite import from_dict
 
-from dept.base import Dependent
-from dept.datetime import TZAware
-from dept.numeric import Natural
-from dept.re import Match
-from dept.sized import NonEmpty
+from phantom.base import Phantom
+from phantom.datetime import TZAware
+from phantom.numeric import Natural
+from phantom.re import Match
+from phantom.sized import NonEmpty
 
 
 class Name(str, NonEmpty[str], max=20):
@@ -41,7 +41,7 @@ class Book:
 
     @classmethod
     def parse(cls, data: Dict[str, Any]) -> Book:
-        return from_dict(cls, data, config=Config(cast=[Dependent]))
+        return from_dict(cls, data, config=Config(cast=[Phantom]))
 
 
 def test_can_parse_valid_book() -> None:
@@ -62,7 +62,7 @@ def test_can_parse_valid_book() -> None:
     assert type(book.author.name) is str
     assert type(book.author.email) is str
 
-    # But the dependent types let's us statically retain more information about
+    # But the phantom types let's us statically retain more information about
     # their shapes. This allows us to avoid shotgun parsing.
     if TYPE_CHECKING:
         reveal_type(book.id)
@@ -73,7 +73,7 @@ def test_can_parse_valid_book() -> None:
 
 
 def test_negative_id_raises() -> None:
-    with pytest.raises(TypeError, match=r"^Can't create Natural from -2$"):
+    with pytest.raises(TypeError, match=r"^Can't create phantom type Natural from -2$"):
         Book.parse(
             {
                 "id": -2,
@@ -85,7 +85,9 @@ def test_negative_id_raises() -> None:
 
 
 def test_empty_name_raises() -> None:
-    with pytest.raises(TypeError, match=r"^Can't create NonEmpty from ''$"):
+    with pytest.raises(
+        TypeError, match=r"^Can't create phantom type NonEmpty from ''$"
+    ):
         Book.parse(
             {
                 "id": 3,
@@ -98,7 +100,7 @@ def test_empty_name_raises() -> None:
 
 def test_naive_datetime_raises() -> None:
     with pytest.raises(
-        TypeError, match=r"^Can't create TZAware from datetime\.datetime"
+        TypeError, match=r"^Can't create phantom type TZAware from datetime\.datetime"
     ):
         Book.parse(
             {
@@ -112,7 +114,8 @@ def test_naive_datetime_raises() -> None:
 
 def test_long_name_raises() -> None:
     with pytest.raises(
-        TypeError, match="^Can't create Name from 'John Ronald Reuel Tolkien'$"
+        TypeError,
+        match="^Can't create phantom type Name from 'John Ronald Reuel Tolkien'$",
     ):
         Book.parse(
             {
@@ -128,7 +131,9 @@ def test_long_name_raises() -> None:
 
 
 def test_invalid_email_raises() -> None:
-    with pytest.raises(TypeError, match=r"^Can't create Email from 'j@rr@john\.com'$"):
+    with pytest.raises(
+        TypeError, match=r"^Can't create phantom type Email from 'j@rr@john\.com'$"
+    ):
         Book.parse(
             {
                 "id": 1,

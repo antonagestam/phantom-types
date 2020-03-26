@@ -2,13 +2,13 @@ from typing import Any
 from typing import Type
 from typing import TypeVar
 
-from .base import Dependent
+from .base import Phantom
 
 
 T = TypeVar("T", bound=float)
 
 
-class OpenRange(Dependent):
+class OpenRange(Phantom):
     __min__: float
     __max__: float
     __type__: Type[float]

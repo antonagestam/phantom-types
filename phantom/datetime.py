@@ -1,7 +1,7 @@
 import datetime
 from typing import Any
 
-from .base import Dependent
+from .base import Phantom
 
 
 def is_tz_aware(dt: datetime.datetime) -> bool:
@@ -9,13 +9,13 @@ def is_tz_aware(dt: datetime.datetime) -> bool:
     return dt.tzinfo is not None and dt.tzinfo.utcoffset(dt) is not None
 
 
-class TZAware(datetime.datetime, Dependent):
+class TZAware(datetime.datetime, Phantom):
     @classmethod
     def __instancecheck__(cls, instance: Any) -> bool:
         return isinstance(instance, datetime.datetime) and is_tz_aware(instance)
 
 
-class TZNaive(datetime.datetime, Dependent):
+class TZNaive(datetime.datetime, Phantom):
     @classmethod
     def __instancecheck__(cls, instance: Any) -> bool:
         return isinstance(instance, datetime.datetime) and not is_tz_aware(instance)

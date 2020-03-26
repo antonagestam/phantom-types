@@ -15,12 +15,12 @@ from typing import Sized
 from typing import Type
 from typing import TypeVar
 
-from .base import Dependent
-from .base import DependentMeta
+from .base import Phantom
+from .base import PhantomMeta
 
 
 __all__ = (
-    "DependentSized",
+    "PhantomSized",
     "NonEmpty",
     "Empty",
 )
@@ -35,12 +35,12 @@ class SizedIterable(Sized, Iterable[T], Protocol[T]):
     ...
 
 
-class SizedIterableDependentMeta(DependentMeta, _ProtocolMeta):
+class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):
     ...
 
 
-class DependentSized(
-    SizedIterable[T], Dependent, Generic[T], metaclass=SizedIterableDependentMeta
+class PhantomSized(
+    SizedIterable[T], Phantom, Generic[T], metaclass=SizedIterablePhantomMeta
 ):
     __min__: int
     __max__: float
@@ -66,9 +66,9 @@ class DependentSized(
         return cls
 
 
-class NonEmpty(DependentSized[T], Generic[T], min=1):
+class NonEmpty(PhantomSized[T], Generic[T], min=1):
     ...
 
 
-class Empty(DependentSized[T], Generic[T], min=0, max=0):
+class Empty(PhantomSized[T], Generic[T], min=0, max=0):
     ...

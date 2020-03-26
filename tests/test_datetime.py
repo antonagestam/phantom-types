@@ -2,8 +2,8 @@ import datetime
 
 import pytest
 
-from dept.datetime import TZAware
-from dept.datetime import TZNaive
+from phantom.datetime import TZAware
+from phantom.datetime import TZNaive
 
 parametrize_aware = pytest.mark.parametrize(
     "dt", (datetime.datetime.now(tz=datetime.timezone.utc),)

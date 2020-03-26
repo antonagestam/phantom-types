@@ -5,12 +5,12 @@ from typing import ClassVar
 from typing import Pattern
 from typing import TypeVar
 
-from dept.base import Dependent
+from phantom.base import Phantom
 
 P = TypeVar("P", bound=Pattern)
 
 
-class Match(str, Dependent):
+class Match(str, Phantom):
     __pattern__: ClassVar[Pattern]
 
     def __init_subclass__(cls, *, pattern: Pattern) -> None:

@@ -2,7 +2,7 @@ import re
 
 import pytest
 
-from dept.re import Match
+from phantom.re import Match
 
 
 class A(Match, pattern=re.compile(r"^abc$")):

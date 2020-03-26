@@ -1,6 +1,6 @@
 - case: test_subtype
   main: |
-    from dept.sized import NonEmpty
+    from phantom.sized import NonEmpty
     from typing import Tuple
 
     class AtLeastOneInt(Tuple[int, ...], NonEmpty[int]): ...
@@ -13,7 +13,7 @@
 
 - case: test_subscripted
   main: |
-    from dept.sized import NonEmpty
+    from phantom.sized import NonEmpty
 
     def fst(col: NonEmpty[int]) -> int:
         return next(iter(col))
@@ -24,7 +24,7 @@
 
 - case: test_annotated
   main: |
-    from dept.sized import NonEmpty
+    from phantom.sized import NonEmpty
 
     def fst(col: NonEmpty[int]) -> int:
         return next(iter(col))
@@ -35,7 +35,7 @@
 
 - case: test_str
   main: |
-    from dept.sized import NonEmpty
+    from phantom.sized import NonEmpty
 
     def name_length(name: NonEmpty[str]) -> int:
         return len(name)

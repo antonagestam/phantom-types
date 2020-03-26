@@ -1,15 +1,15 @@
-# dependent-types
+# phantom-types
 
-[![](https://github.com/antonagestam/dependent-types/workflows/CI/badge.svg)][CI]
+[![](https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg)][CI]
 
-[CI]: https://github.com/antonagestam/dependent-types/actions?query=workflow%3ACI
+[CI]: https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI
 
-Dependent types for Python.
+Phantom types for Python.
 
 ## Installation
 
 ```bash
-python3 -m pip install dependent-types
+python3 -m pip install phantom-types
 ```
 
 ## Abstract
@@ -26,39 +26,39 @@ python3 -m pip install dependent-types
 
 ### Builtin types
 
-#### `dept.datetime`
+#### `phantom.datetime`
 
 - `TZAware`
 - `TZNaive`
 
-#### `dept.numeric`
+#### `phantom.numeric`
 
 - `Natural`
 - `NegativeInt`
 - `Portion`
 
-#### `dept.re`
+#### `phantom.re`
 
 - `Match`
 
-#### `dept.sized`
+#### `phantom.sized`
 
 - `NonEmpty`
 - `Empty`
 
-### Creating dependent types
+### Creating phantom types
 
-To create new dependent types, subclass `dept.base.Dependent` and define an
+To create new phantom types, subclass `phantom.base.Phantom` and define an
 `__instancecheck__` method:
 
 ```python
 from typing import Any
 from typing import TYPE_CHECKING
 
-from dept.base import Dependent
+from phantom.base import Phantom
 
 
-class Greeting(str, Dependent):
+class Greeting(str, Phantom):
     @classmethod
     def __instancecheck__(cls, instance: Any) -> bool:
         return (
@@ -89,7 +89,7 @@ assert not isinstance("Goodbye", Greeting)
 ```
 
 Checkout out the [dacite example] for how to create dataclasses with rich
-dependently typed fields without duplicating type definitions or losing parsed
+phantom-typed fields without duplicating type definitions or losing parsed
 information.
 
 [dacite example]: examples/dacite/test_dacite.py

@@ -1,6 +1,6 @@
 - case: calling_function_with_unknown_raises
   main: |
-    from dept.numeric import Natural
+    from phantom.numeric import Natural
 
     def take_nat(a: Natural) -> Natural:
         return a
@@ -9,31 +9,31 @@
 
 - case: calling_function_with_known
   main: |
-    from dept.numeric import Natural
+    from phantom.numeric import Natural
 
     def take_nat(a: Natural) -> Natural:
         return a
 
     b = take_nat(Natural.from_instance(1))
-    reveal_type(b) # N: Revealed type is 'dept.numeric.Natural'
+    reveal_type(b) # N: Revealed type is 'phantom.numeric.Natural'
 
 - case: calling_function_with_known
   main: |
-    from dept.numeric import Natural
+    from phantom.numeric import Natural
 
     def from_int(a: int) -> Natural:
         if not isinstance(a, Natural):
             raise TypeError
-        reveal_type(a) # N: Revealed type is 'dept.numeric.Natural'
+        reveal_type(a) # N: Revealed type is 'phantom.numeric.Natural'
         return a
 
     n = from_int(-1)
-    reveal_type(n) # N: Revealed type is 'dept.numeric.Natural'
+    reveal_type(n) # N: Revealed type is 'phantom.numeric.Natural'
 
 - case: test_overload
   main: |
     from typing import overload
-    from dept.numeric import Natural, NegativeInt
+    from phantom.numeric import Natural, NegativeInt
 
     @overload
     def add(a: Natural, b: Natural) -> Natural: ...
@@ -46,7 +46,7 @@
     a = Natural.from_instance(1)
     b = NegativeInt.from_instance(-1)
 
-    reveal_type(add(a, a)) # N: Revealed type is 'dept.numeric.Natural'
-    reveal_type(add(b, b)) # N: Revealed type is 'dept.numeric.NegativeInt'
+    reveal_type(add(a, a)) # N: Revealed type is 'phantom.numeric.Natural'
+    reveal_type(add(b, b)) # N: Revealed type is 'phantom.numeric.NegativeInt'
     reveal_type(add(a, b)) # N: Revealed type is 'builtins.int'
     reveal_type(add(b, a)) # N: Revealed type is 'builtins.int'

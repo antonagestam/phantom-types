@@ -4,14 +4,14 @@ from typing import Type
 from typing import TypeVar
 
 
-class DependentMeta(abc.ABCMeta):
+class PhantomMeta(abc.ABCMeta):
     """
     Metaclass that defers __instancecheck__ to derived classes and prevents
     actual instance creation.
     """
 
     def __instancecheck__(self, instance: Any) -> bool:
-        if not issubclass(self, Dependent):
+        if not issubclass(self, Phantom):
             return False
         return self.__instancecheck__(instance)
 
@@ -22,11 +22,13 @@ class DependentMeta(abc.ABCMeta):
 Derived = TypeVar("Derived")
 
 
-class Dependent(metaclass=DependentMeta):
+class Phantom(metaclass=PhantomMeta):
     @classmethod
     def from_instance(cls: Type[Derived], instance: Any) -> Derived:
         if not isinstance(instance, cls):
-            raise TypeError(f"Can't create {cls.__qualname__} from {instance!r}")
+            raise TypeError(
+                f"Can't create phantom type {cls.__qualname__} from {instance!r}"
+            )
         return instance
 
     @classmethod
