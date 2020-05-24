@@ -8,13 +8,13 @@ from typing import MutableMapping
 from typing import MutableSequence
 from typing import MutableSet
 from typing import Optional
-from typing import Protocol
 from typing import runtime_checkable
 from typing import Sized
 from typing import Type
 from typing import TypeVar
 
 from typing_extensions import Final
+from typing_extensions import Protocol
 
 from .base import Phantom
 from .base import PhantomMeta
