@@ -1,7 +1,7 @@
 # This is the closest I could find to documentation of _ProtocolMeta ...
 # https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
 from typing import _ProtocolMeta  # type: ignore[attr-defined]
-from typing import Any
+from typing import ClassVar
 from typing import Final
 from typing import Generic
 from typing import Iterable
@@ -27,7 +27,7 @@ __all__ = (
 
 
 mutable: Final = (MutableSequence, MutableSet, MutableMapping)
-T = TypeVar("T", bound=Any, covariant=True)
+T = TypeVar("T", bound=object, covariant=True)
 
 
 @runtime_checkable
@@ -42,20 +42,20 @@ class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):
 class PhantomSized(
     SizedIterable[T], Phantom, Generic[T], metaclass=SizedIterablePhantomMeta
 ):
-    __min__: int
-    __max__: float
+    __min__: ClassVar[int] = 0
+    __max__: ClassVar[float] = float("inf")
 
     def __init_subclass__(
         cls, *, min: Optional[int] = None, max: Optional[float] = None
     ):
         super().__init_subclass__()
-        # Resolve __min__ and __max__ in the order: class argument, inherited
-        # value, default.
-        cls.__min__ = getattr(cls, "__min__", 0) if min is None else min
-        cls.__max__ = getattr(cls, "__max__", float("inf")) if max is None else max
+        if min is not None:
+            cls.__min__ = min
+        if max is not None:
+            cls.__max__ = max
 
     @classmethod
-    def __instancecheck__(cls, instance: Any) -> bool:
+    def __instancecheck__(cls, instance: object) -> bool:
         return (
             isinstance(instance, SizedIterable)
             and not isinstance(instance, mutable)

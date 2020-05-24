@@ -1,4 +1,3 @@
-from typing import Any
 from typing import Type
 from typing import TypeVar
 
@@ -27,7 +26,7 @@ class OpenRange(Phantom):
         cls.__type__ = cls.__bases__[0]
 
     @classmethod
-    def __instancecheck__(cls, instance: Any) -> bool:
+    def __instancecheck__(cls, instance: object) -> bool:
         return (
             isinstance(instance, cls.__type__)
             and cls.__min__ <= instance <= cls.__max__

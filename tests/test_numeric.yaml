@@ -41,7 +41,7 @@
     def add(a: NegativeInt, b: NegativeInt) -> NegativeInt: ...
     @overload
     def add(a: int, b: int) -> int: ...
-    def add(a, b): return a + b
+    def add(a: int, b: int) -> int: return a + b
 
     a = Natural.from_instance(1)
     b = NegativeInt.from_instance(-1)

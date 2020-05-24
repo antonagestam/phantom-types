@@ -1,5 +1,4 @@
 import datetime
-from typing import Any
 
 from .base import Phantom
 
@@ -11,11 +10,11 @@ def is_tz_aware(dt: datetime.datetime) -> bool:
 
 class TZAware(datetime.datetime, Phantom):
     @classmethod
-    def __instancecheck__(cls, instance: Any) -> bool:
+    def __instancecheck__(cls, instance: object) -> bool:
         return isinstance(instance, datetime.datetime) and is_tz_aware(instance)
 
 
 class TZNaive(datetime.datetime, Phantom):
     @classmethod
-    def __instancecheck__(cls, instance: Any) -> bool:
+    def __instancecheck__(cls, instance: object) -> bool:
         return isinstance(instance, datetime.datetime) and not is_tz_aware(instance)
