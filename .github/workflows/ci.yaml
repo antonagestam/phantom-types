@@ -35,4 +35,5 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-mypy
       - run: make lint
+        if: ${{ matrix.python-version == '3.8' }}
       - run: make test
