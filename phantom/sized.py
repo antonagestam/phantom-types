@@ -2,7 +2,6 @@
 # https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
 from typing import _ProtocolMeta  # type: ignore[attr-defined]
 from typing import ClassVar
-from typing import Final
 from typing import Generic
 from typing import Iterable
 from typing import MutableMapping
@@ -14,6 +13,8 @@ from typing import runtime_checkable
 from typing import Sized
 from typing import Type
 from typing import TypeVar
+
+from typing_extensions import Final
 
 from .base import Phantom
 from .base import PhantomMeta
