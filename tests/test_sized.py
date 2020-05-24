@@ -1,6 +1,5 @@
-from typing import Final
-
 import pytest
+from typing_extensions import Final
 
 from phantom.sized import Empty
 from phantom.sized import NonEmpty
