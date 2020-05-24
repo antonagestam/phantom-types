@@ -1,6 +1,5 @@
 # This is the closest I could find to documentation of _ProtocolMeta ...
 # https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
-from typing import _ProtocolMeta  # type: ignore[attr-defined]
 from typing import ClassVar
 from typing import Generic
 from typing import Iterable
@@ -11,6 +10,11 @@ from typing import Optional
 from typing import Sized
 from typing import Type
 from typing import TypeVar
+
+try:
+    from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
+except ImportError:
+    from typing import _ProtocolMeta  # type: ignore[attr-defined]
 
 from typing_extensions import Final
 from typing_extensions import Protocol
