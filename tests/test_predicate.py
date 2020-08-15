@@ -1,7 +1,7 @@
 import pytest
 
-from phantom.predicate import Falsy
-from phantom.predicate import Truthy
+from phantom.boolean import Falsy
+from phantom.boolean import Truthy
 
 parametrize_truthy = pytest.mark.parametrize("v", (object(), ("a",), 1, True))
 parametrize_falsy = pytest.mark.parametrize("v", ((), 0, False))

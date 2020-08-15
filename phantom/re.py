@@ -1,7 +1,7 @@
 from typing import ClassVar
 from typing import Pattern
 
-from phantom.base import Phantom
+from .base import Phantom
 
 
 class Match(str, Phantom):

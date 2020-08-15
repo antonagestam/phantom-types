@@ -1,4 +1,7 @@
 import abc
+from typing import Callable
+from typing import ClassVar
+from typing import Generic
 from typing import Type
 from typing import TypeVar
 
@@ -36,3 +39,21 @@ class Phantom(metaclass=PhantomMeta):
     @abc.abstractmethod
     def __instancecheck__(cls, instance: object) -> bool:
         ...
+
+
+T = TypeVar("T", covariant=True, bound=object)
+Predicate = Callable[[T], bool]
+
+
+class PredicateType(Phantom, Generic[T]):
+    __predicate__: ClassVar[Predicate[T]]
+    __bound__: ClassVar[Type[T]]
+
+    def __init_subclass__(cls, *, predicate: Predicate[T], bound: Type[T]) -> None:
+        super().__init_subclass__()
+        cls.__predicate__ = predicate
+        cls.__bound__ = bound
+
+    @classmethod
+    def __instancecheck__(cls, instance: object) -> bool:
+        return isinstance(instance, cls.__bound__) and cls.__predicate__(instance)
