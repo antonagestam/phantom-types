@@ -1,15 +1,20 @@
-from phantom.base import Predicate
+from .base import Predicate, T
+from typing import Any, Type, Tuple, Union
 
 
-def equal(a: object) -> Predicate[object]:
-    def compare(b: object) -> bool:
+def equal(a: object) -> Predicate[T]:
+    def check(b: T) -> bool:
         return a == b
+    return check
 
-    return compare
 
-
-def identical(a: object) -> Predicate[object]:
-    def compare(b: object) -> bool:
+def identical(a: object) -> Predicate[T]:
+    def check(b: T) -> bool:
         return a is b
+    return check
 
-    return compare
+
+def of_type(t: Union[Type, Tuple[Type, ...]]) -> Predicate[T]:
+    def check(a: T) -> bool:
+        return isinstance(a, t)
+    return check

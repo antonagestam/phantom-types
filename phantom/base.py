@@ -49,7 +49,7 @@ class PredicateType(Phantom, Generic[T]):
     __predicate__: ClassVar[Predicate[T]]
     __bound__: ClassVar[Type[T]]
 
-    def __init_subclass__(cls, *, predicate: Predicate[T], bound: Type[T]) -> None:
+    def __init_subclass__(cls, *, predicate: Predicate[T], bound: Type[T] = object) -> None:
         super().__init_subclass__()
         cls.__predicate__ = predicate
         cls.__bound__ = bound

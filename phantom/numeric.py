@@ -1,45 +1,55 @@
-from typing import Type
-from typing import TypeVar
+from __future__ import annotations
+from typing import TypeVar, Final, Union, Type, Generic, Callable
 
-from .base import Phantom
+from .base import PredicateType, Predicate
+from .predicates import interval
+from phantom.utils import default, Unset, unset
 
+infinity: Final = float("inf")
+negative_infinity: Final = float("-inf")
 
 T = TypeVar("T", bound=float)
 
 
-class OpenRange(Phantom):
-    __min__: float
-    __max__: float
-    __type__: Type[float]
-
+class Interval(PredicateType[T], Generic[T]):
     def __init_subclass__(
-        cls, *, min: float = float("-inf"), max: float = float("inf")
-    ):
-        super().__init_subclass__()
-        cls.__min__ = min
-        cls.__max__ = max
-        if not issubclass(cls.__bases__[0], (int, float)):
-            raise TypeError(
-                "The first base of subclasses of OpenRange must be a subclass "
-                "of either int or float."
-            )
-        cls.__type__ = cls.__bases__[0]
-
-    @classmethod
-    def __instancecheck__(cls, instance: object) -> bool:
-        return (
-            isinstance(instance, cls.__type__)
-            and cls.__min__ <= instance <= cls.__max__
+        cls,
+        check: Callable[[float, float], Predicate[T]],
+        low: float = negative_infinity,
+        high: float = infinity,
+        bound: Union[Unset, Type] = unset,
+        **kwargs,
+    ) -> None:
+        super().__init_subclass__(
+            predicate=check(low, high),
+            bound=default(bound, float),
+            **kwargs,
         )
 
 
-class Natural(int, OpenRange, min=0):
+class Open(PredicateType[T], check=interval.open):
     ...
 
 
-class NegativeInt(int, OpenRange, max=0):
+class Closed(PredicateType[T], check=interval.closed):
     ...
 
 
-class Portion(float, OpenRange, min=0, max=1):
+class OpenClosed(PredicateType[T], check=interval.open_closed):
+    ...
+
+
+class ClosedOpen(PredicateType[T], check=interval.closed_open):
+    ...
+
+
+class Natural(Open, low=0, bound=int):
+    ...
+
+
+class NegativeInt(Open, high=0, bound=int):
+    ...
+
+
+class Portion(Open, low=0, high=1):
     ...
