@@ -7,13 +7,13 @@ test:
 .PHONY: lint
 lint:
 	black --check .
-	sorti --check .
+	isort --check .
 	flake8
 	mypy
 
 .PHONY: format
 format:
-	sorti .
+	isort .
 	black .
 
 .PHONY: clean

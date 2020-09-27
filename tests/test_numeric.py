@@ -43,12 +43,12 @@ class TestNatural:
         with pytest.raises(TypeError):
             Natural.from_instance(-10)
         with pytest.raises(TypeError):
-            Natural(-1)
+            Natural(-1)  # type: ignore[call-arg]
 
     @parametrize_positive_ints
     def test_instantiation_returns_instance(self, i):
         assert i is Natural.from_instance(i)
-        assert i is Natural(i)
+        assert i is Natural(i)  # type: ignore[call-arg]
 
 
 parametrize_portion_values = pytest.mark.parametrize(
@@ -70,11 +70,11 @@ class TestPortion:
     @parametrize_portion_values
     def test_instantiation_returns_instance(self, i):
         assert i is Portion.from_instance(i)
-        assert i is Portion(i)
+        assert i is Portion(i)  # type: ignore[call-arg]
 
     @parametrize_non_portion_values
     def test_instantiation_raises_for_non_portion_values(self, i):
         with pytest.raises(TypeError):
             Portion.from_instance(i)
         with pytest.raises(TypeError):
-            Portion(i)
+            Portion(i)  # type: ignore[call-arg]

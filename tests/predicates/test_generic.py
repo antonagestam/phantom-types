@@ -1,5 +1,6 @@
-from phantom.predicates import generic
 import pytest
+
+from phantom.predicates import generic
 
 
 class TestEqual:
@@ -12,4 +13,3 @@ class TestEqual:
     # def test_returns_false_for_non_equal_values(self, a: object, b: object) -> None:
     #     assert not generic.equal(a)(b)
     #     assert not generic.equal(b)(a)
-

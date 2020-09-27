@@ -4,7 +4,6 @@ from typing_extensions import Final
 from phantom.sized import Empty
 from phantom.sized import NonEmpty
 
-
 parametrize_non_empty: Final = pytest.mark.parametrize(
     "container", ((1,), frozenset({1}), "foo")
 )

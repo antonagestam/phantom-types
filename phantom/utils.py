@@ -1,10 +1,21 @@
-from typing import Union, Type, Final, TypeVar
+import abc
+from typing import Type
+from typing import TypeVar
+from typing import Union
 
-Unset: Final = type("_Unset", (), {})
-unset: Final = Unset()
+
+class Undefined:
+    pass
+
 
 V = TypeVar("V")
+undefined = Undefined()
+Maybe = Union[Undefined, V]
 
 
-def default(value: Union[V, Unset], default: Type[V]) -> V:
-    return default if isinstance(value, Unset) else value
+def default(value: Union[V, Undefined], default: V) -> V:
+    return default if isinstance(value, Undefined) else value
+
+
+def is_abstract(cls: Type) -> bool:
+    return abc.ABC in cls.__mro__

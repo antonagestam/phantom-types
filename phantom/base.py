@@ -1,9 +1,12 @@
+from __future__ import annotations
+
 import abc
 from typing import Callable
 from typing import ClassVar
 from typing import Generic
 from typing import Type
 from typing import TypeVar
+from typing import Union
 
 
 class PhantomMeta(abc.ABCMeta):
@@ -45,12 +48,25 @@ T = TypeVar("T", covariant=True, bound=object)
 Predicate = Callable[[T], bool]
 
 
+from .utils import Maybe
+from .utils import Undefined
+from .utils import default
+from .utils import is_abstract
+from .utils import undefined
+
+
 class PredicateType(Phantom, Generic[T]):
     __predicate__: ClassVar[Predicate[T]]
     __bound__: ClassVar[Type[T]]
 
-    def __init_subclass__(cls, *, predicate: Predicate[T], bound: Type[T] = object) -> None:
-        super().__init_subclass__()
+    def __init_subclass__(
+        cls,
+        predicate: Maybe[Predicate[T]],
+        bound: Maybe[Type[T]],
+        **kwargs: object,
+    ) -> None:
+        super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
+
         cls.__predicate__ = predicate
         cls.__bound__ = bound
 

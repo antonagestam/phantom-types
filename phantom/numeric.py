@@ -1,12 +1,17 @@
 from __future__ import annotations
-from typing import TypeVar, Final, Union, Type, Generic, Callable
 
-from .base import PredicateType, Predicate
+from typing import Callable
+from typing import Generic
+from typing import Type
+from typing import TypeVar
+
+from phantom.utils import Maybe
+from phantom.utils import default
+from phantom.utils import undefined
+
+from .base import Predicate
+from .base import PredicateType
 from .predicates import interval
-from phantom.utils import default, Unset, unset
-
-infinity: Final = float("inf")
-negative_infinity: Final = float("-inf")
 
 T = TypeVar("T", bound=float)
 
@@ -15,10 +20,10 @@ class Interval(PredicateType[T], Generic[T]):
     def __init_subclass__(
         cls,
         check: Callable[[float, float], Predicate[T]],
-        low: float = negative_infinity,
-        high: float = infinity,
-        bound: Union[Unset, Type] = unset,
-        **kwargs,
+        low: float = float("-inf"),
+        high: float = float("inf"),
+        bound: Maybe[Type] = undefined,
+        **kwargs: object,
     ) -> None:
         super().__init_subclass__(
             predicate=check(low, high),

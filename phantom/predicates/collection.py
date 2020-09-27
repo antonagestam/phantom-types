@@ -15,7 +15,7 @@ def contains(value: U) -> Predicate[Container]:
 
 
 def count(predicate: Predicate[int]) -> Predicate[Sized]:
-    def compare(sized: Sized[object]) -> bool:
+    def compare(sized: Sized) -> bool:
         return predicate(len(sized))
 
     return compare
