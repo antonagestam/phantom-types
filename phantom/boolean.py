@@ -1,10 +1,10 @@
-from . import predicates
 from .base import PredicateType
+from .predicates import bool
 
 
-class Truthy(PredicateType[object], predicate=predicates.is_truthy, bound=object):
+class Truthy(PredicateType[object], predicate=bool.truthy, bound=object):
     ...
 
 
-class Falsy(PredicateType[object], predicate=predicates.is_falsy, bound=object):
+class Falsy(PredicateType[object], predicate=bool.falsy, bound=object):
     ...
