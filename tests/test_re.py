@@ -22,4 +22,4 @@ class TestMatch:
 
     def test_instantiation_returns_instance(self):
         s = "abc"
-        assert s is A.from_instance(s)
+        assert s is A.from_instance(s)  # type: ignore[comparison-overlap]
