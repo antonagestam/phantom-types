@@ -1,9 +1,3 @@
-"""
-Interval.Open[L, H]: checks if a numeric value is in the interval (L, H)
-Interval.OpenClosed[L, H]: checks if a numeric value is in the interval (L, H]
-Interval.ClosedOpen[L, H]: checks if a numeric value is in the interval [L, H)
-Interval.Closed[L, H]: checks if a numeric value is in the interval [L, H]
-"""
 from .base import Predicate
 
 

@@ -6,7 +6,10 @@ from typing import ClassVar
 from typing import Generic
 from typing import Type
 from typing import TypeVar
-from typing import Union
+
+from phantom.utils import Maybe
+from phantom.utils import resolve_class_attr
+from phantom.utils import undefined
 
 
 class PhantomMeta(abc.ABCMeta):
@@ -48,27 +51,19 @@ T = TypeVar("T", covariant=True, bound=object)
 Predicate = Callable[[T], bool]
 
 
-from .utils import Maybe
-from .utils import Undefined
-from .utils import default
-from .utils import is_abstract
-from .utils import undefined
-
-
 class PredicateType(Phantom, Generic[T]):
     __predicate__: ClassVar[Predicate[T]]
     __bound__: ClassVar[Type[T]]
 
     def __init_subclass__(
         cls,
-        predicate: Maybe[Predicate[T]],
-        bound: Maybe[Type[T]],
+        predicate: Maybe[Predicate[T]] = undefined,
+        bound: Maybe[Type[T]] = undefined,
         **kwargs: object,
     ) -> None:
         super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
-
-        cls.__predicate__ = predicate
-        cls.__bound__ = bound
+        resolve_class_attr(cls, "__predicate__", predicate)
+        resolve_class_attr(cls, "__bound__", bound)
 
     @classmethod
     def __instancecheck__(cls, instance: object) -> bool:
