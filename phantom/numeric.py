@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import abc
 from typing import Callable
 from typing import Generic
 from typing import Optional

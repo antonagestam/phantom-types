@@ -2,7 +2,7 @@ SHELL := /usr/bin/env bash
 
 .PHONY: test
 test:
-	pytest --ignore=examples --mypy-ini-file=setup.cfg
+	pytest --ignore=examples --mypy-ini-file=setup.cfg $(test)
 
 .PHONY: lint
 lint:
