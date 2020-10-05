@@ -126,7 +126,7 @@ impossible to implement, so developer discipline is required.
 - `phantom.predicates.generic.of_type(t: Union[Type, Tuple[Type, ...]]) -> Predicate[object]`
   creates a new predicate that succeeds when its argument is an instance of `t`.
 
-#### `phantom.predicates.interval`
+#### Interval
 
 See corresponding shipped phantom types. Creates new predicates that succeed when their
 argument is strictly or non strictly between the upper and lower bounds.
