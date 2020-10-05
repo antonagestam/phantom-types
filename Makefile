@@ -2,18 +2,18 @@ SHELL := /usr/bin/env bash
 
 .PHONY: test
 test:
-	pytest --ignore=examples --mypy-ini-file=setup.cfg
+	pytest --ignore=examples --mypy-ini-file=setup.cfg $(test)
 
 .PHONY: lint
 lint:
 	black --check .
-	sorti --check .
+	isort --check .
 	flake8
 	mypy
 
 .PHONY: format
 format:
-	sorti .
+	isort .
 	black .
 
 .PHONY: clean

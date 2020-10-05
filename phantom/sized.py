@@ -25,7 +25,6 @@ from typing_extensions import runtime_checkable
 from .base import Phantom
 from .base import PhantomMeta
 
-
 __all__ = (
     "PhantomSized",
     "NonEmpty",
@@ -53,9 +52,9 @@ class PhantomSized(
     __max__: ClassVar[float] = float("inf")
 
     def __init_subclass__(
-        cls, *, min: Optional[int] = None, max: Optional[float] = None
+        cls, min: Optional[int] = None, max: Optional[float] = None, **kwargs: object
     ):
-        super().__init_subclass__()
+        super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
         if min is not None:
             cls.__min__ = min
         if max is not None:
