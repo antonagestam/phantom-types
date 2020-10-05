@@ -1,13 +1,10 @@
 from typing import Container
 from typing import Sized
-from typing import TypeVar
 
 from phantom.base import Predicate
 
-U = TypeVar("U")
 
-
-def contains(value: U) -> Predicate[Container]:
+def contains(value: object) -> Predicate[Container]:
     def compare(container: Container) -> bool:
         return value in container
 
