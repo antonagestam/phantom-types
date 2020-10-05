@@ -5,6 +5,7 @@ import pytest
 
 from phantom.base import Predicate
 from phantom.predicates import collection
+from phantom.predicates import generic
 from phantom.predicates import numeric
 
 
@@ -38,7 +39,7 @@ class TestCount:
     @pytest.mark.parametrize(
         "predicate, sized",
         [
-            (numeric.equal(1), [0]),
+            (generic.equal(1), [0]),
             (numeric.le(3), ("a", "b")),
             (numeric.ge(3), "abc"),
         ],
@@ -51,7 +52,7 @@ class TestCount:
     @pytest.mark.parametrize(
         "predicate, sized",
         [
-            (numeric.equal(1), [0, 0]),
+            (generic.equal(1), [0, 0]),
             (numeric.le(3), ("a", "b", 1, 2)),
             (numeric.ge(3), "ab"),
         ],
