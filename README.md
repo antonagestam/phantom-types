@@ -15,14 +15,15 @@ python3 -m pip install phantom-types
 ## Abstract
 
 - Make illegal states unrepresentable.
-- [Parse, don't validate]
-- [Ghosts of Departed Proofs]
+- [Parse, don't validate].
+- [Ghosts of Departed Proofs].
 - Abuse `__instancecheck__` and type-guards.
-- Values are checked at runtime but no extra instances/subclasses are
-  instantiated.
+- Values are checked at runtime but no extra instances/subclasses are instantiated.
+- Boolean predicate design is heavily inspired by [fthomas/refined].
 
 [Parse, don't validate]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
 [Ghosts of Departed Proofs]: https://kataskeue.com/gdp.pdf
+[fthomas/refined]: https://github.com/fthomas/refined
 
 ## Usage
 
