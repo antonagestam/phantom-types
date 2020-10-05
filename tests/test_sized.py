@@ -1,5 +1,6 @@
+from typing import Final
+
 import pytest
-from typing_extensions import Final
 
 from phantom.sized import Empty
 from phantom.sized import NonEmpty
@@ -34,8 +35,11 @@ class TestNonEmpty:
     def test_instantiation_returns_instance(self, container):
         assert container is NonEmpty.from_instance(container)
 
-    def test_subscription_returns_type(self):
-        assert NonEmpty[tuple] is NonEmpty
+    def test_subscription_returns_type_alias(self):
+        alias = NonEmpty[tuple]
+        assert alias.__origin__ is NonEmpty
+        (arg,) = alias.__args__
+        assert arg is tuple
 
 
 class TestEmpty:
@@ -61,5 +65,8 @@ class TestEmpty:
     def test_instantiation_returns_instance(self, container):
         assert container is Empty.from_instance(container)
 
-    def test_subscription_returns_type(self):
-        assert Empty[list] is Empty
+    def test_subscription_returns_type_alias(self):
+        alias = Empty[frozenset]
+        assert alias.__origin__ is Empty
+        (arg,) = alias.__args__
+        assert arg is frozenset
