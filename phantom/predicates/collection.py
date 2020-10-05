@@ -8,7 +8,7 @@ U = TypeVar("U")
 
 
 def contains(value: U) -> Predicate[Container]:
-    def compare(container: Container[object]) -> bool:
+    def compare(container: Container) -> bool:
         return value in container
 
     return compare

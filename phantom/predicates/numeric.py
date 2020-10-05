@@ -1,5 +1,5 @@
 from .base import Predicate
-from .bool import neg
+from .bool import negate
 from .generic import equal
 
 
@@ -44,5 +44,5 @@ def modulo(n: float, p: Predicate[float]) -> Predicate[float]:
     return check
 
 
-even = modulo(2, equal(0))
-odd = neg(even)
+even: Predicate[int] = modulo(2, equal(0))
+odd: Predicate[int] = negate(even)

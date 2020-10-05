@@ -14,7 +14,7 @@ def false(_value: object) -> Literal[False]:
     return False
 
 
-def neg(p: Predicate[T]) -> Predicate[T]:
+def negate(p: Predicate[T]) -> Predicate[T]:
     def check(value: T) -> bool:
         return not p(value)
 
@@ -25,7 +25,7 @@ def truthy(value: object) -> bool:
     return bool(value)
 
 
-falsy = neg(truthy)
+falsy = negate(truthy)
 
 
 def both(p: Predicate[T], q: Predicate[T]) -> Predicate[T]:
