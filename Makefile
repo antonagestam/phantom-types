@@ -24,7 +24,6 @@ format-readme:
 format:
 	isort .
 	black .
-	for
 
 .PHONY: clean
 clean:
