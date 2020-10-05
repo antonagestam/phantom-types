@@ -1,45 +1,66 @@
-from typing import Type
+from __future__ import annotations
+
+from typing import Optional
+from typing import Protocol
 from typing import TypeVar
 
-from .base import Phantom
+from .base import Predicate
+from .base import PredicateType
+from .predicates import interval
+from .utils import resolve_class_attr
+
+N = TypeVar("N", bound=float)
 
 
-T = TypeVar("T", bound=float)
+class IntervalCheck(Protocol):
+    def __call__(self, a: N, b: N, /) -> Predicate[N]:
+        ...
 
 
-class OpenRange(Phantom):
-    __min__: float
-    __max__: float
-    __type__: Type[float]
+class Interval(PredicateType[float]):
+    __check__: IntervalCheck
 
     def __init_subclass__(
-        cls, *, min: float = float("-inf"), max: float = float("inf")
-    ):
-        super().__init_subclass__()
-        cls.__min__ = min
-        cls.__max__ = max
-        if not issubclass(cls.__bases__[0], (int, float)):
-            raise TypeError(
-                "The first base of subclasses of OpenRange must be a subclass "
-                "of either int or float."
-            )
-        cls.__type__ = cls.__bases__[0]
-
-    @classmethod
-    def __instancecheck__(cls, instance: object) -> bool:
-        return (
-            isinstance(instance, cls.__type__)
-            and cls.__min__ <= instance <= cls.__max__
+        cls,
+        check: Optional[IntervalCheck] = None,
+        low: float = float("-inf"),
+        high: float = float("inf"),
+        **kwargs: object,
+    ) -> None:
+        resolve_class_attr(cls, "__check__", check)
+        if getattr(cls, "__check__", None) is None:
+            raise TypeError(f"{cls.__qualname__} must define an interval check")
+        # See issue as to why the numeric tower isn't used here.
+        # https://github.com/python/mypy/issues/3186
+        bound = b if issubclass(b := cls.__mro__[1], (int, float)) else None
+        super().__init_subclass__(
+            predicate=cls.__check__(low, high), bound=bound, **kwargs
         )
 
 
-class Natural(int, OpenRange, min=0):
+class Open(Interval, check=interval.open):
     ...
 
 
-class NegativeInt(int, OpenRange, max=0):
+class Closed(Interval, check=interval.closed):
     ...
 
 
-class Portion(float, OpenRange, min=0, max=1):
+class OpenClosed(Interval, check=interval.open_closed):
+    ...
+
+
+class ClosedOpen(Interval, check=interval.closed_open):
+    ...
+
+
+class Natural(int, Open, low=0):
+    ...
+
+
+class NegativeInt(int, Open, high=0):
+    ...
+
+
+class Portion(float, Open, low=0, high=1):
     ...

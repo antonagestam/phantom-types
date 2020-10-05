@@ -3,9 +3,9 @@ from __future__ import annotations
 import datetime
 import re
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Dict
-from typing import TYPE_CHECKING
 
 import pytest
 from dacite import Config

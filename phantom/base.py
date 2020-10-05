@@ -1,6 +1,14 @@
+from __future__ import annotations
+
 import abc
+from typing import Callable
+from typing import ClassVar
+from typing import Generic
+from typing import Optional
 from typing import Type
 from typing import TypeVar
+
+from .utils import resolve_class_attr
 
 
 class PhantomMeta(abc.ABCMeta):
@@ -36,3 +44,26 @@ class Phantom(metaclass=PhantomMeta):
     @abc.abstractmethod
     def __instancecheck__(cls, instance: object) -> bool:
         ...
+
+
+T = TypeVar("T", covariant=True, bound=object)
+Predicate = Callable[[T], bool]
+
+
+class PredicateType(Phantom, Generic[T]):
+    __predicate__: ClassVar[Predicate[T]]
+    __bound__: ClassVar[Type[T]]
+
+    def __init_subclass__(
+        cls,
+        predicate: Optional[Predicate[T]] = None,
+        bound: Optional[Type[T]] = None,
+        **kwargs: object,
+    ) -> None:
+        super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
+        resolve_class_attr(cls, "__predicate__", predicate)
+        resolve_class_attr(cls, "__bound__", bound)
+
+    @classmethod
+    def __instancecheck__(cls, instance: object) -> bool:
+        return isinstance(instance, cls.__bound__) and cls.__predicate__(instance)
