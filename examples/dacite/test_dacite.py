@@ -13,12 +13,13 @@ from dacite import from_dict
 
 from phantom.base import Phantom
 from phantom.datetime import TZAware
-from phantom.numeric import Natural
+from phantom.interval import Natural
+from phantom.predicates.interval import closed_open
 from phantom.re import Match
-from phantom.sized import NonEmpty
+from phantom.sized import PhantomSized
 
 
-class Name(str, NonEmpty[str], max=20):
+class Name(str, PhantomSized[str], len=closed_open(0, 20)):
     ...
 
 
@@ -35,7 +36,7 @@ class Author:
 @dataclass(frozen=True)
 class Book:
     id: Natural
-    name: NonEmpty[str]
+    name: Name
     published: TZAware
     author: Author
 
@@ -85,9 +86,7 @@ def test_negative_id_raises() -> None:
 
 
 def test_empty_name_raises() -> None:
-    with pytest.raises(
-        TypeError, match=r"^Can't create phantom type NonEmpty from ''$"
-    ):
+    with pytest.raises(TypeError, match=r"^Can't create phantom type Name from ''$"):
         Book.parse(
             {
                 "id": 3,

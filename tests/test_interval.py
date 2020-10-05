@@ -1,8 +1,8 @@
 import pytest
 
-from phantom.numeric import Natural
-from phantom.numeric import NegativeInt
-from phantom.numeric import Portion
+from phantom.interval import Natural
+from phantom.interval import NegativeInt
+from phantom.interval import Portion
 
 parametrize_negative_ints = pytest.mark.parametrize("i", (-10, -1, -0, +0))
 parametrize_positive_ints = pytest.mark.parametrize("i", (10, 1, +0, -0))

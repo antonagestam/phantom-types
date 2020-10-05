@@ -1,6 +1,6 @@
 - case: asserting_twice_results_in_intersection_type
   main: |
-    from phantom.numeric import Portion, Open
+    from phantom.interval import Portion, Open
 
     class Positive(float, Open, min=0): ...
 
