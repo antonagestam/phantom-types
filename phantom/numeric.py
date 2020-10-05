@@ -1,63 +1,66 @@
 from __future__ import annotations
 
-from typing import Callable
-from typing import Generic
 from typing import Optional
-from typing import Type
+from typing import Protocol
 from typing import TypeVar
 
 from .base import Predicate
 from .base import PredicateType
 from .predicates import interval
+from .utils import resolve_class_attr
 
-T = TypeVar("T", bound=float)
-
-IntervalCheck = Callable[[float, float], Predicate[T]]
+N = TypeVar("N", bound=float)
 
 
-class Interval(PredicateType[T], Generic[T]):
-    __check__: IntervalCheck[T]
+class IntervalCheck(Protocol):
+    def __call__(self, a: N, b: N, /) -> Predicate[N]:
+        ...
+
+
+class Interval(PredicateType[float]):
+    __check__: IntervalCheck
 
     def __init_subclass__(
         cls,
-        check: Optional[IntervalCheck[T]] = None,
+        check: Optional[IntervalCheck] = None,
         low: float = float("-inf"),
         high: float = float("inf"),
-        bound: Type = float,
         **kwargs: object,
     ) -> None:
-        check = getattr(cls, "__check__", None) if check is None else check
-        if check is None:
+        resolve_class_attr(cls, "__check__", check)
+        if getattr(cls, "__check__", None) is None:
             raise TypeError(f"{cls.__qualname__} must define an interval check")
-        cls.__check__ = check
+        # See issue as to why the numeric tower isn't used here.
+        # https://github.com/python/mypy/issues/3186
+        bound = b if issubclass(b := cls.__mro__[1], (int, float)) else None
         super().__init_subclass__(
             predicate=cls.__check__(low, high), bound=bound, **kwargs
         )
 
 
-class Open(Interval[T], check=interval.open):
+class Open(Interval, check=interval.open):
     ...
 
 
-class Closed(Interval[T], check=interval.closed):
+class Closed(Interval, check=interval.closed):
     ...
 
 
-class OpenClosed(Interval[T], check=interval.open_closed):
+class OpenClosed(Interval, check=interval.open_closed):
     ...
 
 
-class ClosedOpen(Interval[T], check=interval.closed_open):
+class ClosedOpen(Interval, check=interval.closed_open):
     ...
 
 
-class Natural(Open, low=0, bound=int):
+class Natural(int, Open, low=0):
     ...
 
 
-class NegativeInt(Open, high=0, bound=int):
+class NegativeInt(int, Open, high=0):
     ...
 
 
-class Portion(Open, low=0, high=1):
+class Portion(float, Open, low=0, high=1):
     ...

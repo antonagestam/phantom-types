@@ -4,12 +4,11 @@ import abc
 from typing import Callable
 from typing import ClassVar
 from typing import Generic
+from typing import Optional
 from typing import Type
 from typing import TypeVar
 
-from phantom.utils import Maybe
-from phantom.utils import resolve_class_attr
-from phantom.utils import undefined
+from .utils import resolve_class_attr
 
 
 class PhantomMeta(abc.ABCMeta):
@@ -57,8 +56,8 @@ class PredicateType(Phantom, Generic[T]):
 
     def __init_subclass__(
         cls,
-        predicate: Maybe[Predicate[T]] = undefined,
-        bound: Maybe[Type[T]] = undefined,
+        predicate: Optional[Predicate[T]] = None,
+        bound: Optional[Type[T]] = None,
         **kwargs: object,
     ) -> None:
         super().__init_subclass__(**kwargs)  # type: ignore[call-arg]

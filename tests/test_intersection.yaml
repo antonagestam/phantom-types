@@ -1,8 +1,8 @@
 - case: asserting_twice_results_in_intersection_type
   main: |
-    from phantom.numeric import Portion, OpenRange
+    from phantom.numeric import Portion, Open
 
-    class Positive(float, OpenRange, min=0): ...
+    class Positive(float, Open, min=0): ...
 
     n = .5
 
