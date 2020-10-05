@@ -11,6 +11,15 @@ lint:
 	flake8
 	mypy
 
+.PHONY: format-readme
+format-readme:
+	docker run --rm -v "$$PWD:/work" tmknom/prettier \
+		--parser=markdown \
+		--print-width=88 \
+		--prose-wrap=always \
+		--write \
+		'**/*.md'
+
 .PHONY: format
 format:
 	isort .
