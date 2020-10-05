@@ -29,99 +29,99 @@ python3 -m pip install phantom-types
 
 ### Shipped phantom types
 
-#### `phantom.boolean`
+#### Boolean
 
 Describes objects that coerce to either `True` or `False` when calling `bool()` on them.
 
-- `Truthy`
-- `Falsy`
+- `phantom.boolean.Truthy`
+- `phantom.boolean.Falsy`
 
-#### `phantom.datetime`
+#### Datetime
 
-- `TZAware`
-- `TZNaive`
+- `phantom.datetime.TZAware`
+- `phantom.datetime.TZNaive`
 
-#### `phantom.interval`
+#### Interval
 
 Describes narrower sets of numbers than `int` and `float`.
 
 ##### Base classes
 
-- `Interval`
+- `phantom.interval.Interval`
   - Takes class arguments `check: IntervalCheck`, `low: float` (defaults to negative
     infinity), and `high: float` (defaults to positive infinity). Expects concrete
     subtypes to specify their runtime type bound as first base.
-- `Open`, `(low, high)`
+- `phantom.interval.Open`, `(low, high)`
   - Uses `check=phantom.predicates.interval.open`.
-- `Closed`, `[low, high]`
+- `phantom.interval.Closed`, `[low, high]`
   - Uses `check=phantom.predicates.interval.closed`.
-- `OpenClosed`, `(low, high]`
+- `phantom.interval.OpenClosed`, `(low, high]`
   - Uses `check=phantom.predicates.interval.open_closed`.
-- `ClosedOpen`, `[low, high)`
+- `phantom.interval.ClosedOpen`, `[low, high)`
   - Uses `check=phantom.predicates.interval.closed_open`.
 
 ##### Implemented intervals
 
-- `Natural`, `(0, ∞)`
-- `NegativeInt`, `(-∞, 0)`
-- `Portion`, `(0, 1)`
+- `phantom.interval.Natural`, `(0, ∞)`
+- `phantom.interval.NegativeInt`, `(-∞, 0)`
+- `phantom.interval.Portion`, `(0, 1)`
 
-#### `phantom.re`
+#### Regular expressions
 
 Takes `pattern: Pattern[str]` as class argument.
 
-- `Match`, uses `phantom.predicates.re.is_match`.
-- `FullMatch`, uses `phantom.predicates.re.is_full_match`.
+- `phantom.re.Match`, uses `phantom.predicates.re.is_match`.
+- `phantom.re.FullMatch`, uses `phantom.predicates.re.is_full_match`.
 
-#### `phantom.sized`
+#### Sized collections
 
 Describes collections with size boundaries. These types should only be used with
 immutable collections. There is a naive check that eliminates some of the most common
 mutable collections in the instance check, however a guaranteed check is probably
 impossible to implement, so developer discipline is required.
 
-- `PhantomSized[T]`, takes class argument `len: Predicate[float]`.
-- `NonEmpty[T]`, a sized collection with at least one item.
-- `Empty[T]`, an empty collection.
+- `phantom.sized.PhantomSized[T]`, takes class argument `len: Predicate[float]`.
+- `phantom.sized.NonEmpty[T]`, a sized collection with at least one item.
+- `phantom.sized.Empty[T]`, an empty collection.
 
 
 ### Shipped predicates and factories
 
-#### `phantom.predicates.bool`
+#### Bool
 
-- `true: Predicate[object]` always returns `True`.
-- `false: Predicate[object]` always returns `False`.
-- `negate(p: Predicate[T]) -> Predicate[T]` negates a given predicate.
-- `truthy: Predicate[object]` returns `True` for truthy objects.
-- `falsy: Predicate[object]` returns `True` for falsy objects.
-- `both(p: Predicate[T], q: Predicate[T]) -> Predicate[T]` creates a new predicate that
+- `phantom.predicates.bool.true: Predicate[object]` always returns `True`.
+- `phantom.predicates.bool.false: Predicate[object]` always returns `False`.
+- `phantom.predicates.bool.negate(p: Predicate[T]) -> Predicate[T]` negates a given predicate.
+- `phantom.predicates.bool.truthy: Predicate[object]` returns `True` for truthy objects.
+- `phantom.predicates.bool.falsy: Predicate[object]` returns `True` for falsy objects.
+- `phantom.predicates.bool.both(p: Predicate[T], q: Predicate[T]) -> Predicate[T]` creates a new predicate that
   succeeds when both of the given predicates succeed.
-- `all_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]` creates a new predicate
+- `phantom.predicates.bool.all_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]` creates a new predicate
   that succeeds when all of the given predicates succeed.
-- `any_of(predicates: Iterable[Predicate[T]] -> Predicate[T]` creates a new predicate
+- `phantom.predicates.bool.any_of(predicates: Iterable[Predicate[T]] -> Predicate[T]` creates a new predicate
   that succeeds when at least one of the given predicates succeed.
 
-#### `phantom.predicates.collection`
+#### Collection
 
-- `contains(value: object) -> Predicate[Container]` creates a new predicate that
+- `phantom.predicates.collection.contains(value: object) -> Predicate[Container]` creates a new predicate that
   succeeds when its argument contains `value`.
-- `count(predicate: Predicate[int]) -> Predicate[Sized]` creates a predicate that
+- `phantom.predicates.collection.count(predicate: Predicate[int]) -> Predicate[Sized]` creates a predicate that
   succeeds when the size of its argument satisfies the given `predicate`.
 
-#### `phantom.predicates.datetime`
+#### Datetime
 
-- `is_tz_aware: Predicate[datetime.datetime]` succeeds if its argument is timezone
+- `phantom.predicates.datetime.is_tz_aware: Predicate[datetime.datetime]` succeeds if its argument is timezone
   aware.
-- `is_tz_naive: Predicate[datetime.datetime]` succeeds if its argument is timezone
+- `phantom.predicates.datetime.is_tz_naive: Predicate[datetime.datetime]` succeeds if its argument is timezone
   naive.
 
-#### `phantom.predicates.generic`
+#### Generic
 
-- `equal(a: object) -> Predicate[object]` creates a new predicate that succeeds when its
+- `phantom.predicates.generic.equal(a: object) -> Predicate[object]` creates a new predicate that succeeds when its
   argument is equal to `a`.
-- `identical(a: object) -> Predicate[object]` creates a new predicate that succeeds when
+- `phantom.predicates.generic.identical(a: object) -> Predicate[object]` creates a new predicate that succeeds when
   its argument is identical to `a`.
-- `of_type(t: Union[Type, Tuple[Type, ...]]) -> Predicate[object]` creates a new
+- `phantom.predicates.generic.of_type(t: Union[Type, Tuple[Type, ...]]) -> Predicate[object]` creates a new
   predicate that succeeds when its argument is an instance of `t`.
 
 #### `phantom.predicates.interval`
@@ -129,37 +129,37 @@ impossible to implement, so developer discipline is required.
 See corresponding shipped phantom types. Creates new predicates that succeed when their
 argument is strictly or non strictly between the upper and lower bounds.
 
-- `open(low: float, high: float) -> Predicate[float]`
-- `open_closed(low: float, high: float) -> Predicate[float]`
-- `closed_open(low: float, high: float) -> Predicate[float]`
-- `closed(low: float, high: float) -> Predicate[float]`
+- `phantom.predicates.interval.open(low: float, high: float) -> Predicate[float]`
+- `phantom.predicates.interval.open_closed(low: float, high: float) -> Predicate[float]`
+- `phantom.predicates.interval.closed_open(low: float, high: float) -> Predicate[float]`
+- `phantom.predicates.interval.closed(low: float, high: float) -> Predicate[float]`
 
-#### `phantom.predicates.numeric`
+#### Numeric
 
-- `less(n: float) -> Predicate[float]` creates a new predicate that succeeds when its
+- `phantom.predicates.numeric.less(n: float) -> Predicate[float]` creates a new predicate that succeeds when its
   argument is strictly less than `n`.
-- `le(n: float) -> Predicate[float]` creates a new predicate that succeeds when its
+- `phantom.predicates.numeric.le(n: float) -> Predicate[float]` creates a new predicate that succeeds when its
   argument is less than or equal to `n`.
-- `greater(n: float) -> Predicate[float]` creates a new predicate that succeeds when its
+- `phantom.predicates.numeric.greater(n: float) -> Predicate[float]` creates a new predicate that succeeds when its
   argument is strictly greater than `n`.
-- `ge(n: float) -> Predicate[float]` creates a new predicate that succeeds when its
+- `phantom.predicates.numeric.ge(n: float) -> Predicate[float]` creates a new predicate that succeeds when its
   argument is greater than or equal to `n`.
-- `positive: Predicate[float]` succeeds when its argument is strictly greater than zero.
-- `non_positive: Predicate[float]` succeeds when its argument is less than or equal to
+- `phantom.predicates.numeric.positive: Predicate[float]` succeeds when its argument is strictly greater than zero.
+- `phantom.predicates.numeric.non_positive: Predicate[float]` succeeds when its argument is less than or equal to
   zero.
-- `negative: Predicate[float]` succeeds when its argument is strictly less than zero.
-- `non_negative: Predicate[float]` succeeds when its argument is greater than or equal
+- `phantom.predicates.numeric.negative: Predicate[float]` succeeds when its argument is strictly less than zero.
+- `phantom.predicates.numeric.non_negative: Predicate[float]` succeeds when its argument is greater than or equal
   to zero.
-- `modulo(n: float, p: Predicate[float]) -> Predicate[float]` creates a new predicate
+- `phantom.predicates.numeric.modulo(n: float, p: Predicate[float]) -> Predicate[float]` creates a new predicate
   that succeeds when its argument modulo `n` satisfies the given predicate `p`.
-- `even: Predicate[int]` succeeds when its argument is even.
-- `odd: Predicate[int]` succeeds when its argument is odd.
+- `phantom.predicates.numeric.even: Predicate[int]` succeeds when its argument is even.
+- `phantom.predicates.numeric.odd: Predicate[int]` succeeds when its argument is odd.
 
-#### `phantom.predicates.re`
+#### Regular Expressions
 
-- `is_match(pattern: Pattern[str]) -> Predicate[str]` creates a new predicate that
+- `phantom.predicates.re.is_match(pattern: Pattern[str]) -> Predicate[str]` creates a new predicate that
   succeeds when the start of its argument matches the given `pattern`.
-- `is_full_match(pattern: Pattern[str]) -> Predicate[str]` creates a new predicate that
+- `phantom.predicates.re.is_full_match(pattern: Pattern[str]) -> Predicate[str]` creates a new predicate that
   succeeds when its whole argument matches the given `pattern`.
 
 ### Creating phantom types
