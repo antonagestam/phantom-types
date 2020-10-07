@@ -39,4 +39,9 @@ jobs:
             ${{ runner.os }}-mypy
       - run: make lint
         if: ${{ matrix.python-version == '3.8' }}
-      - run: make test
+      - run: make coverage
+      - run: make coverage-report
+      - uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: coverage.md
