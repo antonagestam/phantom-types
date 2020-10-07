@@ -10,10 +10,7 @@ coverage:
 	coverage run -m pytest --ignore=examples --mypy-ini-file=setup.cfg $(test)
 
 coverage-report:
-	cat <(echo -e "# Coverage report\n\n"'```') \
-		<(coverage report) \
-		<(echo '```') \
-		> coverage.md
+	coverage report
 
 lint:
 	black --check .
