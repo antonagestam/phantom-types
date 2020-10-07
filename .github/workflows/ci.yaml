@@ -42,6 +42,7 @@ jobs:
         run: |
           report=$(make coverage-report)
           echo "::set-output name=report::${report}"
+      - run: echo "${{ steps.coverage-report.outputs.report }}"
       - uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
