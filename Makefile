@@ -11,6 +11,7 @@ coverage:
 
 coverage-report:
 	@coverage report
+	@coverage xml
 
 lint:
 	black --check .
@@ -34,7 +35,7 @@ format:
 	black .
 
 clean:
-	rm -rf *.egg-info **/__pycache__ build dist
+	rm -rf *.egg-info **/__pycache__ build dist .coverage
 
 build: clean
 	python3 -m pip install --upgrade wheel twine setuptools
