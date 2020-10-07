@@ -38,23 +38,11 @@ jobs:
       - run: make lint
         if: ${{ matrix.python-version == '3.8' }}
       - run: make coverage
-      - id: coverage-report
-        run: |
-          report=$(make coverage-report)
-          # See https://github.community/t/set-output-truncates-multiline-strings/16852/5
-          report="${report//'%'/'%25'}"
-          report="${report//$'\n'/'%0A'}"
-          report="${report//$'\r'/'%0D'}"
-          echo "::set-output name=report::${report}"
-      - run: echo "${{ steps.coverage-report.outputs.report }}"
-      - uses: unsplash/comment-on-pr@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: make coverage-report
+      - name: Report coverage
+        if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize')
+        uses: 5monkeys/cobertura-action@v6
         with:
-          msg: |
-            # Coverage report
-
-            ```
-            ${{ steps.coverage-report.outputs.report }}
-            ```
-          check_for_duplicate_msg: false
+          path: coverage.xml
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          minimum_coverage: 80
