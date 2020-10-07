@@ -41,6 +41,10 @@ jobs:
       - id: coverage-report
         run: |
           report=$(make coverage-report)
+          # See https://github.community/t/set-output-truncates-multiline-strings/16852/5
+          report="${report//'%'/'%25'}"
+          report="${report//$'\n'/'%0A'}"
+          report="${report//$'\r'/'%0D'}"
           echo "::set-output name=report::${report}"
       - run: echo "${{ steps.coverage-report.outputs.report }}"
       - uses: unsplash/comment-on-pr@master
