@@ -41,7 +41,7 @@ jobs:
       - run: make coverage-report
       - name: Report coverage
         if: github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize')
-        uses: 5monkeys/cobertura-action@v5
+        uses: 5monkeys/cobertura-action@v6
         with:
           path: coverage.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
