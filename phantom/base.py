@@ -13,8 +13,8 @@ from .utils import resolve_class_attr
 
 class PhantomMeta(abc.ABCMeta):
     """
-    Metaclass that defers __instancecheck__ to derived classes and prevents
-    actual instance creation.
+    Metaclass that defers __instancecheck__ to derived classes and prevents actual
+    instance creation.
     """
 
     def __instancecheck__(self, instance: object) -> bool:
@@ -22,8 +22,8 @@ class PhantomMeta(abc.ABCMeta):
             return False
         return self.__instancecheck__(instance)
 
-    # With the current level of metaclass support in mypy it's unlikely that
-    # we'll be able to make this context typed, hence the ignores.
+    # With the current level of metaclass support in mypy it's unlikely that we'll be
+    # able to make this context typed, hence the ignores.
     def __call__(cls, instance):  # type: ignore[no-untyped-def]
         return cls.from_instance(instance)  # type: ignore[attr-defined,misc]
 

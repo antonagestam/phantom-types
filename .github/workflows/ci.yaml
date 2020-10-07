@@ -24,8 +24,7 @@ jobs:
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('setup.cfg') }}
-          restore-keys: |
-            ${{ runner.os }}-pip
+          restore-keys: ${{ runner.os }}-pip
       - run: pip install -e .[test,lint]
         if: ${{ matrix.python-version == '3.8' }}
       - run: pip install -e .[test]
@@ -35,8 +34,27 @@ jobs:
         with:
           path: .mypy_cache
           key: ${{ runner.os }}-mypy-${{ hashFiles('setup.cfg') }}
-          restore-keys: |
-            ${{ runner.os }}-mypy
+          restore-keys: ${{ runner.os }}-mypy
       - run: make lint
         if: ${{ matrix.python-version == '3.8' }}
-      - run: make test
+      - run: make coverage
+      - id: coverage-report
+        run: |
+          report=$(make coverage-report)
+          # See https://github.community/t/set-output-truncates-multiline-strings/16852/5
+          report="${report//'%'/'%25'}"
+          report="${report//$'\n'/'%0A'}"
+          report="${report//$'\r'/'%0D'}"
+          echo "::set-output name=report::${report}"
+      - run: echo "${{ steps.coverage-report.outputs.report }}"
+      - uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: |
+            # Coverage report
+
+            ```
+            ${{ steps.coverage-report.outputs.report }}
+            ```
+          check_for_duplicate_msg: false
