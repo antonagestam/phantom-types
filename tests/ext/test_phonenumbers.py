@@ -43,6 +43,9 @@ class TestFormattedPhoneNumber:
         value = 123
         with pytest.raises(
             TypeError,
-            match=fr"Can't create phantom type {FormattedPhoneNumber.__name__} from {value}",
+            match=(
+                fr"Can't create phantom type {FormattedPhoneNumber.__name__} from "
+                fr"{value}"
+            ),
         ):
             FormattedPhoneNumber.from_instance(123)
