@@ -19,8 +19,8 @@ __all__ = (
 
 
 # Ignore due to subclassing Any, since phonenumbers isn't annotated.
-class InvalidPhoneNumber(  # type: ignore[misc]
-    phonenumbers.NumberParseException, TypeError
+class InvalidPhoneNumber(
+    phonenumbers.NumberParseException, TypeError  # type: ignore[misc]
 ):
     def __init__(self, error_type: int = 99, msg: str = "Invalid number") -> None:
         super().__init__(error_type, msg)
