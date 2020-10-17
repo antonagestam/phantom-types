@@ -171,7 +171,7 @@ argument is strictly or non strictly between the upper and lower bounds.
 ### External Wrappers
 
 A collection of phantom types that wraps functionality of well maintained
-implementations of third-party validation libraries. Importing from `phantom.ext.` is a
+implementations of third-party validation libraries. Importing from `phantom.ext.*` is a
 hint that more dependencies need to be installed.
 
 #### Phone numbers
