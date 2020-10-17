@@ -195,6 +195,9 @@ pip install phantom-types[phonenumbers]
 
 - `phantom.ext.phonenumbers.is_phone_number: Predicate[str]`
 - `phantom.ext.phonenumbers.is_formatted_phone_number: Predicate[str]`
+- `phantom.ext.phonenumbers.normalize_phone_number(phone_number: str, country_code: Optional[str]=None) -> FormattedPhoneNumber`
+  normalizes numbers using `phonenumbers.PhoneNumberFormat.E164` and might raise
+  `InvalidPhoneNumber`.
 
 ##### Exceptions
 
