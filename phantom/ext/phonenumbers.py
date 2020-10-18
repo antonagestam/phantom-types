@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import Final
 from typing import Optional
 from typing import cast
 
@@ -22,7 +23,9 @@ __all__ = (
 class InvalidPhoneNumber(
     phonenumbers.NumberParseException, TypeError  # type: ignore[misc]
 ):
-    def __init__(self, error_type: int = 99, msg: str = "Invalid number") -> None:
+    INVALID: Final = 99
+
+    def __init__(self, error_type: int = INVALID, msg: str = "Invalid number") -> None:
         super().__init__(error_type, msg)
 
 
