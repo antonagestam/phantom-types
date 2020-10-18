@@ -1,0 +1,46 @@
+- case: bound_is_not_subtype
+  main: |
+    from phantom.ext.phonenumbers import PhoneNumber
+    from phantom.ext.phonenumbers import FormattedPhoneNumber
+
+    def takes_phone_number(n: PhoneNumber) -> None:
+        ...
+
+    takes_phone_number("")  # E: Argument 1 to "takes_phone_number" has incompatible type "str"; expected "PhoneNumber"  [arg-type]
+
+    def takes_formatted_phone_number(n: FormattedPhoneNumber) -> None:
+        ...
+
+    takes_formatted_phone_number("")  # E: Argument 1 to "takes_formatted_phone_number" has incompatible type "str"; expected "FormattedPhoneNumber"  [arg-type]
+- case: can_instantiate
+  main: |
+    from phantom.ext.phonenumbers import PhoneNumber
+    from phantom.ext.phonenumbers import FormattedPhoneNumber
+
+    def takes_phone_number(n: PhoneNumber) -> None:
+        ...
+
+    takes_phone_number(PhoneNumber.from_instance(""))
+
+    def takes_formatted_phone_number(n: FormattedPhoneNumber) -> None:
+        ...
+
+    takes_formatted_phone_number(FormattedPhoneNumber.from_instance(""))
+- case: can_infer
+  main: |
+    from phantom.ext.phonenumbers import PhoneNumber
+    from phantom.ext.phonenumbers import FormattedPhoneNumber
+
+    def takes_phone_number(n: PhoneNumber) -> None:
+        ...
+
+    n = ""
+    assert isinstance(n, PhoneNumber)
+    takes_phone_number(n)
+
+    def takes_formatted_phone_number(n: FormattedPhoneNumber) -> None:
+        ...
+
+    f = ""
+    assert isinstance(f, FormattedPhoneNumber)
+    takes_formatted_phone_number(f)

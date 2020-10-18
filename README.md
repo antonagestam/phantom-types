@@ -168,6 +168,41 @@ argument is strictly or non strictly between the upper and lower bounds.
 - `phantom.predicates.re.is_full_match(pattern: Pattern[str]) -> Predicate[str]` creates
   a new predicate that succeeds when its whole argument matches the given `pattern`.
 
+### External Wrappers
+
+A collection of phantom types that wraps functionality of well maintained
+implementations of third-party validation libraries. Importing from `phantom.ext.*` is a
+hint that more dependencies need to be installed.
+
+#### Phone numbers
+
+Requires the [phonenumbers] library which can be installed with:
+
+[phonenumbers]: https://pypi.org/project/phonenumbers/
+
+```bash
+pip install phantom-types[phonenumbers]
+```
+
+##### Types
+
+- `phantom.ext.phonenumbers.PhoneNumber`
+- `phantom.ext.phonenumbers.FormattedPhoneNumber`
+  - `FormattedPhoneNumber.from_instance()` normalizes numbers using
+    `phonenumbers.PhoneNumberFormat.E164` and might raise `InvalidPhoneNumber`.
+
+##### Functions
+
+- `phantom.ext.phonenumbers.is_phone_number: Predicate[str]`
+- `phantom.ext.phonenumbers.is_formatted_phone_number: Predicate[str]`
+- `phantom.ext.phonenumbers.normalize_phone_number(phone_number: str, country_code: Optional[str]=None) -> FormattedPhoneNumber`
+  normalizes numbers using `phonenumbers.PhoneNumberFormat.E164` and might raise
+  `InvalidPhoneNumber`.
+
+##### Exceptions
+
+- `phantom.ext.phonenumbers.InvalidPhoneNumber`
+
 ### Creating phantom types
 
 Phantom types are created by subclassing `phantom.base.Phantom` and defining an
