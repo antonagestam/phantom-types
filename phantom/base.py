@@ -12,6 +12,7 @@ from typing import Type
 from typing import TypeVar
 from typing import Union
 
+from .utils import UnresolvedClassAttribute
 from .utils import resolve_class_attr
 
 
@@ -72,39 +73,7 @@ TypeSpec = Union[Type[T], Tuple[Type[T], ...]]
 Predicate = Callable[[T], bool]
 
 
-# TODO: Consider introducing class argument abstract: bool, to be able to add stricter
-#  checks for allowing the deferral of definitions of class arguments/attributes. Using
-#  abc.ABC is probably too much of a hassle due to metaclass conflicts.
 class Phantom(PhantomBase, Generic[T]):
-    """
-    Behaviour for __bound__ should be that is always overridable with a class argument
-    of bound=..., but will default to any bases given before Phantom. The thesis is that
-    this will provide an API that is _ for most cases and enough flexibility for more
-    complex cases.
-
-    Implicit bound:
-    >>> class A(float, Phantom, abstract=True):
-    ...     ...
-    >>> A.__bound__
-    (<class 'float'>,)
-
-    Explicit bound:
-    >>> class A(Phantom, bound=int, abstract=True):
-    ...     ...
-    >>> A.__bound__
-    (<class 'int'>,)
-
-    Speficy kind in base type:
-    >>> class A(Phantom, kind=(int, float), abstract=True):
-    ...     ...
-    >>> class B(A, bound=str, abstract=True):
-    ...     ... #doctest: +ELLIPSIS
-    Traceback (most recent call last):
-      ...
-    TypeError: One of the bounds of <class 'phantom.base.B'> (<class 'str'>) isn't a \
-subtype of its kind ((<class 'int'>, <class 'float'>))
-    """
-
     __predicate__: ClassVar[Predicate[T]]
     __bound__: ClassVar[TypeSpec[T]]
     __kind__: ClassVar[TypeSpec[Any]]
@@ -144,6 +113,11 @@ subtype of its kind ((<class 'int'>, <class 'float'>))
             bound = implicit
         elif (inherited := getattr(cls, "__bound__", None)) is not None:
             bound = inherited
+        elif not getattr(cls, "__abstract__", False):
+            raise UnresolvedClassAttribute(
+                f"Concrete phantom type {cls.__qualname__} must define class attribute "
+                f"__bound__."
+            )
         else:
             return
         if (kind := getattr(cls, "__kind__", None)) is not None:

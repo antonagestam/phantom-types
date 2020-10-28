@@ -36,19 +36,19 @@ class Interval(Phantom[float], kind=(int, float), abstract=True):
         super().__init_subclass__(predicate=cls.__check__(low, high), **kwargs)
 
 
-class Open(Interval, check=interval.open):
+class Open(Interval, check=interval.open, abstract=True):
     ...
 
 
-class Closed(Interval, check=interval.closed):
+class Closed(Interval, check=interval.closed, abstract=True):
     ...
 
 
-class OpenClosed(Interval, check=interval.open_closed):
+class OpenClosed(Interval, check=interval.open_closed, abstract=True):
     ...
 
 
-class ClosedOpen(Interval, check=interval.closed_open):
+class ClosedOpen(Interval, check=interval.closed_open, abstract=True):
     ...
 
 
