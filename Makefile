@@ -4,7 +4,10 @@ SHELL := /usr/bin/env bash
 		clean distribute test-distribute
 
 test:
-	pytest --ignore=examples --mypy-ini-file=setup.cfg $(test)
+	pytest \
+		--mypy-ini-file=setup.cfg \
+		--doctest-modules \
+		$(test)
 
 coverage:
 	coverage run -m pytest --ignore=examples --mypy-ini-file=setup.cfg $(test)
@@ -22,7 +25,7 @@ lint:
 format-readme:
 	docker run \
 		--rm \
-		-v "$$PWD:/work" \
+		-v "$$PWD/README.md:/work/README.md" \
 		tmknom/prettier \
 		--parser=markdown \
 		--print-width=88 \

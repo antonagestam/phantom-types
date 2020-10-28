@@ -14,7 +14,7 @@
     def take_nat(a: Natural) -> Natural:
         return a
 
-    b = take_nat(Natural.from_instance(1))
+    b = take_nat(Natural.parse(1))
     reveal_type(b) # N: Revealed type is 'phantom.interval.Natural'
 
 - case: calling_function_with_known_2
@@ -44,8 +44,8 @@
     def add(a: int, b: int) -> int:
         return a + b
 
-    a = Natural.from_instance(1)
-    b = NegativeInt.from_instance(-1)
+    a = Natural.parse(1)
+    b = NegativeInt.parse(-1)
 
     reveal_type(add(a, a)) # N: Revealed type is 'phantom.interval.Natural'
     reveal_type(add(b, b)) # N: Revealed type is 'phantom.interval.NegativeInt'

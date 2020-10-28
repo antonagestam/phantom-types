@@ -6,7 +6,8 @@ from typing import cast
 
 import phonenumbers
 
-from phantom import PredicateType
+from phantom import Phantom
+from phantom import parse_bound
 from phantom.utils import excepts
 
 __all__ = (
@@ -61,17 +62,11 @@ def is_formatted_phone_number(number: str) -> bool:
         return False
 
 
-class PhoneNumber(str, PredicateType, bound=str, predicate=is_phone_number):
+class PhoneNumber(str, Phantom, predicate=is_phone_number):
     ...
 
 
-class FormattedPhoneNumber(
-    str, PredicateType, bound=str, predicate=is_formatted_phone_number
-):
+class FormattedPhoneNumber(str, Phantom, predicate=is_formatted_phone_number):
     @classmethod
-    def from_instance(cls, instance: object) -> FormattedPhoneNumber:
-        if not isinstance(instance, str):
-            raise TypeError(
-                f"Can't create phantom type {cls.__qualname__} from {instance!r}"
-            )
-        return normalize_phone_number(instance)
+    def parse(cls, instance: object) -> FormattedPhoneNumber:
+        return normalize_phone_number(parse_bound(str, instance))

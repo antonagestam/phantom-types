@@ -18,8 +18,8 @@ class TestMatch:
 
     def test_instantiation_raises_for_non_matching_string(self):
         with pytest.raises(TypeError):
-            A.from_instance("b")
+            A.parse("b")
 
     def test_instantiation_returns_instance(self):
         s = "abc"
-        assert s is A.from_instance(s)  # type: ignore[comparison-overlap]
+        assert s is A.parse(s)

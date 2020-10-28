@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+from typing import Any
 from typing import Optional
 from typing import Protocol
 from typing import TypeVar
 
+from .base import Phantom
 from .base import Predicate
-from .base import PredicateType
 from .predicates import interval
 from .utils import resolve_class_attr
 
@@ -17,7 +18,9 @@ class IntervalCheck(Protocol):
         ...
 
 
-class Interval(PredicateType[float]):
+# See issue as to why the numeric tower isn't used for kind here.
+# https://github.com/python/mypy/issues/3186
+class Interval(Phantom[float], kind=(int, float)):
     __check__: IntervalCheck
 
     def __init_subclass__(
@@ -25,17 +28,12 @@ class Interval(PredicateType[float]):
         check: Optional[IntervalCheck] = None,
         low: float = float("-inf"),
         high: float = float("inf"),
-        **kwargs: object,
+        **kwargs: Any,
     ) -> None:
         resolve_class_attr(cls, "__check__", check)
         if getattr(cls, "__check__", None) is None:
             raise TypeError(f"{cls.__qualname__} must define an interval check")
-        # See issue as to why the numeric tower isn't used here.
-        # https://github.com/python/mypy/issues/3186
-        bound = b if issubclass(b := cls.__mro__[1], (int, float)) else None
-        super().__init_subclass__(
-            predicate=cls.__check__(low, high), bound=bound, **kwargs
-        )
+        super().__init_subclass__(predicate=cls.__check__(low, high), **kwargs)
 
 
 class Open(Interval, check=interval.open):

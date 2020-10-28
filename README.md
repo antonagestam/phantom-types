@@ -6,6 +6,10 @@
 
 Phantom types for Python.
 
+_This project is in early development and major changes to core APIs should be expected.
+Semantic versioning will be followed after version 1.0, but before that breaking changes
+will happen between minor versions._
+
 ## Installation
 
 ```bash
@@ -188,7 +192,7 @@ pip install phantom-types[phonenumbers]
 
 - `phantom.ext.phonenumbers.PhoneNumber`
 - `phantom.ext.phonenumbers.FormattedPhoneNumber`
-  - `FormattedPhoneNumber.from_instance()` normalizes numbers using
+  - `FormattedPhoneNumber.parse()` normalizes numbers using
     `phonenumbers.PhoneNumberFormat.E164` and might raise `InvalidPhoneNumber`.
 
 ##### Functions
@@ -212,10 +216,10 @@ Phantom types are created by subclassing `phantom.base.Phantom` and defining an
 from typing import Any
 from typing import TYPE_CHECKING
 
-from phantom.base import Phantom
+from phantom.base import PhantomBase
 
 
-class Greeting(Phantom):
+class Greeting(PhantomBase):
     @classmethod
     def __instancecheck__(cls, instance: Any) -> bool:
         return (
@@ -228,7 +232,7 @@ hello = "Hello there"
 # We can narrow types using mypy's type guards
 assert isinstance(hello, Greeting)
 # or explicitly when we need to
-hi = Greeting.from_instance("Hi there")
+hi = Greeting.parse("Hi there")
 
 # The runtime types are unchanged and will still be str for our greetings
 assert type(hello) is str
@@ -249,7 +253,7 @@ Checkout out the [dacite example][dacite-example] for how to create dataclasses 
 rich phantom-typed fields without duplicating type definitions or losing parsed
 information.
 
-[dacite-example]: examples/dacite/test_dacite.py
+[dacite-example]: examples/dacite/dacite_example.py
 
 ### Using predicates
 
@@ -269,7 +273,7 @@ Now, looking at the example we implemented by subclassing `Phantom` and providin
 reduce the amount of boilerplate required.
 
 ```python
-from phantom.base import PredicateType
+from phantom.base import Phantom
 
 
 # A boolean predicate that checks if a given string is a greeting. This function is of
@@ -279,15 +283,17 @@ def is_greeting(instance: str) -> bool:
 
 
 # Since our predicate requires its argument to be a `str`, we must make the bound of the
-# phantom type `str` as well.
-class Greeting(PredicateType, bound=str, predicate=is_greeting):
+# phantom type `str` as well. We do that by making it it's first base. Any base
+# specified before Phantom is implicitly interpreted as its bound, unless an explicit
+# bound is specificed as a class argument.
+class Greeting(str, Phantom, predicate=is_greeting):
     ...
 
 
 # Now we can make the same operations as with our previous example.
 hello = "Hello there"
 assert isinstance(hello, Greeting)
-hi = Greeting.from_instance("Hi there")
+hi = Greeting.parse("Hi there")
 ```
 
 As you can see, in addition to having less boilerplate than the previous example, this

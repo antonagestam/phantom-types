@@ -1,80 +1,13 @@
 from __future__ import annotations
 
 import datetime
-import re
-from dataclasses import dataclass
-from typing import TYPE_CHECKING
-from typing import Any
-from typing import Dict
 
 import pytest
-from dacite import Config
-from dacite import from_dict
-
-from phantom.base import Phantom
-from phantom.datetime import TZAware
-from phantom.interval import Natural
-from phantom.predicates.interval import closed_open
-from phantom.re import Match
-from phantom.sized import PhantomSized
-
-
-class Name(str, PhantomSized[str], len=closed_open(0, 20)):
-    ...
-
-
-class Email(Match, pattern=re.compile(r"^[a-z._]+@[a-z\-]+\.(?:com|se|am)$")):
-    ...
-
-
-@dataclass(frozen=True)
-class Author:
-    name: Name
-    email: Email
-
-
-@dataclass(frozen=True)
-class Book:
-    id: Natural
-    name: Name
-    published: TZAware
-    author: Author
-
-    @classmethod
-    def parse(cls, data: Dict[str, Any]) -> Book:
-        return from_dict(cls, data, config=Config(cast=[Phantom]))
-
-
-def test_can_parse_valid_book() -> None:
-    book = Book.parse(
-        {
-            "id": 1,
-            "name": "foo",
-            "published": datetime.datetime.now(tz=datetime.timezone.utc),
-            "author": {"name": "Jane Doe", "email": "jane@doe.com"},
-        }
-    )
-    assert isinstance(book, Book)
-
-    # Fields are regular builtin Python types at runtime
-    assert type(book.id) is int
-    assert type(book.name) is str  # type: ignore[comparison-overlap]
-    assert type(book.published) is datetime.datetime
-    assert type(book.author.name) is str
-    assert type(book.author.email) is str
-
-    # But the phantom types let's us statically retain more information about
-    # their shapes. This allows us to avoid shotgun parsing.
-    if TYPE_CHECKING:
-        reveal_type(book.id)
-        reveal_type(book.name)
-        reveal_type(book.published)
-        reveal_type(book.author.name)
-        reveal_type(book.author.email)
+from dacite_example import Book
 
 
 def test_negative_id_raises() -> None:
-    with pytest.raises(TypeError, match=r"^Can't create phantom type Natural from -2$"):
+    with pytest.raises(TypeError, match=r"^Can't parse Natural from int value: -2$"):
         Book.parse(
             {
                 "id": -2,
@@ -86,7 +19,7 @@ def test_negative_id_raises() -> None:
 
 
 def test_empty_name_raises() -> None:
-    with pytest.raises(TypeError, match=r"^Can't create phantom type Name from ''$"):
+    with pytest.raises(TypeError, match=r"^Can't parse Name from str value: ''$"):
         Book.parse(
             {
                 "id": 3,
@@ -99,7 +32,11 @@ def test_empty_name_raises() -> None:
 
 def test_naive_datetime_raises() -> None:
     with pytest.raises(
-        TypeError, match=r"^Can't create phantom type TZAware from datetime\.datetime"
+        TypeError,
+        match=(
+            r"^Can't parse TZAware from datetime value: "
+            r"datetime.datetime\([0-9, ]+\)$"
+        ),
     ):
         Book.parse(
             {
@@ -114,7 +51,7 @@ def test_naive_datetime_raises() -> None:
 def test_long_name_raises() -> None:
     with pytest.raises(
         TypeError,
-        match="^Can't create phantom type Name from 'John Ronald Reuel Tolkien'$",
+        match="^Can't parse Name from str value: 'John Ronald Reuel Tolkien'$",
     ):
         Book.parse(
             {
@@ -131,7 +68,7 @@ def test_long_name_raises() -> None:
 
 def test_invalid_email_raises() -> None:
     with pytest.raises(
-        TypeError, match=r"^Can't create phantom type Email from 'j@rr@john\.com'$"
+        TypeError, match=r"^Can't parse Email from str value: 'j@rr@john.com'$"
     ):
         Book.parse(
             {

@@ -11,9 +11,9 @@ from typing import TypeVar
 from typing import _ProtocolMeta  # type: ignore[attr-defined]
 from typing import runtime_checkable
 
+from .base import Phantom
 from .base import PhantomMeta
 from .base import Predicate
-from .base import PredicateType
 from .predicates import bool
 from .predicates import collection
 from .predicates import generic
@@ -36,14 +36,14 @@ class SizedIterable(Sized, Iterable[T], Protocol[T]):
 
 
 # This raises a mypy error because disallow_subclassing_any is enabled and _ProtocolMeta
-# isn't publically typed.
+# isn't publicly typed.
 class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):  # type: ignore[misc]
     ...
 
 
 class PhantomSized(
     SizedIterable[T],
-    PredicateType[Sized],
+    Phantom[Sized],
     Generic[T],
     metaclass=SizedIterablePhantomMeta,
     bound=SizedIterable,

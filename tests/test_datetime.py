@@ -25,11 +25,11 @@ class TestTZAware:
     @parametrize_naive
     def test_instantiation_raises_for_naive_datetime(self, dt):
         with pytest.raises(TypeError):
-            TZAware.from_instance(dt)
+            TZAware.parse(dt)
 
     @parametrize_aware
     def test_instantiation_returns_instance(self, dt):
-        assert dt is TZAware.from_instance(dt)
+        assert dt is TZAware.parse(dt)
 
 
 class TestTZNaive:
@@ -44,8 +44,8 @@ class TestTZNaive:
     @parametrize_aware
     def test_instantiation_raises_for_aware_datetime(self, dt):
         with pytest.raises(TypeError):
-            TZNaive.from_instance(dt)
+            TZNaive.parse(dt)
 
     @parametrize_naive
     def test_instantiation_returns_instance(self, dt):
-        assert dt is TZNaive.from_instance(dt)
+        assert dt is TZNaive.parse(dt)
