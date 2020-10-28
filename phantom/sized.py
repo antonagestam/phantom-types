@@ -47,6 +47,7 @@ class PhantomSized(
     Generic[T],
     metaclass=SizedIterablePhantomMeta,
     bound=SizedIterable,
+    abstract=True,
 ):
     def __init_subclass__(cls, len: Predicate[float], **kwargs: Any) -> None:
         super().__init_subclass__(

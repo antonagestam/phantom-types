@@ -20,7 +20,7 @@ class IntervalCheck(Protocol):
 
 # See issue as to why the numeric tower isn't used for kind here.
 # https://github.com/python/mypy/issues/3186
-class Interval(Phantom[float], kind=(int, float)):
+class Interval(Phantom[float], kind=(int, float), abstract=True):
     __check__: IntervalCheck
 
     def __init_subclass__(

@@ -36,6 +36,10 @@ class NotWithinBound(TypeError):
     ...
 
 
+class NotWithinKind(TypeError):
+    ...
+
+
 def parse_bound(bound: Type[T], instance: object) -> T:
     if not isinstance(instance, bound):
         raise NotWithinBound(
@@ -59,6 +63,10 @@ class PhantomBase(metaclass=PhantomMeta):
         ...
 
 
+class AbstractInstanceCheck(TypeError):
+    ...
+
+
 T = TypeVar("T", covariant=True, bound=object)
 TypeSpec = Union[Type[T], Tuple[Type[T], ...]]
 Predicate = Callable[[T], bool]
@@ -75,21 +83,21 @@ class Phantom(PhantomBase, Generic[T]):
     complex cases.
 
     Implicit bound:
-    >>> class A(float, Phantom):
+    >>> class A(float, Phantom, abstract=True):
     ...     ...
     >>> A.__bound__
     (<class 'float'>,)
 
     Explicit bound:
-    >>> class A(Phantom, bound=int):
+    >>> class A(Phantom, bound=int, abstract=True):
     ...     ...
     >>> A.__bound__
     (<class 'int'>,)
 
     Speficy kind in base type:
-    >>> class A(Phantom, kind=(int, float)):
+    >>> class A(Phantom, kind=(int, float), abstract=True):
     ...     ...
-    >>> class B(A, bound=str):
+    >>> class B(A, bound=str, abstract=True):
     ...     ... #doctest: +ELLIPSIS
     Traceback (most recent call last):
       ...
@@ -100,17 +108,20 @@ subtype of its kind ((<class 'int'>, <class 'float'>))
     __predicate__: ClassVar[Predicate[T]]
     __bound__: ClassVar[TypeSpec[T]]
     __kind__: ClassVar[TypeSpec[Any]]
+    __abstract__: ClassVar[bool]
 
     def __init_subclass__(
         cls,
         predicate: Optional[Predicate[T]] = None,
         bound: Optional[Type[T]] = None,
         kind: Optional[TypeSpec] = None,
+        abstract: bool = False,
         **kwargs: Any,
     ) -> None:
         super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
+        resolve_class_attr(cls, "__abstract__", abstract)
         resolve_class_attr(cls, "__predicate__", predicate)
-        resolve_class_attr(cls, "__kind__", kind)
+        resolve_class_attr(cls, "__kind__", kind, required=False)
         cls._resolve_bound(bound)
 
     @classmethod
@@ -138,7 +149,7 @@ subtype of its kind ((<class 'int'>, <class 'float'>))
         if (kind := getattr(cls, "__kind__", None)) is not None:
             for part in bound if isinstance(bound, Iterable) else (bound,):
                 if not issubclass(part, kind):
-                    raise TypeError(
+                    raise NotWithinKind(
                         f"One of the bounds of {cls} ({part}) isn't a subtype of its "
                         f"kind ({kind})"
                     )
@@ -146,4 +157,8 @@ subtype of its kind ((<class 'int'>, <class 'float'>))
 
     @classmethod
     def __instancecheck__(cls, instance: object) -> bool:
+        if cls.__abstract__:
+            raise AbstractInstanceCheck(
+                "Abstract phantom types cannot be used in instance checks"
+            )
         return isinstance(instance, cls.__bound__) and cls.__predicate__(instance)
