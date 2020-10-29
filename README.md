@@ -185,7 +185,7 @@ hint that more dependencies need to be installed.
 
 #### Phone numbers
 
-Requires the [phonenumbers] library which can be installed with:
+Requires the [phonenumbers] package which can be installed with:
 
 [phonenumbers]: https://pypi.org/project/phonenumbers/
 
@@ -211,6 +211,31 @@ pip install phantom-types[phonenumbers]
 ##### Exceptions
 
 - `phantom.ext.phonenumbers.InvalidPhoneNumber`
+
+#### Country codes
+
+Requires the [iso3166] package which can be installed with:
+
+[iso3166]: https://pypi.org/project/iso3166/
+
+```bash
+pip install phantom-types[iso3166]
+```
+
+##### Types
+
+- `phantom.ext.iso3166.Alpha2`
+  - `Alpha2.parse()` normalizes mixed case codes.
+- `phantom.ext.iso3166.CountryCode` alias of `Alpha2`
+
+##### Functions
+
+- `phantom.ext.iso3166.normalize_alpha2_country_code(country_code: str) -> Alpha2`
+  normalizes mixed case country codes and might raise `InvalidCountryCode`.
+
+##### Exceptions
+
+- `phantom.ext.iso3166.InvalidCountryCode`
 
 ### Creating phantom types
 
