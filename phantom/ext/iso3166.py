@@ -7,7 +7,7 @@ import iso3166
 
 from phantom import Phantom
 from phantom import parse_bound
-from phantom.predicates.collection import of
+from phantom.predicates.collection import contained
 
 __all__ = (
     "ALPHA2",
@@ -18,7 +18,7 @@ __all__ = (
 )
 
 ALPHA2: Final = frozenset(iso3166.countries_by_alpha2.keys())
-is_alpha2_country_code = of(ALPHA2)
+is_alpha2_country_code = contained(ALPHA2)
 
 
 class InvalidCountryCode(TypeError):

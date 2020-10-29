@@ -110,8 +110,13 @@ impossible to implement, so developer discipline is required.
 
 - `phantom.predicates.collection.contains(value: object) -> Predicate[Container]`
   creates a new predicate that succeeds when its argument contains `value`.
+- `phantom.predicates.collection.contained(container: Container) -> Predicate[object]`
+  creates a new predicate that succeeds when its argument is contained by `container`.
 - `phantom.predicates.collection.count(predicate: Predicate[int]) -> Predicate[Sized]`
   creates a predicate that succeeds when the size of its argument satisfies the given
+  `predicate`.
+- `phantom.predicates.collection.exists(predicate: Predicate[object]) -> Predicate[Iterable]`
+  creates a predicate that succeeds when one or more items in its argument satisfies
   `predicate`.
 
 #### Datetime
