@@ -23,7 +23,7 @@ class TestNormalizeAlpha2CountryCode:
 
 class TestAlpha2:
     @pytest.mark.parametrize("invalid", ("SP", "DA", "AV", 1))
-    def test_invalid_country_code_is_not_instance(self, invalid: object):
+    def test_invalid_country_code_is_not_instance(self, invalid: object) -> None:
         assert not isinstance(invalid, Alpha2)
 
     @pytest.mark.parametrize("country_code", ("PS", "AD", "VA"))
