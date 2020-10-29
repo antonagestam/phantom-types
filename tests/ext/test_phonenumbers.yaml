@@ -20,12 +20,12 @@
     def takes_phone_number(n: PhoneNumber) -> None:
         ...
 
-    takes_phone_number(PhoneNumber.from_instance(""))
+    takes_phone_number(PhoneNumber.parse(""))
 
     def takes_formatted_phone_number(n: FormattedPhoneNumber) -> None:
         ...
 
-    takes_formatted_phone_number(FormattedPhoneNumber.from_instance(""))
+    takes_formatted_phone_number(FormattedPhoneNumber.parse(""))
 - case: can_infer
   main: |
     from phantom.ext.phonenumbers import PhoneNumber

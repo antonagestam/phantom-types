@@ -18,12 +18,12 @@ class TestTruthy:
 
     @parametrize_truthy
     def test_instantiation_returns_instance(self, v):
-        assert v is Truthy.from_instance(v)
+        assert v is Truthy.parse(v)
 
     @parametrize_falsy
     def test_instantiation_raises_for_falsy_value(self, v):
         with pytest.raises(TypeError):
-            Truthy.from_instance(v)
+            Truthy.parse(v)
 
 
 class TestFalsy:
@@ -37,9 +37,9 @@ class TestFalsy:
 
     @parametrize_falsy
     def test_instantiation_returns_instance(self, v):
-        assert v is Falsy.from_instance(v)
+        assert v is Falsy.parse(v)
 
     @parametrize_truthy
     def test_instantiation_raises_for_truthy_value(self, v):
         with pytest.raises(TypeError):
-            Falsy.from_instance(v)
+            Falsy.parse(v)

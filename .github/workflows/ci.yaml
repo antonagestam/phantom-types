@@ -25,9 +25,9 @@ jobs:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('setup.cfg') }}
           restore-keys: ${{ runner.os }}-pip
-      - run: pip install -e .[phonenumbers,test,lint]
+      - run: pip install -e .[iso3166,phonenumbers,test,lint]
         if: ${{ matrix.python-version == '3.8' }}
-      - run: pip install -e .[phonenumbers,test]
+      - run: pip install -e .[iso3166,phonenumbers,test]
         if: ${{ matrix.python-version != '3.8' }}
       - name: mypy cache
         uses: actions/cache@v1

@@ -16,6 +16,6 @@
         return a
 
     b = take_aware(
-      TZAware.from_instance(datetime.datetime.now(tz=datetime.timezone.utc))
+      TZAware.parse(datetime.datetime.now(tz=datetime.timezone.utc))
     )
     reveal_type(b) # N: Revealed type is 'phantom.datetime.TZAware'

@@ -21,5 +21,5 @@
     def take_a(a: A) -> A:
         return a
 
-    a = take_a(A.from_instance("abc"))
+    a = take_a(A.parse("abc"))
     reveal_type(a)  # N: Revealed type is 'main.A'

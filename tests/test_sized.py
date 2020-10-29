@@ -24,16 +24,16 @@ class TestNonEmpty:
     @parametrize_empty
     def test_instantiation_raises_for_empty_container(self, container):
         with pytest.raises(TypeError):
-            NonEmpty.from_instance(container)
+            NonEmpty.parse(container)
 
     @parametrize_mutable
     def test_instantiation_raises_for_mutable(self, container):
         with pytest.raises(TypeError):
-            NonEmpty.from_instance(container)
+            NonEmpty.parse(container)
 
     @parametrize_non_empty
     def test_instantiation_returns_instance(self, container):
-        assert container is NonEmpty.from_instance(container)
+        assert container is NonEmpty.parse(container)
 
     def test_subscription_returns_type_alias(self):
         alias = NonEmpty[tuple]
@@ -54,16 +54,16 @@ class TestEmpty:
     @parametrize_non_empty
     def test_instantiation_raises_for_non_empty_container(self, container):
         with pytest.raises(TypeError):
-            Empty.from_instance(container)
+            Empty.parse(container)
 
     @parametrize_mutable
     def test_instantiation_raises_for_mutable(self, container):
         with pytest.raises(TypeError):
-            Empty.from_instance(container)
+            Empty.parse(container)
 
     @parametrize_empty
     def test_instantiation_returns_instance(self, container):
-        assert container is Empty.from_instance(container)
+        assert container is Empty.parse(container)
 
     def test_subscription_returns_type_alias(self):
         alias = Empty[frozenset]

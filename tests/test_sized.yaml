@@ -8,7 +8,7 @@
     def fst(things: AtLeastOneInt) -> int:
         return things[0]
 
-    f = fst(AtLeastOneInt.from_instance((1, 2)))
+    f = fst(AtLeastOneInt.parse((1, 2)))
     reveal_type(f)  # N: Revealed type is 'builtins.int'
 
 - case: test_subscripted
@@ -18,7 +18,7 @@
     def fst(col: NonEmpty[int]) -> int:
         return next(iter(col))
 
-    l = NonEmpty[int].from_instance((0,))
+    l = NonEmpty[int].parse((0,))
     i = fst(l)
     reveal_type(i)  # N: Revealed type is 'builtins.int'
 
@@ -29,7 +29,7 @@
     def fst(col: NonEmpty[int]) -> int:
         return next(iter(col))
 
-    l: NonEmpty[int] = NonEmpty.from_instance((0,))
+    l: NonEmpty[int] = NonEmpty.parse((0,))
     i = fst(l)
     reveal_type(i)  # N: Revealed type is 'builtins.int'
 
@@ -40,5 +40,5 @@
     def name_length(name: NonEmpty[str]) -> int:
         return len(name)
 
-    i = name_length(NonEmpty.from_instance("foo"))
+    i = name_length(NonEmpty.parse("foo"))
     reveal_type(i)  # N: Revealed type is 'builtins.int'

@@ -34,25 +34,21 @@ class TestFormattedPhoneNumber:
         assert isinstance("+46701234567", FormattedPhoneNumber)
 
     def test_normalizes_unformatted_number(self):
-        number = FormattedPhoneNumber.from_instance("+46 (701) 234567")
+        number = FormattedPhoneNumber.parse("+46 (701) 234567")
         assert number == "+46701234567"
         assert isinstance(number, FormattedPhoneNumber)
 
-    def test_from_instance_raises_for_invalid_phone_number(self):
+    def test_parse_raises_for_invalid_phone_number(self):
         with pytest.raises(InvalidPhoneNumber):
-            FormattedPhoneNumber.from_instance("+46")
+            FormattedPhoneNumber.parse("+46")
 
     def test_raises_type_error_for_out_of_bound_type(self):
-        """Since we override from_instance we need to test the bound check"""
+        """Since we override parse we need to test the bound check"""
         value = 123
         with pytest.raises(
-            TypeError,
-            match=(
-                fr"Can't create phantom type {FormattedPhoneNumber.__name__} from "
-                fr"{value}"
-            ),
+            TypeError, match=fr"Can't parse str from int value: {value}"
         ):
-            FormattedPhoneNumber.from_instance(123)
+            FormattedPhoneNumber.parse(123)
 
 
 class TestDeconstructPhoneNumber:

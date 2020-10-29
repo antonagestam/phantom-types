@@ -1,5 +1,4 @@
 from typing import Tuple
-from typing import Type
 from typing import Union
 
 from .base import Predicate
@@ -19,7 +18,7 @@ def identical(a: object) -> Predicate[object]:
     return check
 
 
-def of_type(t: Union[Type, Tuple[Type, ...]]) -> Predicate[object]:
+def of_type(t: Union[type, Tuple[type, ...]]) -> Predicate[object]:
     def check(a: object) -> bool:
         return isinstance(a, t)
 

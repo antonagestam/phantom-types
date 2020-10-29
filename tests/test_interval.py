@@ -19,13 +19,13 @@ class TestNegativeInt:
 
     def test_instantiation_raises_for_positive_int(self):
         with pytest.raises(TypeError):
-            NegativeInt.from_instance(1)
+            NegativeInt.parse(1)
         with pytest.raises(TypeError):
-            NegativeInt.from_instance(10)
+            NegativeInt.parse(10)
 
     @parametrize_negative_ints
     def test_instantiation_returns_instance(self, i):
-        assert i is NegativeInt.from_instance(i)
+        assert i is NegativeInt.parse(i)
 
 
 class TestNatural:
@@ -39,15 +39,15 @@ class TestNatural:
 
     def test_instantiation_raises_for_positive_int(self):
         with pytest.raises(TypeError):
-            Natural.from_instance(-1)
+            Natural.parse(-1)
         with pytest.raises(TypeError):
-            Natural.from_instance(-10)
+            Natural.parse(-10)
         with pytest.raises(TypeError):
             Natural(-1)
 
     @parametrize_positive_ints
     def test_instantiation_returns_instance(self, i):
-        assert i is Natural.from_instance(i)
+        assert i is Natural.parse(i)
         assert i is Natural(i)
 
 
@@ -69,12 +69,12 @@ class TestPortion:
 
     @parametrize_portion_values
     def test_instantiation_returns_instance(self, i):
-        assert i is Portion.from_instance(i)
+        assert i is Portion.parse(i)
         assert i is Portion(i)
 
     @parametrize_non_portion_values
     def test_instantiation_raises_for_non_portion_values(self, i):
         with pytest.raises(TypeError):
-            Portion.from_instance(i)
+            Portion.parse(i)
         with pytest.raises(TypeError):
             Portion(i)

@@ -12,10 +12,21 @@ from typing import TypeVar
 from typing import Union
 
 
-def resolve_class_attr(cls: Type, name: str, argument: Optional[object]) -> None:
+class UnresolvedClassAttribute(NotImplementedError):
+    ...
+
+
+def resolve_class_attr(
+    cls: Type, name: str, argument: Optional[object], required: bool = True
+) -> None:
     argument = getattr(cls, name, None) if argument is None else argument
     if argument is not None:
         setattr(cls, name, argument)
+    elif required and not getattr(cls, "__abstract__", False):
+        raise UnresolvedClassAttribute(
+            f"Concrete phantom type {cls.__qualname__} must define class attribute "
+            f"{name}."
+        )
 
 
 A = TypeVar("A")
