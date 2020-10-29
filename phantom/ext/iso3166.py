@@ -15,6 +15,7 @@ __all__ = (
     "InvalidCountryCode",
     "Alpha2",
     "CountryCode",
+    "normalize_alpha2_country_code",
 )
 
 ALPHA2: Final = frozenset(iso3166.countries_by_alpha2.keys())
