@@ -1,7 +1,7 @@
 .. mdinclude:: ../README.md
 
-Contents
---------
+Documentation sections
+----------------------
 
 .. toctree::
   :maxdepth: 1
