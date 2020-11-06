@@ -66,10 +66,7 @@ class PhoneNumber(str, Phantom, predicate=is_phone_number):
     ...
 
 
-# TODO: Consider making subtype of PhoneNumber!!
 class FormattedPhoneNumber(str, Phantom, predicate=is_formatted_phone_number):
     @classmethod
-    def parse(
-        cls, instance: object, country_code: Optional[str] = None
-    ) -> FormattedPhoneNumber:
-        return normalize_phone_number(parse_bound(str, instance), country_code)
+    def parse(cls, instance: object) -> FormattedPhoneNumber:
+        return normalize_phone_number(parse_bound(str, instance))
