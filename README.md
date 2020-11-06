@@ -9,9 +9,10 @@ _This project is in early development and major changes to core APIs should be e
 Semantic versioning will be followed after version 1.0, but before that breaking changes
 will happen between minor versions._
 
+[Complete documentation is available on Read the Docs.](https://phantom-types.readthedocs.io/en/stable/)
+
 ## Installation
 
 ```bash
 $  python3 -m pip install phantom-types
 ```
-
