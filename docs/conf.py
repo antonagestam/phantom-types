@@ -1,5 +1,3 @@
-# Configuration file for the Sphinx documentation builder.
-#
 # This file only contains a selection of the most common options. For a full list see
 # the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
@@ -12,7 +10,7 @@ import sys
 # root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath(".."))
 
-import phantom
+import phantom  # noqa: E402
 
 current_dir = pathlib.Path(__file__).resolve().parent
 
