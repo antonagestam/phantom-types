@@ -55,7 +55,7 @@ class PhantomSized(
                 bool.negate(generic.of_type(mutable)),
                 collection.count(len),
             ),
-            **kwargs
+            **kwargs,
         )
 
 
