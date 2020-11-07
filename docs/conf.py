@@ -20,7 +20,7 @@ def get_copyright_from_license() -> str:
     prefix = "Copyright (c) "
     for line in license.read_text().split("\n"):
         if line.startswith(prefix):
-            return line.removeprefix(prefix)
+            return line[len(prefix) :]
     raise RuntimeError("Couldn't parse copyright from LICENSE")
 
 
