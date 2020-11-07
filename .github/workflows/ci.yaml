@@ -12,7 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8']
+        python-version: ['3.8', '3.9']
+    env:
+      lint-version: '3.9'
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -26,9 +28,9 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('setup.cfg') }}
           restore-keys: ${{ runner.os }}-pip
       - run: pip install -e .[iso3166,phonenumbers,test,lint]
-        if: ${{ matrix.python-version == '3.8' }}
+        if: ${{ matrix.python-version == env.lint-version }}
       - run: pip install -e .[iso3166,phonenumbers,test]
-        if: ${{ matrix.python-version != '3.8' }}
+        if: ${{ matrix.python-version != env.lint-version }}
       - name: mypy cache
         uses: actions/cache@v1
         with:
@@ -36,7 +38,7 @@ jobs:
           key: ${{ runner.os }}-mypy-${{ hashFiles('setup.cfg') }}
           restore-keys: ${{ runner.os }}-mypy
       - run: make lint
-        if: ${{ matrix.python-version == '3.8' }}
+        if: ${{ matrix.python-version == env.lint-version }}
       - run: make coverage
       - run: make coverage-report
       - name: Report coverage
