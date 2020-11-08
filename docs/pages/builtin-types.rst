@@ -20,6 +20,8 @@ Datetime
 * ``TZAware``
 * ``TZNaive``
 
+.. _numeric-interval-types:
+
 Numeric intervals
 -----------------
 
@@ -37,9 +39,8 @@ arguments.
 * ``low: float`` (defaults to negative infinity)
 * ``high: float`` (defaults to positive infinity)
 
-Concrete subclasses must specify their runtime type bound as their first base.
-
-!! TODO: Link to used predicates
+Concrete subclasses must specify their runtime type bound as their first base. :ref:`See
+corresponding predicate functions<numeric-interval-predicates>`.
 
 * ``Interval``
 * ``Open``
@@ -59,9 +60,8 @@ Regular expressions
 
 ``phantom.re.*``
 
-Takes ``pattern: Pattern[str]`` as class argument.
-
-!! TODO: link to predicates
+Takes ``pattern: Pattern[str]`` as class argument. :ref:`See corresponding predicate
+functions<regular-expression-predicates>`.
 
 * ``Match``, uses ``phantom.predicates.re.is_match``.
 * ``FullMatch``, uses ``phantom.predicates.re.is_full_match``.
