@@ -10,7 +10,7 @@ class TestInterval:
     def test_subclassing_without_check_raises(self):
         with pytest.raises(TypeError, match="I must define an interval check$"):
 
-            class I(Interval, abstract=False):
+            class I(Interval, abstract=False):  # noqa: E742
                 ...
 
 
