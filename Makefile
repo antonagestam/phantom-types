@@ -3,7 +3,7 @@ SHELL := /usr/bin/env bash
 .PHONY: all test coverage coverage-report lint lint-makefile format-readme format \
 		clean distribute test-distribute
 
-pytest_args = --mypy-ini-file=setup.cfg --doctest-modules --ignore=example.py
+pytest_args = --mypy-ini-file=setup.cfg --doctest-modules --ignore=examples
 
 test:
 	pytest $(pytest_args) $(test)
