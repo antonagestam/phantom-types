@@ -3,14 +3,13 @@ SHELL := /usr/bin/env bash
 .PHONY: all test coverage coverage-report lint lint-makefile format-readme format \
 		clean distribute test-distribute
 
+pytest_args = --mypy-ini-file=setup.cfg --doctest-modules --ignore=example.py
+
 test:
-	pytest \
-		--mypy-ini-file=setup.cfg \
-		--doctest-modules \
-		$(test)
+	pytest $(pytest_args) $(test)
 
 coverage:
-	coverage run -m pytest --ignore=examples --mypy-ini-file=setup.cfg $(test)
+	@coverage run -m pytest $(pytest_args) $(test)
 
 coverage-report:
 	@coverage report
