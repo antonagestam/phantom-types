@@ -3,6 +3,7 @@ import pytest
 from phantom import Phantom
 from phantom.base import AbstractInstanceCheck
 from phantom.base import NotWithinKind
+from phantom.base import PhantomMeta
 from phantom.predicates.numeric import positive
 from phantom.utils import UnresolvedClassAttribute
 
@@ -82,3 +83,16 @@ class TestPhantom:
 
         with pytest.raises(AbstractInstanceCheck):
             isinstance(1, A)
+
+    def test_phantom_meta_is_usable_without_phantom_base(self):
+        class Alt(metaclass=PhantomMeta):
+            ...
+
+        assert isinstance("a", Alt) is False
+
+        class AlwaysTrue(metaclass=PhantomMeta):
+            @classmethod
+            def __instancecheck__(self, instance: object) -> bool:
+                return True
+
+        assert isinstance("a", AlwaysTrue) is True
