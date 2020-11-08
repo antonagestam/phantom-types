@@ -55,13 +55,16 @@ Generic
 * ``of_type(t: Union[Type, Tuple[Type, ...]]) -> Predicate[object]`` creates a new
   predicate that succeeds when its argument is an instance of ``t``.
 
+.. _numeric-interval-predicates:
+
 Numeric intervals
 -----------------
 
 ``phantom.predicates.interval.*``
 
-See corresponding shipped phantom types. Creates new predicates that succeed when their
-argument is strictly or non strictly between the upper and lower bounds.
+Creates new predicates that succeed when their argument is strictly or non strictly
+between the upper and lower bounds. :ref:`See corresponding shipped phantom
+types<numeric-interval-types>`.
 
 * ``open(low: float, high: float) -> Predicate[float]``
 * ``open_closed(low: float, high: float) -> Predicate[float]``
@@ -92,6 +95,8 @@ Numeric
   that succeeds when its argument modulo ``n`` satisfies the given predicate ``p``.
 * ``even: Predicate[int]`` succeeds when its argument is even.
 * ``odd: Predicate[int]`` succeeds when its argument is odd.
+
+.. _regular-expression-predicates:
 
 Regular expressions
 -------------------
