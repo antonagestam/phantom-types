@@ -7,13 +7,21 @@ from typing import ClassVar
 from typing import Generic
 from typing import Iterable
 from typing import Optional
+from typing import Protocol
 from typing import Tuple
 from typing import Type
 from typing import TypeVar
 from typing import Union
+from typing import runtime_checkable
 
 from .utils import UnresolvedClassAttribute
 from .utils import resolve_class_attr
+
+
+@runtime_checkable
+class InstanceCheckable(Protocol):
+    def __instancecheck__(self, instance: object) -> bool:
+        ...
 
 
 class PhantomMeta(abc.ABCMeta):
@@ -23,7 +31,7 @@ class PhantomMeta(abc.ABCMeta):
     """
 
     def __instancecheck__(self, instance: object) -> bool:
-        if not issubclass(self, PhantomBase):
+        if not issubclass(self, InstanceCheckable):
             return False
         return self.__instancecheck__(instance)
 
@@ -101,7 +109,7 @@ class Phantom(PhantomBase, Generic[T]):
             if issubclass(type_, Phantom):
                 break
             yield type_
-        else:
+        else:  # pragma: no cover
             raise RuntimeError(f"{cls} is not a subclass of Phantom")
 
     @classmethod

@@ -1,8 +1,18 @@
 import pytest
 
+from phantom.interval import Interval
 from phantom.interval import Natural
 from phantom.interval import NegativeInt
 from phantom.interval import Portion
+
+
+class TestInterval:
+    def test_subclassing_without_check_raises(self):
+        with pytest.raises(TypeError, match="I must define an interval check$"):
+
+            class I(Interval, abstract=False):  # noqa: E742
+                ...
+
 
 parametrize_negative_ints = pytest.mark.parametrize("i", (-10, -1, -0, +0))
 parametrize_positive_ints = pytest.mark.parametrize("i", (10, 1, +0, -0))

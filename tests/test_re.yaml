@@ -1,4 +1,4 @@
-- case: calling_function_with_unknown_raises
+- case: str_is_not_subtype_of_match
   main: |
     import re
     from phantom.re import Match
@@ -10,7 +10,19 @@
         return a
 
     take_a("c") # E: Argument 1 to "take_a" has incompatible type "str"; expected "A"  [arg-type]
-- case: can_call_function_with_known
+- case: str_is_not_subtype_of_full_match
+  main: |
+    import re
+    from phantom.re import FullMatch
+
+    class A(FullMatch, pattern=re.compile(r"^abc$")):
+        ...
+
+    def take_a(a: A) -> A:
+        return a
+
+    take_a("c") # E: Argument 1 to "take_a" has incompatible type "str"; expected "A"  [arg-type]
+- case: can_instantiate_match
   main: |
     import re
     from phantom.re import Match
@@ -23,3 +35,44 @@
 
     a = take_a(A.parse("abc"))
     reveal_type(a)  # N: Revealed type is 'main.A'
+- case: can_instantiate_full_match
+  main: |
+    import re
+    from phantom.re import FullMatch
+
+    class A(FullMatch, pattern=re.compile(r"^abc$")):
+        ...
+
+    def take_a(a: A) -> A:
+        return a
+
+    a = take_a(A.parse("abc"))
+    reveal_type(a)  # N: Revealed type is 'main.A'
+- case: can_infer_match
+  main: |
+    import re
+    from phantom.re import Match
+
+    class A(Match, pattern=re.compile(r"^abc$")):
+        ...
+
+    def take_a(a: A) -> A:
+        return a
+
+    a = "abc"
+    assert isinstance(a, A)
+    a = take_a(a)
+- case: can_infer_full_match
+  main: |
+    import re
+    from phantom.re import FullMatch
+
+    class A(FullMatch, pattern=re.compile(r"^abc$")):
+        ...
+
+    def take_a(a: A) -> A:
+        return a
+
+    a = "abc"
+    assert isinstance(a, A)
+    a = take_a(a)
