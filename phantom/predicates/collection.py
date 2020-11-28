@@ -37,11 +37,23 @@ def count(predicate: Predicate[int]) -> Predicate[Sized]:
 
 def exists(predicate: Predicate[object]) -> Predicate[Iterable]:
     """
-    Return a predicate that is successful given an iterable with one or more items
-    satisfying `predicate`.
+    Return a predicate that is successful given an iterable where one or more items
+    satisfy `predicate`.
     """
 
     def compare(iterable: Iterable) -> bool:
         return any(predicate(item) for item in iterable)
+
+    return compare
+
+
+def every(predicate: Predicate[object]) -> Predicate[Iterable]:
+    """
+    Return a predicate that is successful given an iterable where all items satisfy
+    `predicate`.
+    """
+
+    def compare(iterable: Iterable) -> bool:
+        return all(predicate(item) for item in iterable)
 
     return compare

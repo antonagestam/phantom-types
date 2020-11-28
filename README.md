@@ -2,7 +2,6 @@
 
 [![](https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg)](https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI)
 
-
 Phantom types for Python.
 
 _This project is in early development and major changes to core APIs should be expected.

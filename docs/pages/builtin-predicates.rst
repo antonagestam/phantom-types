@@ -32,6 +32,8 @@ Collection
   succeeds when the size of its argument satisfies the given ``predicate``.
 * ``exists(predicate: Predicate[object]) -> Predicate[Iterable]`` creates a predicate
   that succeeds when one or more items in its argument satisfies ``predicate``.
+* ``every(predicate: Predicate[object]) -> Predicate[Iterable]`` creates a predicate
+  that succeeds when all items in its argument satisfy ``predicate``.
 
 Datetime
 --------
