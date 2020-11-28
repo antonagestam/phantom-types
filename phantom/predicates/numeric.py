@@ -1,5 +1,5 @@
 from .base import Predicate
-from .bool import negate
+from .boolean import negate
 from .generic import equal
 
 

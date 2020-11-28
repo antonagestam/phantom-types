@@ -1,6 +1,6 @@
 import datetime
 
-from .bool import negate
+from .boolean import negate
 
 
 def is_tz_aware(dt: datetime.datetime) -> bool:

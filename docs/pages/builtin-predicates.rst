@@ -4,7 +4,7 @@ Builtin predicates and factories
 Boolean logic
 -------------
 
-``phantom.predicates.bool.*``
+``phantom.predicates.boolean.*``
 
 
 * ``true: Predicate[object]`` always returns ``True``.

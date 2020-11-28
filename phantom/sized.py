@@ -14,7 +14,7 @@ from typing import runtime_checkable
 from .base import Phantom
 from .base import PhantomMeta
 from .base import Predicate
-from .predicates import bool
+from .predicates import boolean
 from .predicates import collection
 from .predicates import generic
 from .predicates import numeric
@@ -51,8 +51,8 @@ class PhantomSized(
 ):
     def __init_subclass__(cls, len: Predicate[float], **kwargs: Any) -> None:
         super().__init_subclass__(
-            predicate=bool.both(
-                bool.negate(generic.of_type(mutable)),
+            predicate=boolean.both(
+                boolean.negate(generic.of_type(mutable)),
                 collection.count(len),
             ),
             **kwargs,

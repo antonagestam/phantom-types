@@ -1,10 +1,10 @@
 from .base import Phantom
-from .predicates import bool
+from .predicates import boolean
 
 
-class Truthy(Phantom[object], predicate=bool.truthy, bound=object):
+class Truthy(Phantom[object], predicate=boolean.truthy, bound=object):
     ...
 
 
-class Falsy(Phantom[object], predicate=bool.falsy, bound=object):
+class Falsy(Phantom[object], predicate=boolean.falsy, bound=object):
     ...
