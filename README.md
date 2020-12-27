@@ -32,7 +32,7 @@ In functional programming terms this is due to the function being _partial_, it 
 `Iterable` as argument, but in reality we would need a narrower type to describe the set of valid arguments,
 and make the function _total_.
 
-You need to deal with the problem at hand so you go ahead and adjust the all the call sites of your function,
+You need to deal with the problem at hand so you go ahead and adjust all the call sites of your function,
 and you now end up either asserting that the iterables are non-empty, or catching the `StopIteration`.
 
 ```python
