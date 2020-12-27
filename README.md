@@ -39,7 +39,7 @@ and you now end up either asserting that the iterables are non-empty, or catchin
 items = get_values()
 if not len(items):
     return "empty"
-return "first element is: {head(items)}"
+return f"first element is: {head(items)}"
 ```
 
 This works, and you could totally move on like this from here, but, you've now introduced 
@@ -64,7 +64,7 @@ the length of the iterable again.
 items = get_values()
 if not isinstance(items, NonEmpty):
     return "empty"
-return "first element is: {head(items)}"
+return f"first element is: {head(items)}"
 ```
 
 This strategy works in all places where a function works on a narrower type than you can
