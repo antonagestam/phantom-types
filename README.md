@@ -72,5 +72,5 @@ describe with the builtin types of Python. You can narrow strings, integers, dat
 and so on to completely reduce duplicated validation throughout your projects.
 
 There's a set of phantom types that ships builtin, but you will probably mostly use
-customized phantom types that narrows types to the exact values that your implementations
-can handle.
+custom phantom types that describe the values that your implementations
+require. [The documentation contains examples of how to create phantom types.](https://phantom-types.readthedocs.io/en/stable/).
