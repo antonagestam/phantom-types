@@ -85,7 +85,7 @@ although you might mostly use your own custom phantom types that describe the ex
 values that your implementations require. [The documentation contains examples of how to
 create phantom types.][docs].
 
-## How is this implemented?
+## How are phantom types implemented?
 
 phantom-types make use of Python's `__instancecheck__` protocol to make types work with
 the same checks that are recognized as type guards by static type checkers, e.g.
