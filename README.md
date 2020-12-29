@@ -11,7 +11,7 @@ _This project is in early development and major changes to core APIs should be e
 Semantic versioning will be followed after version 1.0, but before that breaking changes
 will happen between minor versions._
 
-[Checkout the complete documentation on Read the Docs.](https://phantom-types.readthedocs.io/en/stable/)
+[Checkout the complete documentation on Read the Docs.][docs]
 
 ## Installation
 
@@ -82,8 +82,8 @@ duplicated validation throughout code bases.
 
 There's a set of phantom types that ships builtin that is helpful to build on top of,
 although you might mostly use your own custom phantom types that describe the exact
-values that your implementations require.
-[The documentation contains examples of how to create phantom types.](https://phantom-types.readthedocs.io/en/stable/).
+values that your implementations require. [The documentation contains examples of how to
+create phantom types.][docs].
 
 ## How is this implemented?
 
@@ -96,6 +96,7 @@ parsed before it is processed is deffered to the static type checker.
 The choice to design the library around boolean predicates, and much of the initially
 shipped builtin predicates are heavily inspired by [fthomas/refined][refined].
 
+[docs]: https://phantom-types.readthedocs.io/en/stable/
 [parse]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
 [ghosts]: https://kataskeue.com/gdp.pdf
 [refined]: https://github.com/fthomas/refined
