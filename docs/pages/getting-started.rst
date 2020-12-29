@@ -1,20 +1,6 @@
 Getting Started
 ===============
 
-Abstract
---------
-
-* Make illegal states unrepresentable.
-* `Parse, don't validate`_.
-* `Ghosts of Departed Proofs`_.
-* Abuse `__instancecheck__` and type-guards.
-* Values are checked at runtime but no extra instances/subclasses are instantiated.
-* Boolean predicate design is heavily inspired by `fthomas/refined`_.
-
-.. _Parse, don't validate: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
-.. _Ghosts of Departed Proofs: https://kataskeue.com/gdp.pdf
-.. _fthomas/refined: https://github.com/fthomas/refined
-
 Creating phantom types
 ----------------------
 

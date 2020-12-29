@@ -4,6 +4,9 @@
 
 Phantom types for Python.
 
+[Phantom types][ghosts] will help you make illegal states unrepresentable and avoid
+shotgun parsing by practicing [_"Parse, don't validate"_][parse].
+
 _This project is in early development and major changes to core APIs should be expected.
 Semantic versioning will be followed after version 1.0, but before that breaking changes
 will happen between minor versions._
@@ -16,7 +19,7 @@ will happen between minor versions._
 $  python3 -m pip install phantom-types
 ```
 
-## Quick example
+## Motivating example
 
 Imagine that you're working on implementing a `head` function that should return the
 first item of any given iterable. The implementation is simple:
@@ -73,11 +76,26 @@ return f"first element is: {head(items)}"
 ```
 
 This strategy works in all places where a function works on a narrower type than you can
-describe with the builtin types of Python. You can narrow strings, integers, datetimes,
-and any other arbitrary types to completely rid of duplicated validation throughout code
-bases.
+describe with the builtin types of Python, not only this made-up example. You can narrow
+strings, integers, datetimes, and any other arbitrary types to completely rid of
+duplicated validation throughout code bases.
 
 There's a set of phantom types that ships builtin that is helpful to build on top of,
 although you might mostly use your own custom phantom types that describe the exact
 values that your implementations require.
 [The documentation contains examples of how to create phantom types.](https://phantom-types.readthedocs.io/en/stable/).
+
+## How is this implemented?
+
+phantom-types make use of Python's `__instancecheck__` protocol to make types work with
+the same checks that are recognized as type guards by static type checkers, e.g.
+`isinstance()`. Phantom types are never instantiated at runtime and so will not add any
+processing-, or memory overhead. Instead they simply help the static type checker keep
+track of whether or not a value has been properly parsed before it's processed.
+
+The choice to design the library around boolean predicates, and much of the initially
+shipped builtin predicates are heavily inspired by [fthomas/refined][refined].
+
+[parse]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
+[ghosts]: https://kataskeue.com/gdp.pdf
+[refined]: https://github.com/fthomas/refined
