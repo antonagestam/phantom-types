@@ -42,9 +42,11 @@ if not len(items):
 return f"first element is: {head(items)}"
 ```
 
-This works, and you could totally move on like this from here, but, you've now introduced 
+This works, and you could move on like this from here, but, you have now introduced 
 shotgun parsing into your application, since further down the processing line you need to check
-the length if the iterable for other purposes. So how should you deal with this?
+the length if the iterable for other purposes. Shotgun parsing is an antipattern that results
+in a program state that is hard to predict and will very likely lead to bugs down the line.
+So how should you deal with this?
 
 Using phantom types you can use the builtin `NonEmpty` type. 
 
