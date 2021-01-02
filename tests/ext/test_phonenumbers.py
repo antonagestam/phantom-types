@@ -1,5 +1,6 @@
 import pytest
 
+from phantom.base import BoundError
 from phantom.ext.phonenumbers import FormattedPhoneNumber
 from phantom.ext.phonenumbers import InvalidPhoneNumber
 from phantom.ext.phonenumbers import PhoneNumber
@@ -46,7 +47,7 @@ class TestFormattedPhoneNumber:
         """Since we override parse we need to test the bound check"""
         value = 123
         with pytest.raises(
-            TypeError, match=fr"Can't parse str from int value: {value}"
+            BoundError, match=fr"Value is not within bound of 'str': {value}"
         ):
             FormattedPhoneNumber.parse(123)
 

@@ -8,12 +8,15 @@ from typing import Generic
 from typing import Iterable
 from typing import Optional
 from typing import Protocol
-from typing import Tuple
+from typing import Sequence
 from typing import Type
 from typing import TypeVar
-from typing import Union
+from typing import cast
 from typing import runtime_checkable
 
+from .predicates.boolean import all_of
+from .predicates.generic import of_complex_type
+from .predicates.generic import of_type
 from .utils import UnresolvedClassAttribute
 from .utils import resolve_class_attr
 
@@ -41,21 +44,41 @@ class PhantomMeta(abc.ABCMeta):
         return cls.parse(instance)  # type: ignore[attr-defined,misc]
 
 
-class NotWithinBound(TypeError):
+class BoundError(TypeError):
     ...
 
 
-class NotWithinKind(TypeError):
+# TODO: Get rid of kinds by instead introducing a restriction that bounds must be
+#  subtype of parent bound.
+class BoundNotOfKind(TypeError):
     ...
 
 
-def parse_bound(bound: Type[T], instance: object) -> T:
-    if not isinstance(instance, bound):
-        raise NotWithinBound(
-            f"Can't parse {bound.__qualname__} from {type(instance).__name__} value: "
-            f"{instance!r}"
-        )
-    return instance
+T = TypeVar("T", covariant=True)
+
+
+def display_bound(bound: Any) -> str:
+    if isinstance(bound, Iterable):
+        return f"Intersection[{', '.join(display_bound(part) for part in bound)}]"
+    return str(getattr(bound, "__name__", bound))
+
+
+def get_bound_parser(bound: Any) -> Callable[[object], T]:
+    within_bound = (
+        # Interpret sequence as intersection
+        all_of(of_type(t) for t in bound)
+        if isinstance(bound, Sequence)
+        else of_complex_type(bound)
+    )
+
+    def parser(instance: object) -> T:
+        if not within_bound(instance):
+            raise BoundError(
+                f"Value is not within bound of {display_bound(bound)!r}: {instance!r}"
+            )
+        return cast(T, instance)
+
+    return parser
 
 
 Derived = TypeVar("Derived")
@@ -64,7 +87,9 @@ Derived = TypeVar("Derived")
 class PhantomBase(metaclass=PhantomMeta):
     @classmethod
     def parse(cls: Type[Derived], instance: object) -> Derived:
-        return parse_bound(cls, instance)
+        if not isinstance(instance, cls):
+            raise TypeError(f"Could not parse {cls} from {instance!r}")
+        return instance
 
     @classmethod
     @abc.abstractmethod
@@ -76,22 +101,20 @@ class AbstractInstanceCheck(TypeError):
     ...
 
 
-T = TypeVar("T", covariant=True, bound=object)
-TypeSpec = Union[Type[T], Tuple[Type[T], ...]]
 Predicate = Callable[[T], bool]
 
 
 class Phantom(PhantomBase, Generic[T]):
     __predicate__: ClassVar[Predicate[T]]
-    __bound__: ClassVar[TypeSpec[T]]
-    __kind__: ClassVar[TypeSpec[Any]]
+    __bound__: ClassVar[Any]
+    __kind__: ClassVar[Any]
     __abstract__: ClassVar[bool]
 
     def __init_subclass__(
         cls,
         predicate: Optional[Predicate[T]] = None,
         bound: Optional[Type[T]] = None,
-        kind: Optional[TypeSpec] = None,
+        kind: Optional[Any] = None,
         abstract: bool = False,
         **kwargs: Any,
     ) -> None:
@@ -113,8 +136,7 @@ class Phantom(PhantomBase, Generic[T]):
             raise RuntimeError(f"{cls} is not a subclass of Phantom")
 
     @classmethod
-    def _resolve_bound(cls, class_arg: Optional[TypeSpec[T]]) -> None:
-        bound: TypeSpec
+    def _resolve_bound(cls, class_arg: Any) -> None:
         if class_arg is not None:
             bound = class_arg if isinstance(class_arg, tuple) else (class_arg,)
         elif implicit := tuple(cls._interpret_implicit_bound()):
@@ -128,10 +150,16 @@ class Phantom(PhantomBase, Generic[T]):
             )
         else:
             return
-        if (kind := getattr(cls, "__kind__", None)) is not None:
-            for part in bound if isinstance(bound, Iterable) else (bound,):
+        kind = getattr(cls, "__kind__", None)
+        if kind is not None:
+            parts = (
+                bound
+                if isinstance(bound, Iterable)  # type: ignore[unreachable]
+                else (bound,)
+            )
+            for part in parts:
                 if not issubclass(part, kind):
-                    raise NotWithinKind(
+                    raise BoundNotOfKind(
                         f"One of the bounds of {cls} ({part}) isn't a subtype of its "
                         f"kind ({kind})"
                     )
@@ -143,4 +171,8 @@ class Phantom(PhantomBase, Generic[T]):
             raise AbstractInstanceCheck(
                 "Abstract phantom types cannot be used in instance checks"
             )
-        return isinstance(instance, cls.__bound__) and cls.__predicate__(instance)
+        try:
+            instance = get_bound_parser(cls.__bound__)(instance)
+        except BoundError:
+            return False
+        return cls.__predicate__(instance)

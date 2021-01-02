@@ -1,16 +1,16 @@
 phantom-types
 -------------
 
-[![](https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg)](https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI)
+[![CI](https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg)](https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI+branch%3Amain)
 
 Phantom types for Python.
 
 [Phantom types][ghosts] will help you make illegal states unrepresentable and avoid
 shotgun parsing by practicing ["Parse, don't validate"][parse].
 
-_This project is in early development and major changes to core APIs should be expected.
+_This project is in early development and fundamental changes should be expected.
 Semantic versioning will be followed after version 1.0, but before that breaking changes
-will happen between minor versions._
+will occur between minor versions._
 
 [Checkout the complete documentation on Read the Docs →][docs]
 
@@ -35,9 +35,9 @@ def head(iterable: Iterable[T]) -> T:
 You go ahead and use this function across your project, until suddenly you run into a
 subtle issue that you didn't think of: this function raises `StopIteration` when passed
 an empty iterable. In functional programming terms this is due to the function being
-[partial][totality], it specifies that it takes `Iterable` as argument, but in reality
+_partial_ it specifies that it takes `Iterable` as argument, but in reality
 we would need a narrower type to describe the set of valid arguments, and make the
-function [total][totality].
+function _total_.
 
 You need to deal with the problem at hand so you go ahead and adjust all the call sites
 of your function, and you now end up either asserting that the iterables are non-empty,
@@ -104,4 +104,3 @@ shipped builtin predicates are heavily inspired by [fthomas/refined][refined].
 [parse]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
 [ghosts]: https://kataskeue.com/gdp.pdf
 [refined]: https://github.com/fthomas/refined
-[totality]: https://en.wikipedia.org/wiki/Total_functional_programming

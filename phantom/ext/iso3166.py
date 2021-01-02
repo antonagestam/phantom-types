@@ -6,7 +6,7 @@ from typing import cast
 import iso3166
 
 from phantom import Phantom
-from phantom import parse_bound
+from phantom import get_bound_parser
 from phantom.predicates.collection import contained
 
 __all__ = (
@@ -20,6 +20,7 @@ __all__ = (
 
 ALPHA2: Final = frozenset(iso3166.countries_by_alpha2.keys())
 is_alpha2_country_code = contained(ALPHA2)
+parse_str = get_bound_parser(str)
 
 
 class InvalidCountryCode(TypeError):
@@ -36,7 +37,7 @@ def normalize_alpha2_country_code(country_code: str) -> Alpha2:
 class Alpha2(str, Phantom, predicate=is_alpha2_country_code):
     @classmethod
     def parse(cls, instance: object) -> Alpha2:
-        return normalize_alpha2_country_code(parse_bound(str, instance))
+        return normalize_alpha2_country_code(parse_str(instance))
 
 
 CountryCode = Alpha2
