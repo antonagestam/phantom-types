@@ -1,16 +1,16 @@
 phantom-types
 -------------
 
-[![](https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg)](https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI)
+[![](https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg)][ci]
 
 Phantom types for Python.
 
 [Phantom types][ghosts] will help you make illegal states unrepresentable and avoid
 shotgun parsing by practicing ["Parse, don't validate"][parse].
 
-_This project is in early development and major changes to core APIs should be expected.
+_This project is in early development and fundamental changes should be expected.
 Semantic versioning will be followed after version 1.0, but before that breaking changes
-will happen between minor versions._
+will occur between minor versions._
 
 [Checkout the complete documentation on Read the Docs →][docs]
 
@@ -105,3 +105,4 @@ shipped builtin predicates are heavily inspired by [fthomas/refined][refined].
 [ghosts]: https://kataskeue.com/gdp.pdf
 [refined]: https://github.com/fthomas/refined
 [totality]: https://en.wikipedia.org/wiki/Total_functional_programming
+[ci]: https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI

@@ -7,7 +7,7 @@ from typing import cast
 import phonenumbers
 
 from phantom import Phantom
-from phantom import parse_bound
+from phantom import get_bound_parser
 from phantom.utils import excepts
 
 __all__ = (
@@ -53,6 +53,7 @@ def normalize_phone_number(
 
 
 is_phone_number = excepts(InvalidPhoneNumber)(_deconstruct_phone_number)
+parse_str = get_bound_parser(str)
 
 
 def is_formatted_phone_number(number: str) -> bool:
@@ -69,4 +70,4 @@ class PhoneNumber(str, Phantom, predicate=is_phone_number):
 class FormattedPhoneNumber(str, Phantom, predicate=is_formatted_phone_number):
     @classmethod
     def parse(cls, instance: object) -> FormattedPhoneNumber:
-        return normalize_phone_number(parse_bound(str, instance))
+        return normalize_phone_number(parse_str(instance))
