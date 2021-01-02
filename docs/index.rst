@@ -1,8 +1,3 @@
-.. mdinclude:: ../README.md
-
-Documentation sections
-----------------------
-
 .. toctree::
   :maxdepth: 1
 
@@ -10,3 +5,5 @@ Documentation sections
   pages/builtin-types.rst
   pages/builtin-predicates.rst
   pages/external-wrappers.rst
+
+.. mdinclude:: ../README.md

@@ -1,25 +1,28 @@
-# phantom-types
+phantom-types
+-------------
 
 [![](https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg)](https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI)
 
 Phantom types for Python.
 
 [Phantom types][ghosts] will help you make illegal states unrepresentable and avoid
-shotgun parsing by practicing [_"Parse, don't validate"_][parse].
+shotgun parsing by practicing ["Parse, don't validate"][parse].
 
 _This project is in early development and major changes to core APIs should be expected.
 Semantic versioning will be followed after version 1.0, but before that breaking changes
 will happen between minor versions._
 
-[Checkout the complete documentation on Read the Docs.][docs]
+[Checkout the complete documentation on Read the Docs →][docs]
 
-## Installation
+Installation
+============
 
 ```bash
 $  python3 -m pip install phantom-types
 ```
 
-## Motivating example
+Motivating example
+==================
 
 Imagine that you're working on implementing a `head` function that should return the
 first item of any given iterable. The implementation is simple:
@@ -32,9 +35,9 @@ def head(iterable: Iterable[T]) -> T:
 You go ahead and use this function across your project, until suddenly you run into a
 subtle issue that you didn't think of: this function raises `StopIteration` when passed
 an empty iterable. In functional programming terms this is due to the function being
-[_partial_][totality], it specifies that it takes `Iterable` as argument, but in reality
+[partial][totality], it specifies that it takes `Iterable` as argument, but in reality
 we would need a narrower type to describe the set of valid arguments, and make the
-function _total_.
+function [total][totality].
 
 You need to deal with the problem at hand so you go ahead and adjust all the call sites
 of your function, and you now end up either asserting that the iterables are non-empty,
@@ -83,9 +86,10 @@ duplicated validation throughout code bases.
 There's a set of phantom types that ships builtin that is helpful to build on top of,
 although you might mostly use your own custom phantom types that describe the exact
 values that your implementations require. [The documentation contains examples of how to
-create phantom types.][docs].
+create phantom types][docs].
 
-## How are phantom types implemented?
+How are phantom types implemented?
+==================================
 
 phantom-types make use of Python's `__instancecheck__` protocol to make types work with
 the same checks that are recognized as type guards by static type checkers, e.g.

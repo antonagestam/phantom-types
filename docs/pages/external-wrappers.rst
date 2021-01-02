@@ -65,7 +65,8 @@ Functions
 * ``normalize_alpha2_country_code(country_code: str) -> Alpha2`` normalizes mixed case
   country codes and raises ``InvalidCountryCode``.
 
-##### Exceptions
+Exceptions
+^^^^^^^^^^
 
 * ``InvalidCountryCode``
 
