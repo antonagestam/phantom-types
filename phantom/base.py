@@ -11,9 +11,7 @@ from typing import Protocol
 from typing import Sequence
 from typing import Type
 from typing import TypeVar
-from typing import Union
 from typing import cast
-from typing import overload
 from typing import runtime_checkable
 
 from .predicates.boolean import all_of
@@ -154,7 +152,12 @@ class Phantom(PhantomBase, Generic[T]):
             return
         kind = getattr(cls, "__kind__", None)
         if kind is not None:
-            for part in bound if isinstance(bound, Iterable) else (bound,):  # type: ignore[unreachable]
+            parts = (
+                bound
+                if isinstance(bound, Iterable)  # type: ignore[unreachable]
+                else (bound,)
+            )
+            for part in parts:
                 if not issubclass(part, kind):
                     raise BoundNotOfKind(
                         f"One of the bounds of {cls} ({part}) isn't a subtype of its "
