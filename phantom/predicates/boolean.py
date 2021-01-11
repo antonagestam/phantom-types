@@ -35,6 +35,8 @@ def both(p: Predicate[T], q: Predicate[T]) -> Predicate[T]:
 
 
 def all_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]:
+    predicates = tuple(predicates)
+
     def check(value: T) -> bool:
         return all(p(value) for p in predicates)
 
@@ -42,6 +44,8 @@ def all_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]:
 
 
 def any_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]:
+    predicates = tuple(predicates)
+
     def check(value: T) -> bool:
         return any(p(value) for p in predicates)
 
