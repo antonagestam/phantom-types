@@ -80,8 +80,9 @@ parametrize_all_false = pytest.mark.parametrize(
 
 
 class TestAllOf:
-    def test_returns_true_for_empty_set_of_predicates(self):
-        assert boolean.all_of(())(0) is True
+    def test_returns_true_for_empty_set_of_predicates(self) -> None:
+        predicate: Predicate[int] = boolean.all_of(())
+        assert predicate(0) is True
 
     @parametrize_all_true
     def test_returns_true_for_succeeding_predicates(
@@ -102,16 +103,18 @@ class TestAllOf:
         assert boolean.all_of(predicates)(0) is False
 
     @parametrize_some_false
-    def test_materializes_generated_predicates(self, predicates: Iterable[Predicate]):
-        generator = (predicate for predicate in predicates)
-        predicate = boolean.all_of(generator)
+    def test_materializes_generated_predicates(
+        self, predicates: Iterable[Predicate]
+    ) -> None:
+        predicate = boolean.all_of(predicate for predicate in predicates)
         assert predicate(0) is False
         assert predicate(0) is False
 
 
 class TestAnyOf:
-    def test_returns_false_for_empty_set_of_predicates(self):
-        assert boolean.any_of(())(0) is False
+    def test_returns_false_for_empty_set_of_predicates(self) -> None:
+        predicate: Predicate[int] = boolean.any_of(())
+        assert predicate(0) is False
 
     @parametrize_all_true
     def test_returns_true_for_succeeding_predicates(
@@ -132,8 +135,9 @@ class TestAnyOf:
         assert boolean.any_of(predicates)(0) is False
 
     @parametrize_some_false
-    def test_materializes_generated_predicates(self, predicates: Iterable[Predicate]):
-        generator = (predicate for predicate in predicates)
-        predicate = boolean.any_of(generator)
+    def test_materializes_generated_predicates(
+        self, predicates: Iterable[Predicate]
+    ) -> None:
+        predicate = boolean.any_of(predicate for predicate in predicates)
         assert predicate(0) is True
         assert predicate(0) is True
