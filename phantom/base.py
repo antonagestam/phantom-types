@@ -50,12 +50,6 @@ class BoundError(TypeError):
     ...
 
 
-# TODO: Get rid of kinds by instead introducing a restriction that bounds must be
-#  subtype of parent bound.
-class BoundNotOfKind(TypeError):
-    ...
-
-
 T = TypeVar("T", covariant=True)
 
 
@@ -165,7 +159,10 @@ class Phantom(PhantomBase, Generic[T]):
             return
 
         if inherited is not None and not is_subtype(bound, inherited):
-            raise BoundNotOfKind
+            raise BoundError(
+                f"The bounds of {cls.__qualname__} are not compatible with its "
+                f"inherited bounds."
+            )
         cls.__bound__ = bound
 
     @classmethod

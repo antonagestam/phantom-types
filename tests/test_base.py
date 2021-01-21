@@ -7,7 +7,6 @@ from phantom import Phantom
 from phantom import get_bound_parser
 from phantom.base import AbstractInstanceCheck
 from phantom.base import BoundError
-from phantom.base import BoundNotOfKind
 from phantom.base import PhantomMeta
 from phantom.predicates.numeric import positive
 from phantom.utils import UnresolvedClassAttribute
@@ -114,12 +113,11 @@ class TestPhantom:
         class A(Phantom, predicate=positive, abstract=True):
             ...
 
-    # TODO: at least rename ...
-    def test_subclass_outside_kind_raises(self):
+    def test_subclass_with_incompatible_bounds_raises(self):
         class A(Phantom, bound=Union[int, float], abstract=True):
             ...
 
-        with pytest.raises(BoundNotOfKind):
+        with pytest.raises(BoundError):
 
             class B(A, bound=str, abstract=True):
                 ...
