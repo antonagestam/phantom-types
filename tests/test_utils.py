@@ -61,6 +61,7 @@ class TestIsSubtype:
         [
             # 1
             (Union[int, float], Union[int]),
+            (Union[int, float], Union[A, B]),
             # 2
             (str, Union[int, float]),
             # 3
