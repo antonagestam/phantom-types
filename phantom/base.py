@@ -102,10 +102,10 @@ Predicate = Callable[[T], bool]
 
 class Phantom(PhantomBase, Generic[T]):
     __predicate__: ClassVar[Predicate[T]]
-    # The bound of phantom type is type that its values will have at runtime.
-    # When checking if a value is an instance of a phantom type, it's first
-    # checked to be within the bound, so that the value can be safely passed as
-    # argument to the type's predicate function.
+    # The bound of a phantom type is the type that its values will have at
+    # runtime, so when checking if a value is an instance of a phantom type,
+    # it's first checked to be within its bounds, so that the value can be
+    # safely passed as argument to the predicate function.
     #
     # When subclassing, the bound of the new type must be a subtype of the bound
     # of the super class.
