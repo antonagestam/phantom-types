@@ -7,7 +7,6 @@ from phantom import Phantom
 from phantom import get_bound_parser
 from phantom.base import AbstractInstanceCheck
 from phantom.base import BoundError
-from phantom.base import BoundNotOfKind
 from phantom.base import PhantomMeta
 from phantom.predicates.numeric import positive
 from phantom.utils import UnresolvedClassAttribute
@@ -110,18 +109,15 @@ class TestPhantom:
         class A(Phantom, bound=int, abstract=True):
             ...
 
-    def test_can_subclass_without_kind(self):
-        class A(Phantom, bound=int, predicate=positive):
+    def test_can_subclass_without_bound_if_abstract(self):
+        class A(Phantom, predicate=positive, abstract=True):
             ...
 
-        class B(A, bound=str):
+    def test_subclass_with_incompatible_bounds_raises(self):
+        class A(Phantom, bound=Union[int, float], abstract=True):
             ...
 
-    def test_subclass_outside_kind_raises(self):
-        class A(Phantom, kind=int, abstract=True):
-            ...
-
-        with pytest.raises(BoundNotOfKind):
+        with pytest.raises(BoundError):
 
             class B(A, bound=str, abstract=True):
                 ...
@@ -130,13 +126,13 @@ class TestPhantom:
         class A(float, Phantom, abstract=True):
             ...
 
-        assert A.__bound__ == (float,)
+        assert A.__bound__ is float
 
     def test_can_define_bound_explicitly(self):
         class A(Phantom, bound=float, abstract=True):
             ...
 
-        assert A.__bound__ == (float,)
+        assert A.__bound__ is float
 
     def test_can_inherit_bound(self):
         class A(Phantom, bound=float, abstract=True):
@@ -145,7 +141,7 @@ class TestPhantom:
         class B(A, abstract=True):
             ...
 
-        assert B.__bound__ == (float,)
+        assert B.__bound__ is float
 
     def test_abstract_instance_check_raises(self):
         class A(Phantom, bound=float, abstract=True):

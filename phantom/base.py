@@ -17,7 +17,9 @@ from typing import runtime_checkable
 from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
+from .utils import BoundType
 from .utils import UnresolvedClassAttribute
+from .utils import is_subtype
 from .utils import resolve_class_attr
 
 
@@ -45,12 +47,6 @@ class PhantomMeta(abc.ABCMeta):
 
 
 class BoundError(TypeError):
-    ...
-
-
-# TODO: Get rid of kinds by instead introducing a restriction that bounds must be
-#  subtype of parent bound.
-class BoundNotOfKind(TypeError):
     ...
 
 
@@ -106,42 +102,53 @@ Predicate = Callable[[T], bool]
 
 class Phantom(PhantomBase, Generic[T]):
     __predicate__: ClassVar[Predicate[T]]
+    # The bound of a phantom type is the type that its values will have at
+    # runtime, so when checking if a value is an instance of a phantom type,
+    # it's first checked to be within its bounds, so that the value can be
+    # safely passed as argument to the predicate function.
+    #
+    # When subclassing, the bound of the new type must be a subtype of the bound
+    # of the super class.
     __bound__: ClassVar[Any]
-    __kind__: ClassVar[Any]
     __abstract__: ClassVar[bool]
 
     def __init_subclass__(
         cls,
         predicate: Optional[Predicate[T]] = None,
         bound: Optional[Type[T]] = None,
-        kind: Optional[Any] = None,
         abstract: bool = False,
         **kwargs: Any,
     ) -> None:
         super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
         resolve_class_attr(cls, "__abstract__", abstract)
         resolve_class_attr(cls, "__predicate__", predicate)
-        resolve_class_attr(cls, "__kind__", kind, required=False)
         cls._resolve_bound(bound)
 
     @classmethod
-    def _interpret_implicit_bound(cls) -> Iterable[type]:
-        for type_ in cls.__mro__:
-            if type_ is cls:
-                continue
-            if issubclass(type_, Phantom):
-                break
-            yield type_
-        else:  # pragma: no cover
-            raise RuntimeError(f"{cls} is not a subclass of Phantom")
+    def _interpret_implicit_bound(cls) -> BoundType:
+        def discover_bounds() -> Iterable[type]:
+            for type_ in cls.__mro__:
+                if type_ is cls:
+                    continue
+                if issubclass(type_, Phantom):
+                    break
+                yield type_
+            else:  # pragma: no cover
+                raise RuntimeError(f"{cls} is not a subclass of Phantom")
+
+        types = tuple(discover_bounds())
+        if len(types) == 1:
+            return types[0]
+        return types
 
     @classmethod
     def _resolve_bound(cls, class_arg: Any) -> None:
+        inherited = getattr(cls, "__bound__", None)
         if class_arg is not None:
-            bound = class_arg if isinstance(class_arg, tuple) else (class_arg,)
-        elif implicit := tuple(cls._interpret_implicit_bound()):
+            bound = class_arg
+        elif implicit := cls._interpret_implicit_bound():
             bound = implicit
-        elif (inherited := getattr(cls, "__bound__", None)) is not None:
+        elif inherited is not None:
             bound = inherited
         elif not getattr(cls, "__abstract__", False):
             raise UnresolvedClassAttribute(
@@ -150,19 +157,12 @@ class Phantom(PhantomBase, Generic[T]):
             )
         else:
             return
-        kind = getattr(cls, "__kind__", None)
-        if kind is not None:
-            parts = (
-                bound
-                if isinstance(bound, Iterable)  # type: ignore[unreachable]
-                else (bound,)
+
+        if inherited is not None and not is_subtype(bound, inherited):
+            raise BoundError(
+                f"The bounds of {cls.__qualname__} are not compatible with its "
+                f"inherited bounds."
             )
-            for part in parts:
-                if not issubclass(part, kind):
-                    raise BoundNotOfKind(
-                        f"One of the bounds of {cls} ({part}) isn't a subtype of its "
-                        f"kind ({kind})"
-                    )
         cls.__bound__ = bound
 
     @classmethod
