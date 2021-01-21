@@ -3,13 +3,20 @@
 from __future__ import annotations
 
 import functools
+from itertools import combinations
+from itertools import product
 from typing import Any
 from typing import Callable
+from typing import Iterable
+from typing import Literal
 from typing import Optional
 from typing import Tuple
 from typing import Type
 from typing import TypeVar
 from typing import Union
+from typing import get_args
+from typing import get_origin
+from typing import overload
 
 
 class UnresolvedClassAttribute(NotImplementedError):
@@ -50,3 +57,89 @@ def excepts(
         return wrapper
 
     return decorator
+
+
+BoundType = Union[type, Tuple[type, ...]]
+
+
+@overload
+def is_union(type_: Type[Union]) -> Literal[True]:
+    ...
+
+
+@overload
+def is_union(type_: BoundType) -> Literal[False]:
+    ...
+
+
+def is_union(type_: BoundType) -> bool:
+    return get_origin(type_) is Union
+
+
+@overload
+def is_intersection(type_: tuple) -> Literal[True]:
+    ...
+
+
+@overload
+def is_intersection(type_: BoundType) -> Literal[False]:
+    ...
+
+
+def is_intersection(type_: BoundType) -> bool:
+    return isinstance(type_, tuple)
+
+
+def is_subtype(a: BoundType, b: BoundType) -> bool:
+    """
+    Return True if ``a`` is a subtype of ``b``. Supports single-level typing.Unions
+    and intersections represented as tuples respectively without nesting.
+
+    The cases that this function deals with can be divided into the following cases,
+    where T is neither a union or intersection:
+
+    1. Union, Union: Success if all types in a have a subclass in b.
+    2. T, Union: Success if a is a subclass of one or more types in b.
+    3. Union, T: Always fails (except when a single-type union, see 9).
+    4. T, Intersection: Success if a is a subclass of all types in b.
+    5. Intersection, T: Success if one type in a is a subclass of b.
+    6. Intersection, Union: Success if one type in a is a subclass of one type in b.
+    7. Union, Intersection: Always fails (except when a is a single-type union see 4).
+    8. Intersection, Intersection: Success if all items in b have a subclass in a.
+    9. T, T: Success if a is a subclass of b.
+    """
+
+    if is_union(a) and is_union(b):
+        for a_part in get_args(a):
+            for b_part in get_args(b):
+                if issubclass(a_part, b_part):
+                    break
+            else:
+                return False
+        return True
+    elif is_intersection(a) and is_union(b):
+        for a_part, b_part in product(a, get_args(b)):
+            if issubclass(a_part, b_part):
+                return True
+        return False
+    elif is_intersection(a) and is_intersection(b):
+        for b_part in b:
+            for a_part in a:
+                try:
+                    if issubclass(a_part, b_part):
+                        break
+                except TypeError:
+                    breakpoint()
+                    raise
+            else:
+                return False
+        return True
+    elif is_union(a):
+        return False
+    elif is_union(b):
+        return any(issubclass(a, b_part) for b_part in get_args(b))
+    elif is_intersection(b):
+        return all(issubclass(a, b_part) for b_part in b)
+    elif is_intersection(a):
+        return any(issubclass(a_part, b) for a_part in a)
+    return issubclass(a, b)

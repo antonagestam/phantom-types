@@ -1,23 +1,28 @@
 from __future__ import annotations
 
 import abc
+from itertools import combinations
 from typing import Any
 from typing import Callable
 from typing import ClassVar
 from typing import Generic
 from typing import Iterable
+from typing import Literal
 from typing import Optional
 from typing import Protocol
 from typing import Sequence
 from typing import Type
 from typing import TypeVar
+from typing import Union
 from typing import cast
+from typing import overload
 from typing import runtime_checkable
 
 from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
 from .utils import UnresolvedClassAttribute
+from .utils import is_subtype
 from .utils import resolve_class_attr
 
 
@@ -106,22 +111,26 @@ Predicate = Callable[[T], bool]
 
 class Phantom(PhantomBase, Generic[T]):
     __predicate__: ClassVar[Predicate[T]]
+    # The bound of phantom type is type that its values will have at runtime.
+    # When checking if a value is an instance of a phantom type, it's first
+    # checked to be within the bound, so that the value can be safely passed as
+    # argument to the type's predicate function.
+    #
+    # When subclassing, the bound of the new type must be a subtype of the bound
+    # of the super class.
     __bound__: ClassVar[Any]
-    __kind__: ClassVar[Any]
     __abstract__: ClassVar[bool]
 
     def __init_subclass__(
         cls,
         predicate: Optional[Predicate[T]] = None,
         bound: Optional[Type[T]] = None,
-        kind: Optional[Any] = None,
         abstract: bool = False,
         **kwargs: Any,
     ) -> None:
         super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
         resolve_class_attr(cls, "__abstract__", abstract)
         resolve_class_attr(cls, "__predicate__", predicate)
-        resolve_class_attr(cls, "__kind__", kind, required=False)
         cls._resolve_bound(bound)
 
     @classmethod
@@ -137,11 +146,12 @@ class Phantom(PhantomBase, Generic[T]):
 
     @classmethod
     def _resolve_bound(cls, class_arg: Any) -> None:
+        inherited = getattr(cls, "__bound__", None)
         if class_arg is not None:
             bound = class_arg if isinstance(class_arg, tuple) else (class_arg,)
         elif implicit := tuple(cls._interpret_implicit_bound()):
             bound = implicit
-        elif (inherited := getattr(cls, "__bound__", None)) is not None:
+        elif inherited is not None:
             bound = inherited
         elif not getattr(cls, "__abstract__", False):
             raise UnresolvedClassAttribute(
@@ -150,19 +160,9 @@ class Phantom(PhantomBase, Generic[T]):
             )
         else:
             return
-        kind = getattr(cls, "__kind__", None)
-        if kind is not None:
-            parts = (
-                bound
-                if isinstance(bound, Iterable)  # type: ignore[unreachable]
-                else (bound,)
-            )
-            for part in parts:
-                if not issubclass(part, kind):
-                    raise BoundNotOfKind(
-                        f"One of the bounds of {cls} ({part}) isn't a subtype of its "
-                        f"kind ({kind})"
-                    )
+
+        if inherited is not None and not is_subtype(bound, inherited):
+            raise BoundNotOfKind
         cls.__bound__ = bound
 
     @classmethod

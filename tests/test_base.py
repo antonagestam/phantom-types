@@ -117,8 +117,9 @@ class TestPhantom:
         class B(A, bound=str):
             ...
 
+    # TODO: at least rename ...
     def test_subclass_outside_kind_raises(self):
-        class A(Phantom, kind=int, abstract=True):
+        class A(Phantom, bound=Union[int, float], abstract=True):
             ...
 
         with pytest.raises(BoundNotOfKind):

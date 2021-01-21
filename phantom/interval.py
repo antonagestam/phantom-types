@@ -4,6 +4,7 @@ from typing import Any
 from typing import Optional
 from typing import Protocol
 from typing import TypeVar
+from typing import Union
 
 from .base import Phantom
 from .base import Predicate
@@ -20,7 +21,7 @@ class IntervalCheck(Protocol):
 
 # See issue as to why the numeric tower isn't used for kind here.
 # https://github.com/python/mypy/issues/3186
-class Interval(Phantom[float], kind=(int, float), abstract=True):
+class Interval(Phantom[float], bound=Union[int, float], abstract=True):
     __check__: IntervalCheck
 
     def __init_subclass__(
