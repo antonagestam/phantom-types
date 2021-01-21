@@ -36,10 +36,3 @@ def of_complex_type(t: type) -> Predicate[object]:
         return True
 
     return check
-
-
-def subclass_of(t: Union[type, Tuple[type, ...]]) -> Predicate[object]:
-    def check(a: object) -> bool:
-        return issubclass(a, t)
-
-    return check

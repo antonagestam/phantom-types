@@ -3,12 +3,9 @@
 from __future__ import annotations
 
 import functools
-from itertools import combinations
 from itertools import product
 from typing import Any
 from typing import Callable
-from typing import Iterable
-from typing import Literal
 from typing import Optional
 from typing import Tuple
 from typing import Type
@@ -16,7 +13,6 @@ from typing import TypeVar
 from typing import Union
 from typing import get_args
 from typing import get_origin
-from typing import overload
 
 
 class UnresolvedClassAttribute(NotImplementedError):
@@ -62,35 +58,15 @@ def excepts(
 BoundType = Union[type, Tuple[type, ...]]
 
 
-@overload
-def is_union(type_: Type[Union]) -> Literal[True]:
-    ...
-
-
-@overload
-def is_union(type_: BoundType) -> Literal[False]:
-    ...
-
-
-def is_union(type_: BoundType) -> bool:
+def _is_union(type_: BoundType) -> bool:
     return get_origin(type_) is Union
 
 
-@overload
-def is_intersection(type_: tuple) -> Literal[True]:
-    ...
-
-
-@overload
-def is_intersection(type_: BoundType) -> Literal[False]:
-    ...
-
-
-def is_intersection(type_: BoundType) -> bool:
+def _is_intersection(type_: BoundType) -> bool:
     return isinstance(type_, tuple)
 
 
-def is_subtype(a: BoundType, b: BoundType) -> bool:
+def is_subtype(a: BoundType, b: BoundType) -> bool:  # noqa: C901
     """
     Return True if ``a`` is a subtype of ``b``. Supports single-level typing.Unions
     and intersections represented as tuples respectively without nesting.
@@ -109,7 +85,7 @@ def is_subtype(a: BoundType, b: BoundType) -> bool:
     9. T, T: Success if a is a subclass of b.
     """
 
-    if is_union(a) and is_union(b):
+    if _is_union(a) and _is_union(b):
         for a_part in get_args(a):
             for b_part in get_args(b):
                 if issubclass(a_part, b_part):
@@ -117,29 +93,33 @@ def is_subtype(a: BoundType, b: BoundType) -> bool:
             else:
                 return False
         return True
-    elif is_intersection(a) and is_union(b):
+    elif _is_intersection(a) and _is_union(b):
+        assert isinstance(a, tuple)
         for a_part, b_part in product(a, get_args(b)):
             if issubclass(a_part, b_part):
                 return True
         return False
-    elif is_intersection(a) and is_intersection(b):
+    elif _is_intersection(a) and _is_intersection(b):
+        assert isinstance(a, tuple)
+        assert isinstance(b, tuple)
         for b_part in b:
             for a_part in a:
-                try:
-                    if issubclass(a_part, b_part):
-                        break
-                except TypeError:
-                    breakpoint()
-                    raise
+                if issubclass(a_part, b_part):
+                    break
             else:
                 return False
         return True
-    elif is_union(a):
+    elif _is_union(a):
         return False
-    elif is_union(b):
+    elif _is_union(b):
+        assert isinstance(a, type)
         return any(issubclass(a, b_part) for b_part in get_args(b))
-    elif is_intersection(b):
+    elif _is_intersection(b):
+        assert isinstance(a, type)
+        assert isinstance(b, tuple)
         return all(issubclass(a, b_part) for b_part in b)
-    elif is_intersection(a):
+    elif _is_intersection(a):
+        assert isinstance(a, tuple)
         return any(issubclass(a_part, b) for a_part in a)
+    assert isinstance(a, type)
     return issubclass(a, b)

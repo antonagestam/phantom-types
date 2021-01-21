@@ -110,11 +110,8 @@ class TestPhantom:
         class A(Phantom, bound=int, abstract=True):
             ...
 
-    def test_can_subclass_without_kind(self):
-        class A(Phantom, bound=int, predicate=positive):
-            ...
-
-        class B(A, bound=str):
+    def test_can_subclass_without_bound_if_abstract(self):
+        class A(Phantom, predicate=positive, abstract=True):
             ...
 
     # TODO: at least rename ...
@@ -131,13 +128,13 @@ class TestPhantom:
         class A(float, Phantom, abstract=True):
             ...
 
-        assert A.__bound__ == (float,)
+        assert A.__bound__ is float
 
     def test_can_define_bound_explicitly(self):
         class A(Phantom, bound=float, abstract=True):
             ...
 
-        assert A.__bound__ == (float,)
+        assert A.__bound__ is float
 
     def test_can_inherit_bound(self):
         class A(Phantom, bound=float, abstract=True):
@@ -146,7 +143,7 @@ class TestPhantom:
         class B(A, abstract=True):
             ...
 
-        assert B.__bound__ == (float,)
+        assert B.__bound__ is float
 
     def test_abstract_instance_check_raises(self):
         class A(Phantom, bound=float, abstract=True):

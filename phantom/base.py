@@ -1,26 +1,23 @@
 from __future__ import annotations
 
 import abc
-from itertools import combinations
 from typing import Any
 from typing import Callable
 from typing import ClassVar
 from typing import Generic
 from typing import Iterable
-from typing import Literal
 from typing import Optional
 from typing import Protocol
 from typing import Sequence
 from typing import Type
 from typing import TypeVar
-from typing import Union
 from typing import cast
-from typing import overload
 from typing import runtime_checkable
 
 from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
+from .utils import BoundType
 from .utils import UnresolvedClassAttribute
 from .utils import is_subtype
 from .utils import resolve_class_attr
@@ -134,22 +131,28 @@ class Phantom(PhantomBase, Generic[T]):
         cls._resolve_bound(bound)
 
     @classmethod
-    def _interpret_implicit_bound(cls) -> Iterable[type]:
-        for type_ in cls.__mro__:
-            if type_ is cls:
-                continue
-            if issubclass(type_, Phantom):
-                break
-            yield type_
-        else:  # pragma: no cover
-            raise RuntimeError(f"{cls} is not a subclass of Phantom")
+    def _interpret_implicit_bound(cls) -> BoundType:
+        def discover_bounds() -> Iterable[type]:
+            for type_ in cls.__mro__:
+                if type_ is cls:
+                    continue
+                if issubclass(type_, Phantom):
+                    break
+                yield type_
+            else:  # pragma: no cover
+                raise RuntimeError(f"{cls} is not a subclass of Phantom")
+
+        types = tuple(discover_bounds())
+        if len(types) == 1:
+            return types[0]
+        return types
 
     @classmethod
     def _resolve_bound(cls, class_arg: Any) -> None:
         inherited = getattr(cls, "__bound__", None)
         if class_arg is not None:
-            bound = class_arg if isinstance(class_arg, tuple) else (class_arg,)
-        elif implicit := tuple(cls._interpret_implicit_bound()):
+            bound = class_arg
+        elif implicit := cls._interpret_implicit_bound():
             bound = implicit
         elif inherited is not None:
             bound = inherited
