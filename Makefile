@@ -3,7 +3,27 @@ SHELL := /usr/bin/env bash
 .PHONY: all test coverage coverage-report lint lint-makefile format-readme format \
 		clean distribute test-distribute
 
-pytest_args = --mypy-ini-file=setup.cfg --doctest-modules --ignore=examples
+typeguard_packages := \
+	phantom.boolean \
+	phantom.datetime \
+	phantom.interval \
+	phantom.re \
+	phantom.sized \
+	phantom.predicates.base \
+	phantom.predicates.boolean \
+	phantom.predicates.collection \
+	phantom.predicates.datetime \
+	phantom.prediactes.generic \
+	phantom.predicates.interval \
+	phantom.predicates.numeric \
+	phantom.predicates.re \
+	phantom.ext.iso3166
+
+pytest_args := \
+	--mypy-ini-file=setup.cfg \
+	--doctest-modules \
+	--ignore=examples \
+	--typeguard-packages=$(shell echo $(typeguard_packages) | sed 's/ /,/g')
 
 test:
 	pytest $(pytest_args) $(test)
