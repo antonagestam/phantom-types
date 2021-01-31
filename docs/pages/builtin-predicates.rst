@@ -109,4 +109,3 @@ Regular expressions
   succeeds when the start of its argument matches the given ``pattern``.
 * ``is_full_match(pattern: Pattern[str]) -> Predicate[str]`` creates a new predicate
   that succeeds when its whole argument matches the given ``pattern``.
-
