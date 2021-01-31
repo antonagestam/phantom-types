@@ -8,6 +8,10 @@ pytest_args = --mypy-ini-file=setup.cfg --doctest-modules --ignore=examples
 test:
 	pytest $(pytest_args) $(test)
 
+.PHONY: test-runtime
+test-runtime:
+	pytest $(pytest_args) $(test) tests/**{/*,}.py
+
 .PHONY: coverage
 coverage:
 	@coverage run -m pytest $(pytest_args) $(test)
