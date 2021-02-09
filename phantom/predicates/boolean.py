@@ -70,6 +70,6 @@ def one_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]:
     predicates = tuple(predicates)
 
     def check(value: T) -> bool:
-        return False
+        return 1 == sum(p(value) for p in predicates)
 
     return check
