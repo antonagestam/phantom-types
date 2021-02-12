@@ -6,9 +6,7 @@ import functools
 from itertools import product
 from typing import Any
 from typing import Callable
-from typing import Optional
 from typing import Tuple
-from typing import Type
 from typing import TypeVar
 from typing import Union
 from typing import get_args
@@ -20,7 +18,7 @@ class UnresolvedClassAttribute(NotImplementedError):
 
 
 def resolve_class_attr(
-    cls: type, name: str, argument: Optional[object], required: bool = True
+    cls: type, name: str, argument: object | None, required: bool = True
 ) -> None:
     argument = getattr(cls, name, None) if argument is None else argument
     if argument is not None:
@@ -36,7 +34,7 @@ A = TypeVar("A")
 
 
 def excepts(
-    exception: Union[Tuple[Type[Exception], ...], Type[Exception]],
+    exception: tuple[type[Exception], ...] | type[Exception],
     negate: bool = False,
 ) -> Callable[[Callable[[A], Any]], Callable[[A], bool]]:
     """Turn a unary function that raises an exception into a boolean predicate."""

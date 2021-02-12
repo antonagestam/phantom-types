@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import Final
-from typing import Optional
 from typing import cast
 
 import phonenumbers
@@ -31,7 +30,7 @@ class InvalidPhoneNumber(
 
 
 def _deconstruct_phone_number(
-    phone_number: str, country_code: Optional[str] = None
+    phone_number: str, country_code: str | None = None
 ) -> phonenumbers.PhoneNumber:
     try:
         parsed_number = phonenumbers.parse(phone_number, region=country_code)
@@ -43,7 +42,7 @@ def _deconstruct_phone_number(
 
 
 def normalize_phone_number(
-    phone_number: str, country_code: Optional[str] = None
+    phone_number: str, country_code: str | None = None
 ) -> FormattedPhoneNumber:
     normalized = phonenumbers.format_number(
         _deconstruct_phone_number(phone_number, country_code),
