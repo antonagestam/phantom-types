@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from typing import Any
-from typing import Optional
 from typing import Protocol
 from typing import TypeVar
 from typing import Union
@@ -26,7 +25,7 @@ class Interval(Phantom[float], bound=Union[int, float], abstract=True):
 
     def __init_subclass__(
         cls,
-        check: Optional[IntervalCheck] = None,
+        check: IntervalCheck | None = None,
         low: float = float("-inf"),
         high: float = float("inf"),
         **kwargs: Any,
