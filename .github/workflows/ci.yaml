@@ -78,14 +78,16 @@ jobs:
           restore-keys: ${{ runner.os }}-pip
       - name: Install build dependencies
         run: |
-          python3 -m pip install --upgrade wheel twine setuptools .
+          python3 -m pip install --upgrade wheel setuptools .
       - name: Validate version
         id: version
         run: |
           tagged_version=${GITHUB_REF#refs/tags/rr/v}
           code_version=$(python -c 'import phantom; print(phantom.__version__)')
           if [[ "$tagged_version" != "$code_version" ]]; then
-            echo "Version mismatch 💥"
+            echo "Aborting due to version mismatch 💥"
+            echo "Tagged version: $tagged_version"
+            echo "Code version: $code_version"
             exit 1
           fi
           echo "::set-output name=version::$tagged_version"
@@ -96,7 +98,6 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
-          repository_url: https://test.pypi.org/legacy/
       - name: Tag release
         uses: actions/create-release@v1
         env:
@@ -106,3 +107,4 @@ jobs:
           release_name: ${{ steps.version.outputs.version }}
           draft: false
           prerelease: false
+          body: ""
