@@ -92,7 +92,7 @@ jobs:
       - name: Build
         run: make build
       - name: Publish
-        uses: pypa/gh-action-pypi-publish@release/v1.4.2
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
