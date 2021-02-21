@@ -3,9 +3,16 @@ on:
   push:
     branches:
       - main
+    tags:
+      # Use this pattern here for two reasons:
+      # - Release creation might fail, this avoids adding a tag for a release in that
+      #   case.
+      # - The non-prefixed version tag required for compatibility with Read the docs is
+      #   not easy to match.
+      # Tags for release requests are prefixed with rr/v, followed by the version.
+      - rr/v*
   pull_request:
-    branches:
-      - main
+
 jobs:
   lint:
     name: Static analysis
@@ -14,6 +21,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
       - uses: pre-commit/action@v2.0.0
+
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -44,3 +52,53 @@ jobs:
           minimum_coverage: 80
           show_missing: true
           show_branch: true
+
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    if: |
+      github.event_name == 'push'
+      && startsWith(github.ref, 'refs/tags/rr/v')
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: pip cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('setup.cfg') }}
+          restore-keys: ${{ runner.os }}-pip
+      - name: Validate version
+        id: version
+        run: |
+          tagged_version=${GITHUB_REF#refs/tags/rr/v}
+          code_version=$(python -c 'import phantom; print(phantom.__version__)')
+          if [[ "$tagged_version" != "$code_version" ]]; then
+            echo "Version mismatch 💥"
+            exit 1
+          fi
+          echo "::set-output name=version::$tagged_version"
+      - name: Install build dependencies
+        run: |
+          python3 -m pip install --upgrade wheel twine setuptools
+      - name: Build
+        run: make build
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1.4.2
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+      - name: Tag release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: ${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: false

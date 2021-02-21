@@ -40,8 +40,10 @@ build: clean
 
 .PHONY: distribute
 distribute: build
+	python3 -m twine check --strict dist/*
 	python3 -m twine upload dist/*
 
 .PHONY: test-distribute
 test-distribute: build
+	python3 -m twine check --strict dist/*
 	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
