@@ -35,15 +35,11 @@ clean:
 
 .PHONY: build
 build: clean
-	python3 -m pip install --upgrade wheel twine setuptools
+	python3 -m pip install --upgrade wheel setuptools
 	python3 setup.py sdist bdist_wheel
 
 .PHONY: distribute
-distribute: build
-	python3 -m twine check --strict dist/*
-	python3 -m twine upload dist/*
-
-.PHONY: test-distribute
-test-distribute: build
-	python3 -m twine check --strict dist/*
-	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+create-release:
+	tag="rr/v$(python3 -c 'import phantom; print(phantom.__version__)')"
+	git tag "$tag"
+	git push origin tag
