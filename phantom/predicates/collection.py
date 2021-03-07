@@ -1,6 +1,7 @@
 from typing import Container
 from typing import Iterable
 from typing import Sized
+from typing import TypeVar
 
 from phantom.base import Predicate
 
@@ -35,7 +36,10 @@ def count(predicate: Predicate[int]) -> Predicate[Sized]:
     return compare
 
 
-def exists(predicate: Predicate[object]) -> Predicate[Iterable]:
+_O = TypeVar("_O", bound=object)
+
+
+def exists(predicate: Predicate[_O]) -> Predicate[Iterable]:
     """
     Return a predicate that is successful given an iterable where one or more items
     satisfy `predicate`.
@@ -47,7 +51,7 @@ def exists(predicate: Predicate[object]) -> Predicate[Iterable]:
     return compare
 
 
-def every(predicate: Predicate[object]) -> Predicate[Iterable]:
+def every(predicate: Predicate[_O]) -> Predicate[Iterable]:
     """
     Return a predicate that is successful given an iterable where all items satisfy
     `predicate`.
