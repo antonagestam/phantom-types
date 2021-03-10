@@ -42,4 +42,4 @@ build: clean
 create-release:
 	tag="rr/v$(python3 -c 'import phantom; print(phantom.__version__)')"
 	git tag "$tag"
-	git push origin tag
+	git push origin "$tag"
