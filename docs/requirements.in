@@ -4,3 +4,4 @@ sphinx-typlog-theme
 recommonmark
 m2r2
 mistune<2
+typeguard
