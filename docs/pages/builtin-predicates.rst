@@ -1,6 +1,10 @@
 Builtin predicates and factories
 ================================
 
+Predicates are functions that return a boolean value given a single argument. These
+modules contain predicate functions, and functions that return predicates, that can be
+composed and used for phantom types.
+
 Boolean logic
 -------------
 
@@ -14,10 +18,16 @@ Boolean logic
 * ``falsy: Predicate[object]`` returns ``True`` for falsy objects.
 * ``both(p: Predicate[T], q: Predicate[T]) -> Predicate[T]`` creates a new predicate
   that succeeds when both of the given predicates succeed.
+* ``either(p: Predicate[T], q: Predicate[T]) -> Predicate[T]`` creates a new predicate
+  that succeeds when at least one of the given predicates succeed.
+* ``xor(p: Predicate[T], q: Predicate[T]) -> Predicate[T]`` creates a new predicate that
+  succeeds when one of the given predicates succeed, but not both.
 * ``all_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]`` creates a new predicate
   that succeeds when all of the given predicates succeed.
 * ``any_of(predicates: Iterable[Predicate[T]] -> Predicate[T]`` creates a new predicate
   that succeeds when at least one of the given predicates succeed.
+* ``one_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]`` creates a new predicate
+  that succeeds when exactly one of the given predicates succeed.
 
 Collection
 ----------
