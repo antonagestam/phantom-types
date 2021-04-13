@@ -42,8 +42,10 @@ build: clean
 	python3 -m pip install --upgrade wheel setuptools
 	python3 setup.py sdist bdist_wheel
 
-.PHONY: distribute
+.PHONY: create-release
 create-release:
-	tag="rr/v$(python3 -c 'import phantom; print(phantom.__version__)')"
-	git tag "$tag"
-	git push origin "$tag"
+	(\
+	  tag="rr/v$$(python3 -c 'import phantom; print(phantom.__version__)')";\
+	  git tag "$$tag";\
+	  git push origin "$$tag";\
+	)
