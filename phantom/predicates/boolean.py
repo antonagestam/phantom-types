@@ -34,6 +34,20 @@ def both(p: Predicate[T], q: Predicate[T]) -> Predicate[T]:
     return check
 
 
+def either(p: Predicate[T], q: Predicate[T]) -> Predicate[T]:
+    def check(value: T) -> bool:
+        return p(value) or q(value)
+
+    return check
+
+
+def xor(p: Predicate[T], q: Predicate[T]) -> Predicate[T]:
+    def check(value: T) -> bool:
+        return p(value) ^ q(value)
+
+    return check
+
+
 def all_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]:
     predicates = tuple(predicates)
 
@@ -48,5 +62,14 @@ def any_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]:
 
     def check(value: T) -> bool:
         return any(p(value) for p in predicates)
+
+    return check
+
+
+def one_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]:
+    predicates = tuple(predicates)
+
+    def check(value: T) -> bool:
+        return 1 == sum(p(value) for p in predicates)
 
     return check
