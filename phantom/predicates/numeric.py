@@ -1,6 +1,3 @@
-import math
-from typing import Union
-
 from .base import Predicate
 from .boolean import negate
 from .generic import equal
@@ -47,12 +44,5 @@ def modulo(n: float, p: Predicate[float]) -> Predicate[float]:
     return check
 
 
-def divisible(n: int) -> Predicate[int]:
-    return modulo(n, equal(0))
-
-
-even: Predicate[int] = divisible(2)
+even: Predicate[int] = modulo(2, equal(0))
 odd: Predicate[int] = negate(even)
-
-
-is_nan: Predicate[Union[int, float]] = math.isnan
