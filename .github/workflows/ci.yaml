@@ -83,7 +83,7 @@ jobs:
         id: version
         run: |
           tagged_version=${GITHUB_REF#refs/tags/rr/v}
-          code_version=$(python -c 'import phantom; print(phantom.__version__)')
+          code_version=$(python3 -c 'import phantom; print(phantom.__version__)')
           if [[ "$tagged_version" != "$code_version" ]]; then
             echo "Aborting due to version mismatch 💥"
             echo "Tagged version: $tagged_version"
