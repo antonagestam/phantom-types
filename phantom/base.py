@@ -6,10 +6,8 @@ from typing import Callable
 from typing import ClassVar
 from typing import Generic
 from typing import Iterable
-from typing import Optional
 from typing import Protocol
 from typing import Sequence
-from typing import Type
 from typing import TypeVar
 from typing import cast
 from typing import runtime_checkable
@@ -82,7 +80,7 @@ Derived = TypeVar("Derived")
 
 class PhantomBase(metaclass=PhantomMeta):
     @classmethod
-    def parse(cls: Type[Derived], instance: object) -> Derived:
+    def parse(cls: type[Derived], instance: object) -> Derived:
         if not isinstance(instance, cls):
             raise TypeError(f"Could not parse {cls} from {instance!r}")
         return instance
@@ -114,8 +112,8 @@ class Phantom(PhantomBase, Generic[T]):
 
     def __init_subclass__(
         cls,
-        predicate: Optional[Predicate[T]] = None,
-        bound: Optional[Type[T]] = None,
+        predicate: Predicate[T] | None = None,
+        bound: type[T] | None = None,
         abstract: bool = False,
         **kwargs: Any,
     ) -> None:
