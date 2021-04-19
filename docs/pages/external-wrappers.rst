@@ -8,64 +8,58 @@ should be a hint that more dependencies need to be installed.
 Phone numbers
 -------------
 
-``phantom.ext.phonenumbers.*``
-
-Requires the phonenumbers_ package which can be installed with:
-
-.. _phonenumbers: https://pypi.org/project/phonenumbers/
-
-.. code-block:: bash
-
-    $ python3 -m pip install phantom-types[phonenumbers]
+.. automodule:: phantom.ext.phonenumbers
 
 Types
 ^^^^^
 
-* ``PhoneNumber``
-* ``FormattedPhoneNumber``
-   * ``FormattedPhoneNumber.parse()`` normalizes numbers using
-     ``PhoneNumberFormat.E164`` and raises ``InvalidPhoneNumber``.
+.. autoclass:: phantom.ext.phonenumbers.PhoneNumber
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+.. autoclass:: phantom.ext.phonenumbers.FormattedPhoneNumber
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 Functions
 ^^^^^^^^^
 
-* ``is_phone_number: Predicate[str]``
-* ``is_formatted_phone_number: Predicate[str]``
-* ``normalize_phone_number(phone_number: str, country_code: Optional[str]=None) -> FormattedPhoneNumber``
-  normalizes numbers using ``PhoneNumberFormat.E164`` and raises ``InvalidPhoneNumber``.
+.. autofunction:: phantom.ext.phonenumbers.is_phone_number
+
+.. autofunction:: phantom.ext.phonenumbers.is_formatted_phone_number
+
+.. autofunction:: phantom.ext.phonenumbers.normalize_phone_number
+
 
 Exceptions
 ^^^^^^^^^^
 
-* ``InvalidPhoneNumber``
+.. autoexception:: phantom.ext.phonenumbers.InvalidPhoneNumber
+    :show-inheritance:
 
 Country codes
 -------------
 
-``phantom.ext.iso3166.*``
-
-Requires the iso3166_ package which can be installed with:
-
-.. _iso3166: https://pypi.org/project/iso3166/
-
-.. code-block:: bash
-
-    $ python3 -m pip install phantom-types[iso3166]
+.. automodule:: phantom.ext.iso3166
 
 Types
 ^^^^^
 
-* ``Alpha2``
-  - ``Alpha2.parse()`` normalizes mixed case codes.
-* ``CountryCode`` alias of ``Alpha2``
+.. autoclass:: phantom.ext.iso3166.Alpha2
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 Functions
 ^^^^^^^^^
 
-* ``normalize_alpha2_country_code(country_code: str) -> Alpha2`` normalizes mixed case
-  country codes and raises ``InvalidCountryCode``.
+.. autofunction:: phantom.ext.iso3166.normalize_alpha2_country_code
 
 Exceptions
 ^^^^^^^^^^
 
-* ``InvalidCountryCode``
+.. autoexception:: phantom.ext.iso3166.InvalidCountryCode
+    :show-inheritance:

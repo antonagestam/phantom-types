@@ -55,16 +55,16 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for a list of
 # builtin themes.
-html_theme = "sphinx_typlog_theme"
-html_theme_options = {
-    "logo_name": "phantom-types",
-    "description": "Phantom types for Python",
-    "github_user": "antonagestam",
-    "github_repo": "phantom-types",
-    "color": "#ff0089",
-}
+html_theme = "furo"
+# Set typing.TYPE_CHECKING to True to enable "expensive" typing imports.
+set_type_checking_flag = True
+typehints_fully_qualified = True
+always_document_param_types = True
 
 # Add any paths that contain custom static files (such as style sheets) here, relative
 # to this directory. They are copied after the builtin static files, so a file named
 # "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+# html_static_path = []
+
+# Keep source order instead of sorting members alphabetically.
+autodoc_member_order = "bysource"

@@ -4,45 +4,89 @@ from .generic import equal
 
 
 def less(n: float) -> Predicate[float]:
-    def check(value: float) -> bool:
+    """
+    Create a new predicate that succeeds when its argument is strictly less than ``n``.
+    """
+
+    def check(value: float, /) -> bool:
         return value < n
 
     return check
 
 
 def le(n: float) -> Predicate[float]:
-    def check(value: float) -> bool:
+    """
+    Create a new predicate that succeeds when its argument is less than or equal to
+    ``n``.
+    """
+
+    def check(value: float, /) -> bool:
         return value <= n
 
     return check
 
 
 def greater(n: float) -> Predicate[float]:
-    def check(value: float) -> bool:
+    """
+    Create a new predicate that succeeds when its argument is strictly greater than
+    ``n``.
+    """
+
+    def check(value: float, /) -> bool:
         return value > n
 
     return check
 
 
 def ge(n: float) -> Predicate[float]:
+    """
+    Create a new predicate that succeeds when its argument is greater than or equal to
+    ``n``.
+    """
+
     def check(value: float) -> bool:
         return value >= n
 
     return check
 
 
-positive = greater(0)
-non_positive = le(0)
-negative = less(0)
-non_negative = ge(0)
+def positive(n: float, /) -> bool:
+    """Return :py:const:`True` when ``n`` is strictly greater than zero."""
+    return greater(0)(n)
+
+
+def non_positive(n: float, /) -> bool:
+    """Return :py:const:`True` when ``n``  is less than or equal to zero."""
+    return le(0)(n)
+
+
+def negative(n: float, /) -> bool:
+    """Return :py:const:`True` when ``n`` is strictly less than zero."""
+    return less(0)(n)
+
+
+def non_negative(n: float, /) -> bool:
+    """Return :py:const:`True` when ``n`` is greater than or equal to zero."""
+    return ge(0)(n)
 
 
 def modulo(n: float, p: Predicate[float]) -> Predicate[float]:
-    def check(value: float) -> bool:
+    """
+    Create a new predicate that succeeds when its argument modulo ``n`` satisfies the
+    given predicate ``p``.
+    """
+
+    def check(value: float, /) -> bool:
         return p(value % n)
 
     return check
 
 
-even: Predicate[int] = modulo(2, equal(0))
-odd: Predicate[int] = negate(even)
+def even(n: int, /) -> bool:
+    """Return :py:const:`True`  when ``n`` is even."""
+    return modulo(2, equal(0))(n)
+
+
+def odd(n: int, /) -> bool:
+    """Return :py:const:`True`  when ``n`` is odd."""
+    return negate(even)(n)

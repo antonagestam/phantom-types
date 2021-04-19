@@ -1,3 +1,12 @@
+"""
+Requires the phonenumbers_ package which can be installed with:
+
+.. _phonenumbers: https://pypi.org/project/phonenumbers/
+
+.. code-block:: bash
+
+    $ python3 -m pip install phantom-types[phonenumbers]
+"""
 from __future__ import annotations
 
 from typing import Final
@@ -44,6 +53,11 @@ def _deconstruct_phone_number(
 def normalize_phone_number(
     phone_number: str, country_code: str | None = None
 ) -> FormattedPhoneNumber:
+    """
+    Normalize ``phone_number`` using :py:const:`phonenumbers.PhoneNumberFormat.E164`.
+
+    :raises InvalidPhoneNumber:
+    """
     normalized = phonenumbers.format_number(
         _deconstruct_phone_number(phone_number, country_code),
         phonenumbers.PhoneNumberFormat.E164,
@@ -69,4 +83,9 @@ class PhoneNumber(str, Phantom, predicate=is_phone_number):
 class FormattedPhoneNumber(str, Phantom, predicate=is_formatted_phone_number):
     @classmethod
     def parse(cls, instance: object) -> FormattedPhoneNumber:
+        """
+        Normalize number using :py:const:`phonenumbers.PhoneNumberFormat.E164`.
+
+        :raises InvalidPhoneNumber:
+        """
         return normalize_phone_number(parse_str(instance))

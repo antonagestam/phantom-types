@@ -3,10 +3,9 @@ phantom-types
 
 [![CI](https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg)](https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI+branch%3Amain)
 
-Phantom types for Python.
-
-[Phantom types][ghosts] will help you make illegal states unrepresentable and avoid
-shotgun parsing by practicing ["Parse, don't validate"][parse].
+[Phantom types][ghosts] for Python that will help you make illegal states
+unrepresentable and avoid shotgun parsing by practicing
+["Parse, don't validate"][parse].
 
 _This project is in early development and fundamental changes should be expected.
 Semantic versioning will be followed after version 1.0, but before that breaking changes

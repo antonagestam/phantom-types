@@ -16,7 +16,11 @@ BA = TypeVar("BA")
 
 def compose2(a: Callable[[AA], AR], b: Callable[[BA], AA]) -> Callable[[BA], AR]:
     """
-    Compose a new function that returns the result of applying a to the result of b.
+    Returns a function composed from the two given functions ``a`` and ``b`` such that
+    calling ``compose2(a, b)(x)`` is equivalent to calling ``a(b(x))``.
+
+    >>> compose2("".join, reversed)("!olleH")
+    'Hello!'
     """
     a_name = _name(a)
     b_name = _name(b)
