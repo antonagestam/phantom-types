@@ -22,6 +22,15 @@ jobs:
       - uses: actions/setup-python@v2
       - uses: pre-commit/action@v2.0.0
 
+  docs:
+    name: Build Sphinx Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ammaraskar/sphinx-action@0.4
+        with:
+          docs-folder: "docs/"
+
   test:
     name: Test
     runs-on: ubuntu-latest
