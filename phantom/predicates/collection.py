@@ -3,7 +3,7 @@ from typing import Iterable
 from typing import Sized
 from typing import TypeVar
 
-from phantom.base import Predicate
+from .base import Predicate
 
 
 def contains(value: object) -> Predicate[Container]:

@@ -2,7 +2,7 @@ from typing import Iterable
 
 import pytest
 
-from phantom.base import Predicate
+from phantom import Predicate
 from phantom.predicates import boolean
 
 

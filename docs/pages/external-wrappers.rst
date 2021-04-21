@@ -18,7 +18,6 @@ Types
     :undoc-members:
     :show-inheritance:
 
-
 .. autoclass:: phantom.ext.phonenumbers.FormattedPhoneNumber
     :members:
     :undoc-members:

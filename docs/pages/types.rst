@@ -1,6 +1,17 @@
 Types
 =====
 
+Base
+----
+
+.. automodule:: phantom
+
+.. autoclass:: Phantom
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :inherited-members:
+
 Boolean
 -------
 
