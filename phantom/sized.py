@@ -10,7 +10,7 @@ implemented using ``len=numeric.greater(0)``.
 
 This made-up type would describe sized collections with between 5 and 10 ints::
 
-    class SpecificSize(PhantomSized[int], len=numeric.greater(0)):
+    class SpecificSize(PhantomSized[int], len=interval.open(5, 10)):
         ...
 """
 from typing import Any
