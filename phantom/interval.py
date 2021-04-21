@@ -23,8 +23,8 @@ from typing import Protocol
 from typing import TypeVar
 from typing import Union
 
-from .base import Phantom
-from .base import Predicate
+from . import Phantom
+from . import Predicate
 from .predicates import interval
 from .utils import resolve_class_attr
 

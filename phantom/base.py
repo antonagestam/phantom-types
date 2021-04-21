@@ -12,6 +12,7 @@ from typing import TypeVar
 from typing import cast
 from typing import runtime_checkable
 
+from .predicates.base import Predicate
 from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
@@ -81,6 +82,11 @@ Derived = TypeVar("Derived")
 class PhantomBase(metaclass=PhantomMeta):
     @classmethod
     def parse(cls: type[Derived], instance: object) -> Derived:
+        """
+        Parse an arbitrary value into a phantom type.
+
+        :raises TypeError:
+        """
         if not isinstance(instance, cls):
             raise TypeError(f"Could not parse {cls} from {instance!r}")
         return instance
@@ -95,10 +101,25 @@ class AbstractInstanceCheck(TypeError):
     ...
 
 
-Predicate = Callable[[T], bool]
-
-
 class Phantom(PhantomBase, Generic[T]):
+    """
+    Base class for predicate-based phantom types.
+
+    **Class arguments**
+
+    * ``predicate: Predicate[T] | None`` - Predicate function used for instance checks.
+      Can be ``None`` if the type is abstract.
+    * ``bound: type[T] | None`` - Bound used to check values before passing them to the
+      type's predicate function. This will often but not always be the same as the
+      runtime type that values of the phantom type are represented as. If this is not
+      provided as a class argument, it's attempted to be resolved in order from an
+      implicit bound (any bases of the type that come before ``Phantom``), or inherited
+      from super phantom types that provide a bound. Can be ``None`` if the type is
+      abstract.
+    * ``abstract: bool`` - Set to ``True`` to create an abstract phantom type. This
+      allows deferring definitions of ``predicate`` and ``bound`` to concrete subtypes.
+    """
+
     __predicate__: ClassVar[Predicate[T]]
     # The bound of a phantom type is the type that its values will have at
     # runtime, so when checking if a value is an instance of a phantom type,

@@ -1,6 +1,6 @@
 from typing import Pattern
 
-from phantom.base import Predicate
+from .base import Predicate
 
 
 def is_match(pattern: Pattern[str]) -> Predicate[str]:
