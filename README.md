@@ -8,8 +8,8 @@ unrepresentable and avoid shotgun parsing by practicing
 ["Parse, don't validate"][parse].
 
 _This project is in early development and fundamental changes should be expected.
-Semantic versioning will be followed after version 1.0, but before that breaking changes
-will occur between minor versions._
+Semantic versioning will be followed after version 1.0, but before that breaking
+changes might occur between minor versions._
 
 [Checkout the complete documentation on Read the Docs →][docs]
 
