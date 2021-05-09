@@ -4,7 +4,7 @@ from typing import Sized
 
 import pytest
 
-from phantom.base import Predicate
+from phantom import Predicate
 from phantom.predicates import collection
 from phantom.predicates import generic
 from phantom.predicates import numeric

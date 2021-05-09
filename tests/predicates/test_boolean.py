@@ -2,7 +2,7 @@ from typing import Iterable
 
 import pytest
 
-from phantom.base import Predicate
+from phantom import Predicate
 from phantom.predicates import boolean
 
 
@@ -46,11 +46,62 @@ class TestBoth:
     def test_returns_true_for_two_succeeding_predicates(self) -> None:
         assert boolean.both(boolean.true, boolean.true)(0) is True
 
-    def test_returns_false_for_failure_in_first_predicate(self) -> None:
-        assert boolean.both(boolean.false, boolean.true)(0) is False
+    @pytest.mark.parametrize(
+        "a, b",
+        [
+            (boolean.false, boolean.true),
+            (boolean.true, boolean.false),
+            (boolean.false, boolean.false),
+        ],
+    )
+    def test_returns_false_for_falsy_predicate(
+        self, a: Predicate, b: Predicate
+    ) -> None:
+        assert boolean.both(a, b)(0) is False
 
-    def test_returns_false_for_failure_in_second_predicate(self) -> None:
-        assert boolean.both(boolean.true, boolean.false)(0) is False
+
+class TestEither:
+    @pytest.mark.parametrize(
+        "a, b",
+        [
+            (boolean.false, boolean.true),
+            (boolean.true, boolean.false),
+            (boolean.true, boolean.true),
+        ],
+    )
+    def test_returns_true_for_truthy_predicate(
+        self, a: Predicate, b: Predicate
+    ) -> None:
+        assert boolean.either(a, b)(0) is True
+
+    def test_returns_false_for_two_falsy_predicates(self) -> None:
+        assert boolean.either(boolean.false, boolean.false)(0) is False
+
+
+class TestXor:
+    @pytest.mark.parametrize(
+        "a, b",
+        [
+            (boolean.false, boolean.true),
+            (boolean.true, boolean.false),
+        ],
+    )
+    def test_returns_true_for_two_different_bools(
+        self, a: Predicate, b: Predicate
+    ) -> None:
+        assert boolean.xor(a, b)(0) is True
+
+    @pytest.mark.parametrize(
+        "a, b",
+        [
+            (boolean.false, boolean.false),
+            (boolean.true, boolean.true),
+        ],
+    )
+    def test_returns_false_for_two_equal_bools(
+        self, a: Predicate, b: Predicate
+    ) -> None:
+        assert boolean.xor(a, b)(0) is False
 
 
 parametrize_all_true = pytest.mark.parametrize(
@@ -139,5 +190,63 @@ class TestAnyOf:
         self, predicates: Iterable[Predicate]
     ) -> None:
         predicate = boolean.any_of(predicate for predicate in predicates)
+        assert predicate(0) is True
+        assert predicate(0) is True
+
+
+class TestOneOf:
+    def test_returns_false_for_empty_set_of_predicates(self) -> None:
+        predicate: Predicate[int] = boolean.one_of(())
+        assert predicate(0) is False
+
+    @pytest.mark.parametrize(
+        "predicates",
+        [
+            (boolean.true, boolean.true),
+            (boolean.true, boolean.true, boolean.true),
+            (boolean.false, boolean.true, boolean.true),
+            (boolean.true, boolean.true, boolean.false),
+            (boolean.true, boolean.false, boolean.true),
+        ],
+    )
+    def test_returns_false_for_more_than_one_succeeding_predicates(
+        self, predicates: Iterable[Predicate]
+    ) -> None:
+        assert boolean.one_of(predicates)(0) is False
+
+    @pytest.mark.parametrize(
+        "predicates",
+        [
+            (boolean.true,),
+            (boolean.true, boolean.false),
+            (boolean.false, boolean.true),
+            (boolean.true, boolean.false, boolean.false),
+            (boolean.false, boolean.true, boolean.false),
+            (boolean.false, boolean.false, boolean.true),
+        ],
+    )
+    def test_returns_true_for_one_succeeding_predicate(
+        self, predicates: Iterable[Predicate]
+    ) -> None:
+        assert boolean.one_of(predicates)(0) is True
+
+    @parametrize_all_false
+    def test_returns_false_for_only_failing_predicate(
+        self, predicates: Iterable[Predicate]
+    ) -> None:
+        assert boolean.one_of(predicates)(0) is False
+
+    @pytest.mark.parametrize(
+        "predicates",
+        [
+            (boolean.true,),
+            (boolean.false, boolean.true),
+            (boolean.false, boolean.true, boolean.false),
+        ],
+    )
+    def test_materializes_generated_predicates(
+        self, predicates: Iterable[Predicate]
+    ) -> None:
+        predicate = boolean.one_of(predicate for predicate in predicates)
         assert predicate(0) is True
         assert predicate(0) is True

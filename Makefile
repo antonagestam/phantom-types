@@ -1,7 +1,6 @@
 SHELL := /usr/bin/env bash
 
-.PHONY: all test coverage coverage-report lint lint-makefile format-readme format \
-		clean distribute test-distribute
+.PHONY: all
 
 typeguard_packages := \
 	phantom.boolean \
@@ -25,22 +24,24 @@ pytest_args := \
 	--ignore=examples \
 	--typeguard-packages=$(shell echo $(typeguard_packages) | sed 's/ /,/g')
 
+.PHONY: test
 test:
 	pytest $(pytest_args) $(test)
 
+.PHONY: test-runtime
+test-runtime:
+	pytest $(pytest_args) $(test) tests/**{/*,}.py
+
+.PHONY: coverage
 coverage:
 	@coverage run -m pytest $(pytest_args) $(test)
 
+.PHONY: coverage-report
 coverage-report:
 	@coverage report
 	@coverage xml
 
-lint:
-	black --check .
-	isort --check .
-	flake8
-	mypy
-
+.PHONY: format-readme
 format-readme:
 	docker run \
 		--rm \
@@ -52,19 +53,19 @@ format-readme:
 		--write \
 		'**/*.md'
 
-format:
-	isort .
-	black .
-
+.PHONY: clean
 clean:
-	rm -rf *.egg-info **/__pycache__ build dist .coverage
+	rm -rf *.egg-info **{/**,}/__pycache__ build dist .coverage
 
+.PHONY: build
 build: clean
-	python3 -m pip install --upgrade wheel twine setuptools
+	python3 -m pip install --upgrade wheel setuptools
 	python3 setup.py sdist bdist_wheel
 
-distribute: build
-	python3 -m twine upload dist/*
-
-test-distribute: build
-	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+.PHONY: create-release
+create-release:
+	(\
+	  tag="rr/v$$(python3 -c 'import phantom; print(phantom.__version__)')";\
+	  git tag "$$tag";\
+	  git push origin "$$tag";\
+	)
