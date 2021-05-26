@@ -1,0 +1,43 @@
+- case: doot
+  main: |
+    import re
+    from phantom.datetime import TZAware
+    from phantom.interval import Natural
+    from phantom.predicates.interval import closed_open
+    from phantom.re import Match
+    from phantom.sized import PhantomSized
+    from pydantic import BaseModel
+
+    class Name(str, PhantomSized[str], len=closed_open(0, 20)): ...
+    class Email(Match, pattern=re.compile(r"^[a-z._]+@[a-z\-]+\.(?:com|se|am)$")): ...
+
+    class Author(BaseModel):
+      name: Name
+      email: Email
+
+    class Book(BaseModel):
+      id: Natural
+      name: Name
+      published: TZAware
+      author: Author
+
+    book = Book.parse_obj({})
+
+    reveal_type(book.id)  #
+    reveal_type(book.name)
+    reveal_type(book.published)
+    reveal_type(book.author.name)
+    reveal_type(book.author.email)
+  out: |
+    main:24: note: Revealed type is 'phantom.interval.Natural'
+    main:25: note: Revealed type is 'main.Name'
+    main:26: note: Revealed type is 'phantom.datetime.TZAware'
+    main:27: note: Revealed type is 'main.Name'
+    main:28: note: Revealed type is 'main.Email'
+  mypy_config: |
+    [mypy]
+    python_version = 3.9
+    files = .
+    [mypy-typeguard.*,pydantic.*]
+    ignore_errors = True
+

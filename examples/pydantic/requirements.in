@@ -1,0 +1,5 @@
+-e ../..[iso3166]
+pydantic
+pytest
+pytest-mypy-plugins
+mypy

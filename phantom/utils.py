@@ -121,3 +121,7 @@ def is_subtype(a: BoundType, b: BoundType) -> bool:  # noqa: C901
         return any(issubclass(a_part, b) for a_part in a)
     assert isinstance(a, type)
     return issubclass(a, b)
+
+
+def fully_qualified_name(cls: type) -> str:
+    return f"{cls.__module__}.{cls.__qualname__}"

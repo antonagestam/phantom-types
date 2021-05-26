@@ -83,6 +83,12 @@ class ClosedOpen(Interval, check=interval.closed_open, abstract=True):
 class Natural(int, Open, low=0):
     """Represents integer values in the inclusive range ``(0, ∞)``."""
 
+    @classmethod
+    def __modify_schema__(cls, field_schema: dict) -> None:
+        field_schema.update(
+            description="An integer value in the inclusive range (0, ∞).",
+        )
+
 
 class NegativeInt(int, Open, high=0):
     """Represents integer values in the inclusive range ``(-∞, 0)``."""

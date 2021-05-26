@@ -58,5 +58,12 @@ class Alpha2(str, Phantom, predicate=is_alpha2_country_code):
         """
         return normalize_alpha2_country_code(parse_str(instance))
 
+    @classmethod
+    def __modify_schema__(cls, field_schema: dict) -> None:
+        field_schema.update(
+            description="ISO3166-1 alpha-2 country code",
+            examples=["NR", "KZ", "ET", "CG", "VC", "AE", "NZ", "SX", "XK", "AX"],
+        )
+
 
 CountryCode = Alpha2
