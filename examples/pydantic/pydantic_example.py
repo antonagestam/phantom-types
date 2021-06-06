@@ -3,29 +3,34 @@ from __future__ import annotations
 import datetime
 import re
 
+from pydantic import BaseModel
+
 from phantom.datetime import TZAware
+from phantom.ext.iso3166 import CountryCode
 from phantom.interval import Natural
 from phantom.predicates.interval import closed_open
 from phantom.re import Match
 from phantom.sized import PhantomSized
-from phantom.ext.iso3166 import CountryCode
-from pydantic import BaseModel
 
 
 class Name(str, PhantomSized[str], len=closed_open(0, 20)):
     @classmethod
-    def __modify_schema__(cls, field_schema):
-        field_schema.update(
-            title="Person Name",
-            description="A name between 1 and 20 characters",
-        )
+    def __schema__(cls):
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "title": "Person Name",
+            "description": "A name between 1 and 20 characters",
+        }
+
 
 class Email(Match, pattern=re.compile(r"^[a-z._]+@[a-z\-]+\.(?:com|se|am)$")):
     ...
 
+
 class Author(BaseModel):
     name: Name
     email: Email
+
 
 class Book(BaseModel):
     id: Natural
@@ -55,4 +60,5 @@ assert type(book.author.name) is str
 assert type(book.author.email) is str
 
 import json
+
 print(json.dumps(Book.schema(), indent=2))

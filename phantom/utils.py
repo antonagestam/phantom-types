@@ -18,7 +18,10 @@ class UnresolvedClassAttribute(NotImplementedError):
 
 
 def resolve_class_attr(
-    cls: type, name: str, argument: object | None, required: bool = True
+    cls: type,
+    name: str,
+    argument: object | None,
+    required: bool = True,
 ) -> None:
     argument = getattr(cls, name, None) if argument is None else argument
     if argument is not None:

@@ -17,6 +17,7 @@ from .predicates.base import Predicate
 from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
+from .schema import SchemaField
 from .utils import BoundType
 from .utils import UnresolvedClassAttribute
 from .utils import fully_qualified_name
@@ -81,7 +82,7 @@ def get_bound_parser(bound: Any) -> Callable[[object], T]:
 Derived = TypeVar("Derived", bound="PhantomBase")
 
 
-class PhantomBase(metaclass=PhantomMeta):
+class PhantomBase(SchemaField, metaclass=PhantomMeta):
     @classmethod
     def parse(cls: type[Derived], instance: object) -> Derived:
         """

@@ -5,7 +5,6 @@ import re
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from typing import Any
-from typing import Dict
 
 from dacite import Config
 from dacite import from_dict
@@ -40,7 +39,7 @@ class Book:
     author: Author
 
     @classmethod
-    def parse(cls, data: Dict[str, Any]) -> Book:
+    def parse(cls, data: dict[str, Any]) -> Book:
         return from_dict(cls, data, config=Config(cast=[Phantom]))
 
 

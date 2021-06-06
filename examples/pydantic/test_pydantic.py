@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import datetime
+import re
 
 import pytest
-from pydantic_example import Book
 from pydantic import ValidationError
-import re
+from pydantic_example import Book
 
 
 def book_data(**overrides) -> dict[str, object]:
@@ -52,6 +52,7 @@ def test_long_name_raises() -> None:
 
 def test_invalid_email_raises() -> None:
     not_an_email = "hello@test@test.test"
-    with raises_validation_error("author -> email", "pydantic_example.Email", f"'{not_an_email}'"):
+    with raises_validation_error(
+        "author -> email", "pydantic_example.Email", f"'{not_an_email}'"
+    ):
         Book.parse_obj(book_data(author={"name": "John Doe", "email": not_an_email}))
-

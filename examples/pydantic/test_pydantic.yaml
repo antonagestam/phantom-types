@@ -40,4 +40,3 @@
     files = .
     [mypy-typeguard.*,pydantic.*]
     ignore_errors = True
-
