@@ -22,4 +22,4 @@ help:
 
 requirements: export CUSTOM_COMPILE_COMMAND='make requirements'
 requirements:
-	@pip-compile --upgrade --pre --generate-hashes --allow-unsafe
+	@pip-compile --upgrade --generate-hashes --allow-unsafe
