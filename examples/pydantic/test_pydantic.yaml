@@ -23,7 +23,7 @@
 
     book = Book.parse_obj({})
 
-    reveal_type(book.id)  #
+    reveal_type(book.id)
     reveal_type(book.name)
     reveal_type(book.published)
     reveal_type(book.author.name)

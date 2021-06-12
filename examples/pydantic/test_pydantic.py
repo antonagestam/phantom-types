@@ -14,6 +14,7 @@ def book_data(**overrides) -> dict[str, object]:
         "name": "foo",
         "published": datetime.datetime.now(tz=datetime.timezone.utc),
         "author": {"name": "Jane Doe", "email": "jane@doe.com"},
+        "countries": ["FI", "NO"],
         **overrides,
     }
 
@@ -55,4 +56,16 @@ def test_invalid_email_raises() -> None:
     with raises_validation_error(
         "author -> email", "pydantic_example.Email", f"'{not_an_email}'"
     ):
-        Book.parse_obj(book_data(author={"name": "John Doe", "email": not_an_email}))
+        Book.parse_obj(
+            book_data(
+                author={
+                    "name": "John Doe",
+                    "email": not_an_email,
+                },
+            )
+        )
+
+
+def test_no_countries_raises() -> None:
+    with raises_validation_error("countries", "phantom.sized.NonEmpty", f"()"):
+        Book.parse_obj(book_data(countries=[]))

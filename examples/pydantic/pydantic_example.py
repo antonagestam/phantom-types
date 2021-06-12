@@ -10,6 +10,7 @@ from phantom.ext.iso3166 import CountryCode
 from phantom.interval import Natural
 from phantom.predicates.interval import closed_open
 from phantom.re import Match
+from phantom.sized import NonEmpty
 from phantom.sized import PhantomSized
 
 
@@ -36,7 +37,7 @@ class Book(BaseModel):
     id: Natural
     name: Name
     published: TZAware
-    country: CountryCode
+    countries: NonEmpty[CountryCode]
     author: Author
 
 
@@ -46,7 +47,7 @@ book = Book.parse_obj(
         "name": "foo",
         "published": datetime.datetime.now(tz=datetime.timezone.utc),
         "author": {"name": "Jane Doe", "email": "jane@doe.com"},
-        "country": "NR",
+        "countries": ["NR"],
     }
 )
 
