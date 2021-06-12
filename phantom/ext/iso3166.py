@@ -66,6 +66,7 @@ class Alpha2(str, Phantom, predicate=is_alpha2_country_code):
             **super().__schema__(),  # type: ignore[misc]
             "description": "ISO3166-1 alpha-2 country code",
             "examples": ["NR", "KZ", "ET", "VC", "AE", "NZ", "SX", "XK", "AX"],
+            "format": "iso3166-1 alpha-2",
         }
 
 

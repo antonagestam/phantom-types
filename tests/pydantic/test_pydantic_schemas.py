@@ -1,6 +1,9 @@
 import pydantic
 from phantom.datetime import TZAware
 from phantom.datetime import TZNaive
+from phantom.ext.iso3166 import CountryCode
+from phantom.ext.phonenumbers import FormattedPhoneNumber
+from phantom.ext.phonenumbers import PhoneNumber
 from phantom.interval import Closed
 from phantom.interval import ClosedOpen
 from phantom.interval import Natural
@@ -52,6 +55,9 @@ class DataModel(pydantic.BaseModel):
     full_match: FullMatchType
     non_empty: NonEmpty[str]
     empty: Empty
+    country: CountryCode
+    phone_number: PhoneNumber
+    formatted_phone_number: FormattedPhoneNumber
 
 
 class TestShippedTypesImplementsSchema:
@@ -164,4 +170,29 @@ class TestShippedTypesImplementsSchema:
             "type": "array",
             "description": "An empty array.",
             "maxItems": 0,
+        }
+
+    def test_country_code_implements_schema(self):
+        assert DataModel.schema()["properties"]["country"] == {
+            "title": "Alpha2",
+            "description": "ISO3166-1 alpha-2 country code",
+            "examples": ["NR", "KZ", "ET", "VC", "AE", "NZ", "SX", "XK", "AX"],
+            "type": "string",
+            "format": "iso3166-1 alpha-2",
+        }
+
+    def test_phone_number_implements_schema(self):
+        assert DataModel.schema()["properties"]["phone_number"] == {
+            "title": "PhoneNumber",
+            "description": "A valid E.164 phone number.",
+            "type": "string",
+            "format": "E.164",
+        }
+
+    def test_formatted_phone_number_implements_schema(self):
+        assert DataModel.schema()["properties"]["formatted_phone_number"] == {
+            "title": "PhoneNumber",
+            "description": "A valid E.164 phone number.",
+            "type": "string",
+            "format": "E.164",
         }

@@ -16,6 +16,7 @@ import phonenumbers
 
 from phantom import Phantom
 from phantom import get_bound_parser
+from phantom.schema import Schema
 from phantom.utils import excepts
 
 __all__ = (
@@ -77,10 +78,17 @@ def is_formatted_phone_number(number: str) -> bool:
 
 
 class PhoneNumber(str, Phantom, predicate=is_phone_number):
-    ...
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "description": "A valid E.164 phone number.",
+            "type": "string",
+            "format": "E.164",
+        }
 
 
-class FormattedPhoneNumber(str, Phantom, predicate=is_formatted_phone_number):
+class FormattedPhoneNumber(PhoneNumber, predicate=is_formatted_phone_number):
     @classmethod
     def parse(cls, instance: object) -> FormattedPhoneNumber:
         """
@@ -89,3 +97,10 @@ class FormattedPhoneNumber(str, Phantom, predicate=is_formatted_phone_number):
         :raises InvalidPhoneNumber:
         """
         return normalize_phone_number(parse_str(instance))
+
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "title": "PhoneNumber",
+        }
