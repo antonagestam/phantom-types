@@ -103,6 +103,7 @@ class PhantomBase(SchemaField, metaclass=PhantomMeta):
 
     @classmethod
     def __get_validators__(cls: type[Derived]) -> Iterator[Callable[[object], Derived]]:
+        """Hook that makes phantom types compatible with pydantic."""
         yield cls.parse
 
 

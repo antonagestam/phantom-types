@@ -14,6 +14,9 @@ functions from :py:mod:`phantom.predicates.interval`.
 
     def take_portion(portion: Portion, whole: Natural) -> float:
         return portion * whole
+
+All interval types fully support pydantic and appropriately adds inclusive or exclusive
+minimums and maximums to their schema representations.
 """
 
 from __future__ import annotations
