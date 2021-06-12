@@ -23,7 +23,7 @@ class TZAware(datetime.datetime, Phantom, predicate=is_tz_aware):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),
+            **super().__schema__(),  # type: ignore[misc]
             "description": "A date-time with timezone data.",
         }
 
@@ -39,6 +39,6 @@ class TZNaive(datetime.datetime, Phantom, predicate=is_tz_naive):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),
+            **super().__schema__(),  # type: ignore[misc]
             "description": "A date-time without timezone data.",
         }

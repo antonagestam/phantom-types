@@ -1,15 +1,20 @@
+from typing import Literal
 from typing import Optional
 from typing import Sequence
 from typing import TypedDict
 
 
 class Schema(TypedDict, total=False):
-    description: Optional[str]
-    examples: Optional[Sequence[object]]
+    title: str
+    description: str
+    type: Literal["array", "string", "float", "number"]
+    examples: Sequence[object]
     minimum: Optional[float]
     maximum: Optional[float]
     exclusiveMinimum: Optional[float]
     exclusiveMaximum: Optional[float]
+    minItems: Optional[int]
+    maxItems: Optional[int]
 
 
 class SchemaField:
@@ -21,4 +26,4 @@ class SchemaField:
 
     @classmethod
     def __schema__(cls) -> Schema:
-        return {}
+        return {"title": cls.__name__}

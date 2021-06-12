@@ -41,6 +41,7 @@ __all__ = (
     "Empty",
 )
 
+from .schema import Schema
 
 mutable: Final = (MutableSequence, MutableSet, MutableMapping)
 T = TypeVar("T", bound=object, covariant=True)
@@ -76,10 +77,33 @@ class PhantomSized(
             **kwargs,
         )
 
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "type": "array",
+        }
+
 
 class NonEmpty(PhantomSized[T], Generic[T], len=numeric.greater(0)):
     """A sized collection with at least one item."""
 
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "description": "A non-empty array.",
+            "minItems": 1,
+        }
+
 
 class Empty(PhantomSized[T], Generic[T], len=generic.equal(0)):
     """A sized collection with exactly zero items."""
+
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "description": "An empty array.",
+            "maxItems": 0,
+        }
