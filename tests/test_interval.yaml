@@ -15,7 +15,7 @@
         return a
 
     b = take_nat(Natural.parse(1))
-    reveal_type(b) # N: Revealed type is 'phantom.interval.Natural'
+    reveal_type(b) # N: Revealed type is "phantom.interval.Natural"
 
 - case: calling_function_with_known_2
   main: |
@@ -24,11 +24,11 @@
     def from_int(a: int) -> Natural:
         if not isinstance(a, Natural):
             raise TypeError
-        reveal_type(a) # N: Revealed type is 'phantom.interval.Natural'
+        reveal_type(a) # N: Revealed type is "phantom.interval.Natural"
         return a
 
     n = from_int(-1)
-    reveal_type(n) # N: Revealed type is 'phantom.interval.Natural'
+    reveal_type(n) # N: Revealed type is "phantom.interval.Natural"
 
 - case: test_overload
   main: |
@@ -47,7 +47,7 @@
     a = Natural.parse(1)
     b = NegativeInt.parse(-1)
 
-    reveal_type(add(a, a)) # N: Revealed type is 'phantom.interval.Natural'
-    reveal_type(add(b, b)) # N: Revealed type is 'phantom.interval.NegativeInt'
-    reveal_type(add(a, b)) # N: Revealed type is 'builtins.int'
-    reveal_type(add(b, a)) # N: Revealed type is 'builtins.int'
+    reveal_type(add(a, a)) # N: Revealed type is "phantom.interval.Natural"
+    reveal_type(add(b, b)) # N: Revealed type is "phantom.interval.NegativeInt"
+    reveal_type(add(a, b)) # N: Revealed type is "builtins.int"
+    reveal_type(add(b, a)) # N: Revealed type is "builtins.int"

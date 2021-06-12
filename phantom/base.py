@@ -6,6 +6,7 @@ from typing import Callable
 from typing import ClassVar
 from typing import Generic
 from typing import Iterable
+from typing import Iterator
 from typing import Protocol
 from typing import Sequence
 from typing import TypeVar
@@ -16,8 +17,10 @@ from .predicates.base import Predicate
 from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
+from .schema import SchemaField
 from .utils import BoundType
 from .utils import UnresolvedClassAttribute
+from .utils import fully_qualified_name
 from .utils import is_subtype
 from .utils import resolve_class_attr
 
@@ -76,10 +79,10 @@ def get_bound_parser(bound: Any) -> Callable[[object], T]:
     return parser
 
 
-Derived = TypeVar("Derived")
+Derived = TypeVar("Derived", bound="PhantomBase")
 
 
-class PhantomBase(metaclass=PhantomMeta):
+class PhantomBase(SchemaField, metaclass=PhantomMeta):
     @classmethod
     def parse(cls: type[Derived], instance: object) -> Derived:
         """
@@ -88,13 +91,20 @@ class PhantomBase(metaclass=PhantomMeta):
         :raises TypeError:
         """
         if not isinstance(instance, cls):
-            raise TypeError(f"Could not parse {cls} from {instance!r}")
+            raise TypeError(
+                f"Could not parse {fully_qualified_name(cls)} from {instance!r}"
+            )
         return instance
 
     @classmethod
     @abc.abstractmethod
     def __instancecheck__(cls, instance: object) -> bool:
         ...
+
+    @classmethod
+    def __get_validators__(cls: type[Derived]) -> Iterator[Callable[[object], Derived]]:
+        """Hook that makes phantom types compatible with pydantic."""
+        yield cls.parse
 
 
 class AbstractInstanceCheck(TypeError):

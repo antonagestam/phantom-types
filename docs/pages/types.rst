@@ -1,8 +1,8 @@
 Types
 =====
 
-Base
-----
+Base classes
+------------
 
 .. automodule:: phantom
 
@@ -11,6 +11,7 @@ Base
     :undoc-members:
     :show-inheritance:
     :inherited-members:
+    :special-members: __schema__, __modify_schema__, __get_validators__
 
 Boolean
 -------

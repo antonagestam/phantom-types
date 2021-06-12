@@ -18,4 +18,4 @@
     b = take_aware(
       TZAware.parse(datetime.datetime.now(tz=datetime.timezone.utc))
     )
-    reveal_type(b) # N: Revealed type is 'phantom.datetime.TZAware'
+    reveal_type(b) # N: Revealed type is "phantom.datetime.TZAware"

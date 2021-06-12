@@ -9,4 +9,4 @@
     assert isinstance(n, Positive)
     assert isinstance(n, Portion)
 
-    reveal_type(n)  # N: Revealed type is 'main.<subclass of "Positive" and "Portion">'
+    reveal_type(n)  # N: Revealed type is "main.<subclass of "Positive" and "Portion">"

@@ -7,6 +7,7 @@ import datetime
 from .base import Phantom
 from .predicates.datetime import is_tz_aware
 from .predicates.datetime import is_tz_naive
+from .schema import Schema
 
 
 class TZAware(datetime.datetime, Phantom, predicate=is_tz_aware):
@@ -19,6 +20,13 @@ class TZAware(datetime.datetime, Phantom, predicate=is_tz_aware):
     True
     """
 
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "description": "A date-time with timezone data.",
+        }
+
 
 class TZNaive(datetime.datetime, Phantom, predicate=is_tz_naive):
     """
@@ -27,3 +35,10 @@ class TZNaive(datetime.datetime, Phantom, predicate=is_tz_naive):
     >>> isinstance(datetime.datetime.now(tz=datetime.timezone.utc), TZNaive)
     False
     """
+
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "description": "A date-time without timezone data.",
+        }

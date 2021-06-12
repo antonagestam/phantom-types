@@ -9,7 +9,7 @@
         return things[0]
 
     f = fst(AtLeastOneInt.parse((1, 2)))
-    reveal_type(f)  # N: Revealed type is 'builtins.int'
+    reveal_type(f)  # N: Revealed type is "builtins.int"
 
 - case: test_subscripted
   main: |
@@ -20,7 +20,7 @@
 
     l = NonEmpty[int].parse((0,))
     i = fst(l)
-    reveal_type(i)  # N: Revealed type is 'builtins.int'
+    reveal_type(i)  # N: Revealed type is "builtins.int"
 
 - case: test_annotated
   main: |
@@ -31,7 +31,7 @@
 
     l: NonEmpty[int] = NonEmpty.parse((0,))
     i = fst(l)
-    reveal_type(i)  # N: Revealed type is 'builtins.int'
+    reveal_type(i)  # N: Revealed type is "builtins.int"
 
 - case: test_str
   main: |
@@ -41,4 +41,4 @@
         return len(name)
 
     i = name_length(NonEmpty.parse("foo"))
-    reveal_type(i)  # N: Revealed type is 'builtins.int'
+    reveal_type(i)  # N: Revealed type is "builtins.int"

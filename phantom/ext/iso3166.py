@@ -27,6 +27,8 @@ __all__ = (
     "normalize_alpha2_country_code",
 )
 
+from phantom.schema import Schema
+
 ALPHA2: Final = frozenset(iso3166.countries_by_alpha2.keys())
 is_alpha2_country_code = contained(ALPHA2)
 parse_str = get_bound_parser(str)
@@ -57,6 +59,15 @@ class Alpha2(str, Phantom, predicate=is_alpha2_country_code):
         :raises InvalidCountryCode:
         """
         return normalize_alpha2_country_code(parse_str(instance))
+
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "description": "ISO3166-1 alpha-2 country code",
+            "examples": ["NR", "KZ", "ET", "VC", "AE", "NZ", "SX", "XK", "AX"],
+            "format": "iso3166-1 alpha-2",
+        }
 
 
 CountryCode = Alpha2

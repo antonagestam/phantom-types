@@ -11,3 +11,4 @@ Documentation sections
   pages/predicates.rst
   pages/functional-composition.rst
   pages/external-wrappers.rst
+  pages/pydantic-support.rst
