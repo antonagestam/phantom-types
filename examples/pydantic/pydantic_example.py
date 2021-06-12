@@ -37,7 +37,7 @@ class Book(BaseModel):
     id: Natural
     name: Name
     published: TZAware
-    countries: NonEmpty[CountryCode]
+    countries: tuple[CountryCode, ...]
     author: Author
 
 

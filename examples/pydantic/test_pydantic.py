@@ -64,8 +64,3 @@ def test_invalid_email_raises() -> None:
                 },
             )
         )
-
-
-def test_no_countries_raises() -> None:
-    with raises_validation_error("countries", "phantom.sized.NonEmpty", f"()"):
-        Book.parse_obj(book_data(countries=[]))
