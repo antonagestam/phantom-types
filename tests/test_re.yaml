@@ -34,7 +34,7 @@
         return a
 
     a = take_a(A.parse("abc"))
-    reveal_type(a)  # N: Revealed type is 'main.A'
+    reveal_type(a)  # N: Revealed type is "main.A"
 - case: can_instantiate_full_match
   main: |
     import re
@@ -47,7 +47,7 @@
         return a
 
     a = take_a(A.parse("abc"))
-    reveal_type(a)  # N: Revealed type is 'main.A'
+    reveal_type(a)  # N: Revealed type is "main.A"
 - case: can_infer_match
   main: |
     import re

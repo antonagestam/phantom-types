@@ -2,4 +2,4 @@
 pydantic
 pytest
 pytest-mypy-plugins
-mypy
+mypy>=0.900

@@ -16,7 +16,7 @@ iso3166==1.0.1
     # via phantom-types
 mypy-extensions==0.4.3
     # via mypy
-mypy==0.812
+mypy==0.902
     # via
     #   -r requirements.in
     #   pytest-mypy-plugins
@@ -41,9 +41,9 @@ pytest==6.2.4
 pyyaml==5.4.1
     # via pytest-mypy-plugins
 toml==0.10.2
-    # via pytest
-typed-ast==1.4.3
-    # via mypy
+    # via
+    #   mypy
+    #   pytest
 typeguard==2.12.0
     # via phantom-types
 typing-extensions==3.10.0.0

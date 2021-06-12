@@ -29,11 +29,11 @@
     reveal_type(book.author.name)
     reveal_type(book.author.email)
   out: |
-    main:24: note: Revealed type is 'phantom.interval.Natural'
-    main:25: note: Revealed type is 'main.Name'
-    main:26: note: Revealed type is 'phantom.datetime.TZAware'
-    main:27: note: Revealed type is 'main.Name'
-    main:28: note: Revealed type is 'main.Email'
+    main:24: note: Revealed type is "phantom.interval.Natural"
+    main:25: note: Revealed type is "main.Name"
+    main:26: note: Revealed type is "phantom.datetime.TZAware"
+    main:27: note: Revealed type is "main.Name"
+    main:28: note: Revealed type is "main.Email"
   mypy_config: |
     [mypy]
     python_version = 3.9
