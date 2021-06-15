@@ -1,5 +1,4 @@
-phantom-types
--------------
+# phantom-types
 
 [![CI](https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg)](https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI+branch%3Amain)
 
@@ -13,15 +12,13 @@ changes might occur between minor versions._
 
 [Checkout the complete documentation on Read the Docs →][docs]
 
-Installation
-============
+## Installation
 
 ```bash
 $  python3 -m pip install phantom-types
 ```
 
-Motivating example
-==================
+## Motivating example
 
 Imagine that you're working on implementing a `head` function that should return the
 first item of any given iterable. The implementation is simple:
@@ -87,8 +84,7 @@ although you might mostly use your own custom phantom types that describe the ex
 values that your implementations require. [The documentation contains examples of how to
 create phantom types][docs].
 
-How are phantom types implemented?
-==================================
+## How are phantom types implemented?
 
 phantom-types make use of Python's `__instancecheck__` protocol to make types work with
 the same checks that are recognized as type guards by static type checkers, e.g.
