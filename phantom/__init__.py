@@ -22,5 +22,5 @@ from .base import PhantomMeta
 from .base import get_bound_parser
 from .predicates.base import Predicate
 
-__version__ = "0.9.0"
+__version__ = "0.9.1"
 __all__ = ("PhantomBase", "Phantom", "Predicate", "get_bound_parser", "PhantomMeta")
