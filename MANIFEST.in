@@ -1,0 +1,10 @@
+exclude Makefile
+recursive-exclude docs *
+recursive-exclude examples *
+recursive-exclude .github *
+recursive-exclude tests *
+recursive-include phantom py.typed
+exclude *.yaml
+exclude *.yml
+include README.md
+include LICENSE
