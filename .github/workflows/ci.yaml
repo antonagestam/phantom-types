@@ -3,14 +3,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      # Use this pattern here for two reasons:
-      # - Release creation might fail, this avoids adding a tag for a release in that
-      #   case.
-      # - The non-prefixed version tag required for compatibility with Read the docs is
-      #   not easy to match.
-      # Tags for release requests are prefixed with rr/v, followed by the version.
-      - rr/v*
   pull_request:
 
 jobs:
