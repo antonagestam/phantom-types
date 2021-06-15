@@ -35,7 +35,7 @@ greet(Name.parse("Jane"))
 # And so is this.
 joe = "Joe"
 assert isinstance(joe, Name)
-greet(joe)  # This is valid.
+greet(joe)
 
 # But this will yield a static type checking error.
 greet("bird")
