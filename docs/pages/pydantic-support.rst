@@ -48,6 +48,6 @@ around this subclasses of :class:`PhantomSized <phantom.sized.PhantomSized>` can
             }
 
 As seen in the example, phantom sized types also currently need to manually specify
-`"minItems"` and `"maxItems"`. This is planned to be remedied by introducing an
+``"minItems"`` and ``"maxItems"``. This is planned to be remedied by introducing an
 intermediary ``BoundedSize`` type that provides introspection capabilities for those
 attributes.
