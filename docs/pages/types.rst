@@ -11,7 +11,7 @@ Base classes
     :undoc-members:
     :show-inheritance:
     :inherited-members:
-    :special-members: __schema__, __modify_schema__, __get_validators__
+    :special-members: __schema__, __modify_schema__, __get_validators__, __bound__
 
 Boolean
 -------
@@ -28,6 +28,8 @@ Datetime
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. _numeric-intervals:
 
 Numeric intervals
 -----------------
