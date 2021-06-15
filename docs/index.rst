@@ -17,3 +17,4 @@ Documentation sections
   pages/functional-composition.rst
   pages/external-wrappers.rst
   pages/pydantic-support.rst
+  pages/implementation.rst
