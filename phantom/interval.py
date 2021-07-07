@@ -37,7 +37,7 @@ N = TypeVar("N", bound=float)
 
 
 class IntervalCheck(Protocol):
-    def __call__(self, a: N, b: N, /) -> Predicate[N]:
+    def __call__(self, a: N, b: N) -> Predicate[N]:
         ...
 
 

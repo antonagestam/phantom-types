@@ -9,7 +9,7 @@ def is_match(pattern: Pattern[str]) -> Predicate[str]:
     given ``pattern``.
     """
 
-    def match(instance: str, /) -> bool:
+    def match(instance: str) -> bool:
         return pattern.match(instance) is not None
 
     return match
