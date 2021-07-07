@@ -22,10 +22,11 @@ minimums and maximums to their schema representations.
 from __future__ import annotations
 
 from typing import Any
-from typing import Final
-from typing import Protocol
 from typing import TypeVar
 from typing import Union
+
+from typing_extensions import Final
+from typing_extensions import Protocol
 
 from . import Phantom
 from . import Predicate

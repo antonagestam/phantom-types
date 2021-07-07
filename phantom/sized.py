@@ -14,17 +14,18 @@ This made-up type would describe sized collections with between 5 and 10 ints::
         ...
 """
 from typing import Any
-from typing import Final
 from typing import Generic
 from typing import Iterable
 from typing import MutableMapping
 from typing import MutableSequence
 from typing import MutableSet
-from typing import Protocol
 from typing import Sized
 from typing import TypeVar
-from typing import _ProtocolMeta  # type: ignore[attr-defined]
-from typing import runtime_checkable
+
+from typing_extensions import Final
+from typing_extensions import Protocol
+from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
+from typing_extensions import runtime_checkable
 
 from . import Phantom
 from . import PhantomMeta

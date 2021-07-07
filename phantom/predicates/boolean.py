@@ -1,5 +1,6 @@
 from typing import Iterable
-from typing import Literal
+
+from typing_extensions import Literal
 
 from .base import Predicate
 from .base import T

@@ -1,5 +1,6 @@
-from typing import Protocol
 from typing import TypeVar
+
+from typing_extensions import Protocol
 
 T = TypeVar("T", bound=object, contravariant=True)
 
