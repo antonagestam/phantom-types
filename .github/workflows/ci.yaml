@@ -45,13 +45,6 @@ jobs:
       - run: make coverage
       - run: make coverage-report
       - name: Report coverage
-        if: |
-          github.event_name == 'pull_request'
-          && (
-            github.event.action == 'opened'
-            || github.event.action == 'reopened'
-            || github.event.action == 'synchronize'
-          )
         uses: codecov/codecov-action@v1
         with:
           file: coverage.xml
