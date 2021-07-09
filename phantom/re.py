@@ -36,7 +36,7 @@ class Match(str, Phantom, abstract=True):
             "description": (
                 "A string starting with a match of the format regular expression."
             ),
-            "format": str(cls.__pattern__),
+            "format": str(cls.__pattern__.pattern),
         }
 
 
@@ -57,5 +57,5 @@ class FullMatch(str, Phantom, abstract=True):
         return {
             **super().__schema__(),  # type: ignore[misc]
             "description": "A string that matches the format regular expression.",
-            "format": str(cls.__pattern__),
+            "format": str(cls.__pattern__.pattern),
         }
