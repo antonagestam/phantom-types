@@ -45,17 +45,8 @@ jobs:
       - run: make coverage
       - run: make coverage-report
       - name: Report coverage
-        if: |
-          github.event_name == 'pull_request'
-          && (
-            github.event.action == 'opened'
-            || github.event.action == 'reopened'
-            || github.event.action == 'synchronize'
-          )
-        uses: 5monkeys/cobertura-action@v7
+        uses: codecov/codecov-action@v1
         with:
-          path: coverage.xml
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          minimum_coverage: 80
-          show_missing: true
-          show_branch: true
+          file: coverage.xml
+          fail_ci_if_error: true
+          name: codecov-py${{ matrix.python }}
