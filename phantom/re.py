@@ -8,13 +8,25 @@ Types for representing strings that match a pattern.
 
     assert isinstance("Hello Jane!", Greeting)
 """
+from __future__ import annotations
+
+import re
 from typing import Any
 from typing import Pattern
 
 from .base import Phantom
-from .predicates import re
+from .predicates.re import is_full_match
+from .predicates.re import is_match
 from .schema import Schema
 from .utils import resolve_class_attr
+
+__all__ = ("Match", "FullMatch")
+
+
+def _compile(pattern: Pattern[str] | str) -> Pattern[str]:
+    if not isinstance(pattern, Pattern):
+        return re.compile(pattern)
+    return pattern
 
 
 class Match(str, Phantom, abstract=True):
@@ -25,9 +37,9 @@ class Match(str, Phantom, abstract=True):
 
     __pattern__: Pattern[str]
 
-    def __init_subclass__(cls, pattern: Pattern[str], **kwargs: Any) -> None:
-        resolve_class_attr(cls, "__pattern__", pattern)
-        super().__init_subclass__(predicate=re.is_match(cls.__pattern__), **kwargs)
+    def __init_subclass__(cls, pattern: Pattern[str] | str, **kwargs: Any) -> None:
+        resolve_class_attr(cls, "__pattern__", _compile(pattern))
+        super().__init_subclass__(predicate=is_match(cls.__pattern__), **kwargs)
 
     @classmethod
     def __schema__(cls) -> Schema:
@@ -49,8 +61,8 @@ class FullMatch(str, Phantom, abstract=True):
     __pattern__: Pattern[str]
 
     def __init_subclass__(cls, pattern: Pattern[str], **kwargs: Any) -> None:
-        resolve_class_attr(cls, "__pattern__", pattern)
-        super().__init_subclass__(predicate=re.is_full_match(cls.__pattern__), **kwargs)
+        resolve_class_attr(cls, "__pattern__", _compile(pattern))
+        super().__init_subclass__(predicate=is_full_match(cls.__pattern__), **kwargs)
 
     @classmethod
     def __schema__(cls) -> Schema:
