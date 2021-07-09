@@ -3,7 +3,7 @@ Types for representing strings that match a pattern.
 
 ::
 
-    class Greeting(Match, pattern=re.compile(r"^(Hi|Hello)")):
+    class Greeting(Match, pattern=r"^(Hi|Hello)"):
         ...
 
     assert isinstance("Hello Jane!", Greeting)
@@ -31,7 +31,8 @@ def _compile(pattern: Pattern[str] | str) -> Pattern[str]:
 
 class Match(str, Phantom, abstract=True):
     """
-    Takes ``pattern: Pattern[str]`` as class argument. Uses the
+    Takes ``pattern: Pattern[str] | str`` as class argument as either a compiled
+    :py:class:`Pattern` or a :py:class:`str` to be compiled. Uses the
     :py:func:`phantom.predicate.re.is_match` predicate.
     """
 
@@ -54,7 +55,8 @@ class Match(str, Phantom, abstract=True):
 
 class FullMatch(str, Phantom, abstract=True):
     """
-    Takes ``pattern: Pattern[str]`` as class argument. Uses the
+    Takes ``pattern: Pattern[str] | str`` as class argument as either a compiled
+    :py:class:`Pattern` or a :py:class:`str` to be compiled. Uses the
     :py:func:`phantom.predicate.re.is_full_match` predicate.
     """
 
