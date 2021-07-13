@@ -2,7 +2,7 @@
 
 [![CI Build Status](https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg)][build-status]
 [![Documentation Build Status](https://readthedocs.org/projects/phantom-types/badge/?version=main)][docs]
-
+[![codecov](https://codecov.io/gh/antonagestam/phantom-types/branch/main/graph/badge.svg?token=UE85B7IA3Q)][coverage]
 
 [Phantom types][ghosts] for Python that will help you make illegal states
 unrepresentable and avoid shotgun parsing by practicing
@@ -48,3 +48,4 @@ greet("bird")
 [parse]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
 [ghosts]: https://kataskeue.com/gdp.pdf
 [build-status]: https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI+branch%3Amain
+[coverage]: https://codecov.io/gh/antonagestam/phantom-types

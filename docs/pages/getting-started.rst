@@ -4,7 +4,7 @@ Getting Started
 Creating phantom types
 ----------------------
 
-Phantom types are created by subclassing ``phantom.base.Phantom`` and providing a
+Phantom types are created by subclassing :class:`phantom.base.Phantom` and providing a
 predicate function.
 
 .. code-block:: python
@@ -52,7 +52,9 @@ A motivating example
 --------------------
 
 Imagine that you're working on implementing a ``head()`` function that should return the
-first item of any given iterable. You start out with a simple implementation::
+first item of any given iterable. You start out with a simple implementation:
+
+.. code-block:: python
 
     def head(iterable: Iterable[T]) -> T:
         return next(iter(iterable))
@@ -68,7 +70,7 @@ You need to deal with the problem at hand so you go ahead and adjust all the cal
 of your function, and you now end up either asserting that the iterables are non-empty,
 or catching the `StopIteration`.
 
-::
+.. code-block:: python
 
     items = get_values()
     if not len(items):
@@ -81,9 +83,9 @@ to check the length if the iterable for other purposes. Shotgun parsing is an
 anti-pattern that results in a program state that is hard to predict and will very
 likely lead to bugs down the line. So how should you deal with this?
 
-Using phantom types you can use the builtin ``NonEmpty`` type.
+Using phantom types you can use the builtin :class:`phantom.sized.NonEmpty` type.
 
-::
+.. code-block:: python
 
     def head(iterable: NonEmpty[T]) -> T:
         return next(iter(iterable))
@@ -96,7 +98,7 @@ By using the narrower type at the call sites, you avoid shotgun parsing, since t
 logic further down in the processing chain can rely on the type as well, and you won't
 need to check the length of the iterable again.
 
-::
+.. code-block:: python
 
     items = get_values()
     if not isinstance(items, NonEmpty):
