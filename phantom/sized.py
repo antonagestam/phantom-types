@@ -34,14 +34,7 @@ from .predicates import collection
 from .predicates import generic
 from .predicates import numeric
 
-# We attempt to import _ProtocolMeta from typing_extensions to support Python 3.7 but
-# fall back the typing module to support Python 3.8+. This is the closest I could find
-# to documentation of _ProtocolMeta.
-# https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
-try:
-    from typing import _ProtocolMeta  # type: ignore[attr-defined]
-except ImportError:
-    from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
+from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
 
 __all__ = (
     "SizedIterable",
