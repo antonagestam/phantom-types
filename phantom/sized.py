@@ -24,6 +24,7 @@ from typing import TypeVar
 
 from typing_extensions import Final
 from typing_extensions import Protocol
+from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
 from typing_extensions import runtime_checkable
 
 from . import Phantom
@@ -33,8 +34,6 @@ from .predicates import boolean
 from .predicates import collection
 from .predicates import generic
 from .predicates import numeric
-
-from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
 
 __all__ = (
     "SizedIterable",
@@ -61,8 +60,8 @@ class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):  # type: ignore[misc
 
 
 class PhantomSized(
-    SizedIterable[T],
     Phantom[Sized],
+    SizedIterable[T],
     Generic[T],
     metaclass=SizedIterablePhantomMeta,
     bound=SizedIterable,
