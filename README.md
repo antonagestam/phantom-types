@@ -1,3 +1,5 @@
+<p align=center><img src=docs/phantom.svg alt="Depiction of phantom types in the wild"></p>
+
 <h1 align=center>phantom-types</h1>
 
 <p align=center>
