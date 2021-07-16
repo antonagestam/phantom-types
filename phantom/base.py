@@ -7,11 +7,12 @@ from typing import ClassVar
 from typing import Generic
 from typing import Iterable
 from typing import Iterator
-from typing import Protocol
 from typing import Sequence
 from typing import TypeVar
 from typing import cast
-from typing import runtime_checkable
+
+from typing_extensions import Protocol
+from typing_extensions import runtime_checkable
 
 from .predicates.base import Predicate
 from .predicates.boolean import all_of
@@ -173,9 +174,10 @@ class Phantom(PhantomBase, Generic[T]):
     @classmethod
     def _resolve_bound(cls, class_arg: Any) -> None:
         inherited = getattr(cls, "__bound__", None)
+        implicit = cls._interpret_implicit_bound()
         if class_arg is not None:
             bound = class_arg
-        elif implicit := cls._interpret_implicit_bound():
+        elif implicit:
             bound = implicit
         elif inherited is not None:
             bound = inherited

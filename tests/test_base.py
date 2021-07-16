@@ -66,9 +66,12 @@ class TestParseBound:
             ...
 
         parser: Callable[[object], Union[A, B]] = get_bound_parser(Union[A, B])
-        assert parser(a := A()) is a
-        assert parser(b := B()) is b
-        assert parser(c := C()) is c
+        a = A()
+        b = B()
+        c = C()
+        assert parser(a) is a
+        assert parser(b) is b
+        assert parser(c) is c
 
 
 class TestPhantom:

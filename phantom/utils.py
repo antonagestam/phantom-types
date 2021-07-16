@@ -9,8 +9,9 @@ from typing import Callable
 from typing import Tuple
 from typing import TypeVar
 from typing import Union
-from typing import get_args
-from typing import get_origin
+
+from typing_extensions import get_args
+from typing_extensions import get_origin
 
 
 class UnresolvedClassAttribute(NotImplementedError):
@@ -44,7 +45,7 @@ def excepts(
 
     def decorator(fn: Callable[[A], Any]) -> Callable[[A], bool]:
         @functools.wraps(fn)
-        def wrapper(arg: A, /) -> bool:
+        def wrapper(arg: A) -> bool:
             try:
                 fn(arg)
             except exception:

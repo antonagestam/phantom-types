@@ -9,10 +9,10 @@ Requires the iso3166_ package which can be installed with:
 """
 from __future__ import annotations
 
-from typing import Final
 from typing import cast
 
 import iso3166
+from typing_extensions import Final
 
 from phantom import Phantom
 from phantom import get_bound_parser
