@@ -326,4 +326,5 @@ class PhantomAlpha2(str, Phantom, predicate=is_alpha2_country_code):
         }
 
 
-CountryCode = Alpha2 = Union[LiteralAlpha2, PhantomAlpha2]
+Alpha2 = Union[LiteralAlpha2, PhantomAlpha2]
+CountryCode = Alpha2
