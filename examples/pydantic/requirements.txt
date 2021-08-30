@@ -4,16 +4,12 @@
 #
 #    pip-compile
 #
--e file:///Users/annevoab/projects/phantom-types
-    # via -r requirements.in
 attrs==21.2.0
     # via pytest
 decorator==5.0.9
     # via pytest-mypy-plugins
 iniconfig==1.1.1
     # via pytest
-iso3166==1.0.1
-    # via phantom-types
 mypy-extensions==0.4.3
     # via mypy
 mypy==0.902
@@ -22,6 +18,8 @@ mypy==0.902
     #   pytest-mypy-plugins
 packaging==20.9
     # via pytest
+phantom-types==0.10.0
+    # via -r requirements.in
 pluggy==0.13.1
     # via pytest
 py==1.10.0
@@ -49,4 +47,5 @@ typeguard==2.12.0
 typing-extensions==3.10.0.0
     # via
     #   mypy
+    #   phantom-types
     #   pydantic

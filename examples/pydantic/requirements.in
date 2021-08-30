@@ -1,4 +1,4 @@
--e ../..[iso3166]
+phantom-types
 pydantic
 pytest
 pytest-mypy-plugins

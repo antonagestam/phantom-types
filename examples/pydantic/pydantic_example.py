@@ -6,7 +6,7 @@ import re
 from pydantic import BaseModel
 
 from phantom.datetime import TZAware
-from phantom.ext.iso3166 import CountryCode
+from phantom.iso3166 import CountryCode
 from phantom.interval import Natural
 from phantom.predicates.interval import closed_open
 from phantom.re import Match
