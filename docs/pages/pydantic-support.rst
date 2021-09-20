@@ -17,13 +17,10 @@ To make a phantom type compatible with pydantic, all you need to do is override
     class Name(str, Phantom, predicate=...):
         @classmethod
         def __schema__(cls) -> Schema:
-            return {
-                # This currently needs an ignore as mypy isn't figuring out that
-                # super().__schema__() also returns Schema.
-                **super().__schema__(),  # type: ignore[misc]
-                "description": "A type for names",
-                "format": "name-format",
-            }
+            return super().__schema__() | Schema(
+                description="A type for names",
+                format="name-format",
+            )
 
 As can be seen in the example, ``__schema__()`` implementations are expected to return a
 dict extending its ``super().__schema__()``, however this is not a requirement and any
@@ -41,11 +38,10 @@ around this subclasses of :class:`PhantomSized <phantom.sized.PhantomSized>` can
     class LimitedSize(PhantomSized[int], len=numeric.greater(10)):
         @classmethod
         def __schema__(cls) -> Schema:
-            return {
-                **super().__schema__(),  # type: ignore[misc]
-                "minItems": 10,
-                "items": {"type": "integer"},
-            }
+            return super().__schema__() | Schema(
+                minItems=10,
+                items={"type": "integer"},
+            )
 
 As seen in the example, phantom sized types also currently need to manually specify
 ``"minItems"`` and ``"maxItems"``. This is planned to be remedied by introducing an
