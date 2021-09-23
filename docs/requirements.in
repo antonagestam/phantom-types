@@ -4,6 +4,7 @@ recommonmark
 m2r2
 mistune<2
 typeguard
-furo
+furo==2021.4.11b34
 iso3166
 phonenumbers
+typing-extensions

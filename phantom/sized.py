@@ -14,17 +14,26 @@ This made-up type would describe sized collections with between 5 and 10 ints::
         ...
 """
 from typing import Any
-from typing import Final
 from typing import Generic
 from typing import Iterable
 from typing import MutableMapping
 from typing import MutableSequence
 from typing import MutableSet
-from typing import Protocol
 from typing import Sized
 from typing import TypeVar
-from typing import _ProtocolMeta  # type: ignore[attr-defined]
-from typing import runtime_checkable
+
+# We attempt to import _ProtocolMeta from typing_extensions to support Python 3.7 but
+# fall back the typing module to support Python 3.8+. This is the closest I could find
+# to documentation of _ProtocolMeta.
+# https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
+try:
+    from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
+except ImportError:
+    from typing import _ProtocolMeta  # type: ignore[attr-defined]
+
+from typing_extensions import Final
+from typing_extensions import Protocol
+from typing_extensions import runtime_checkable
 
 from . import Phantom
 from . import PhantomMeta
@@ -59,8 +68,8 @@ class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):  # type: ignore[misc
 
 
 class PhantomSized(
-    SizedIterable[T],
     Phantom[Sized],
+    SizedIterable[T],
     Generic[T],
     metaclass=SizedIterablePhantomMeta,
     bound=SizedIterable,

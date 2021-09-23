@@ -9,7 +9,7 @@ from .base import Predicate
 def contains(value: object) -> Predicate[Container]:
     """Create a new predicate that succeeds when its argument contains ``value``."""
 
-    def compare(container: Container, /) -> bool:
+    def compare(container: Container) -> bool:
         return value in container
 
     return compare
@@ -21,7 +21,7 @@ def contained(container: Container) -> Predicate[object]:
     ``container``.
     """
 
-    def compare(value: object, /) -> bool:
+    def compare(value: object) -> bool:
         return value in container
 
     return compare
@@ -33,7 +33,7 @@ def count(predicate: Predicate[int]) -> Predicate[Sized]:
     ``predicate``.
     """
 
-    def compare(sized: Sized, /) -> bool:
+    def compare(sized: Sized) -> bool:
         return predicate(len(sized))
 
     return compare
@@ -48,7 +48,7 @@ def exists(predicate: Predicate[_O]) -> Predicate[Iterable]:
     ``predicate``.
     """
 
-    def compare(iterable: Iterable, /) -> bool:
+    def compare(iterable: Iterable) -> bool:
         return any(predicate(item) for item in iterable)
 
     return compare
@@ -60,7 +60,7 @@ def every(predicate: Predicate[_O]) -> Predicate[Iterable]:
     ``predicate``.
     """
 
-    def compare(iterable: Iterable, /) -> bool:
+    def compare(iterable: Iterable) -> bool:
         return all(predicate(item) for item in iterable)
 
     return compare

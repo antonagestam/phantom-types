@@ -8,7 +8,7 @@ def less(n: float) -> Predicate[float]:
     Create a new predicate that succeeds when its argument is strictly less than ``n``.
     """
 
-    def check(value: float, /) -> bool:
+    def check(value: float) -> bool:
         return value < n
 
     return check
@@ -20,7 +20,7 @@ def le(n: float) -> Predicate[float]:
     ``n``.
     """
 
-    def check(value: float, /) -> bool:
+    def check(value: float) -> bool:
         return value <= n
 
     return check
@@ -32,7 +32,7 @@ def greater(n: float) -> Predicate[float]:
     ``n``.
     """
 
-    def check(value: float, /) -> bool:
+    def check(value: float) -> bool:
         return value > n
 
     return check
@@ -50,22 +50,22 @@ def ge(n: float) -> Predicate[float]:
     return check
 
 
-def positive(n: float, /) -> bool:
+def positive(n: float) -> bool:
     """Return :py:const:`True` when ``n`` is strictly greater than zero."""
     return greater(0)(n)
 
 
-def non_positive(n: float, /) -> bool:
+def non_positive(n: float) -> bool:
     """Return :py:const:`True` when ``n``  is less than or equal to zero."""
     return le(0)(n)
 
 
-def negative(n: float, /) -> bool:
+def negative(n: float) -> bool:
     """Return :py:const:`True` when ``n`` is strictly less than zero."""
     return less(0)(n)
 
 
-def non_negative(n: float, /) -> bool:
+def non_negative(n: float) -> bool:
     """Return :py:const:`True` when ``n`` is greater than or equal to zero."""
     return ge(0)(n)
 
@@ -76,17 +76,17 @@ def modulo(n: float, p: Predicate[float]) -> Predicate[float]:
     given predicate ``p``.
     """
 
-    def check(value: float, /) -> bool:
+    def check(value: float) -> bool:
         return p(value % n)
 
     return check
 
 
-def even(n: int, /) -> bool:
+def even(n: int) -> bool:
     """Return :py:const:`True`  when ``n`` is even."""
     return modulo(2, equal(0))(n)
 
 
-def odd(n: int, /) -> bool:
+def odd(n: int) -> bool:
     """Return :py:const:`True`  when ``n`` is odd."""
     return negate(even)(n)
