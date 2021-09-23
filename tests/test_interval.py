@@ -3,6 +3,7 @@ import pytest
 from phantom.interval import Interval
 from phantom.interval import Natural
 from phantom.interval import NegativeInt
+from phantom.interval import Open
 from phantom.interval import Portion
 
 
@@ -12,6 +13,12 @@ class TestInterval:
 
             class I(Interval, abstract=False):  # noqa: E742
                 ...
+
+    def test_parse_coerces_str(self):
+        class Great(int, Open, low=10):
+            ...
+
+        assert Great.parse("10") == 10
 
 
 parametrize_negative_ints = pytest.mark.parametrize("i", (-10, -1, -0, +0))

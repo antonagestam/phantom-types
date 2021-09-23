@@ -35,6 +35,7 @@ from .schema import Schema
 from .utils import resolve_class_attr
 
 N = TypeVar("N", bound=float)
+Derived = TypeVar("Derived", bound="Interval")
 
 
 class IntervalCheck(Protocol):
@@ -79,6 +80,10 @@ class Interval(Phantom[float], bound=Union[int, float], abstract=True):
             predicate=cls.__check__(cls.__low__, cls.__high__),
             **kwargs,
         )
+
+    @classmethod
+    def parse(cls: type[Derived], instance: object) -> Derived:
+        return super().parse(cls.__bound__(instance))
 
 
 def _format_limit(value: float) -> str:
