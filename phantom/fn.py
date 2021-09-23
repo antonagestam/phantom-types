@@ -56,7 +56,7 @@ def excepts(
 
     def decorator(fn: Callable[[A], Any]) -> Callable[[A], bool]:
         @functools.wraps(fn)
-        def wrapper(arg: A, /) -> bool:
+        def wrapper(arg: A) -> bool:
             try:
                 fn(arg)
             except exception:
