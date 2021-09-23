@@ -10,7 +10,10 @@ from typing import TypeVar
 def _name(fn: Callable) -> str:
     if isinstance(fn, partial):
         fn = fn.func
-    return fn.__qualname__
+    try:
+        return fn.__qualname__
+    except AttributeError:
+        return str(fn)
 
 
 AA = TypeVar("AA")
