@@ -16,8 +16,8 @@ from typing_extensions import Final
 
 from phantom import Phantom
 from phantom import get_bound_parser
+from phantom.fn import excepts
 from phantom.schema import Schema
-from phantom.utils import excepts
 
 __all__ = (
     "InvalidPhoneNumber",

@@ -2,12 +2,8 @@
 # https://github.com/pytest-dev/pytest/issues/4386
 from __future__ import annotations
 
-import functools
 from itertools import product
-from typing import Any
-from typing import Callable
 from typing import Tuple
-from typing import TypeVar
 from typing import Union
 
 from typing_extensions import get_args
@@ -32,29 +28,6 @@ def resolve_class_attr(
             f"Concrete phantom type {cls.__qualname__} must define class attribute "
             f"{name}."
         )
-
-
-A = TypeVar("A")
-
-
-def excepts(
-    exception: tuple[type[Exception], ...] | type[Exception],
-    negate: bool = False,
-) -> Callable[[Callable[[A], Any]], Callable[[A], bool]]:
-    """Turn a unary function that raises an exception into a boolean predicate."""
-
-    def decorator(fn: Callable[[A], Any]) -> Callable[[A], bool]:
-        @functools.wraps(fn)
-        def wrapper(arg: A) -> bool:
-            try:
-                fn(arg)
-            except exception:
-                return negate
-            return not negate
-
-        return wrapper
-
-    return decorator
 
 
 BoundType = Union[type, Tuple[type, ...]]
