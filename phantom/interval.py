@@ -83,7 +83,9 @@ class Interval(Phantom[float], bound=Union[int, float], abstract=True):
 
     @classmethod
     def parse(cls: type[Derived], instance: object) -> Derived:
-        return super().parse(cls.__bound__(instance))
+        return super().parse(
+            cls.__bound__(instance) if isinstance(instance, str) else instance
+        )
 
 
 def _format_limit(value: float) -> str:
