@@ -29,10 +29,7 @@ __all__ = (
 )
 
 
-# Ignore due to subclassing Any, since phonenumbers isn't annotated.
-class InvalidPhoneNumber(
-    phonenumbers.NumberParseException, TypeError  # type: ignore[misc]
-):
+class InvalidPhoneNumber(phonenumbers.NumberParseException, TypeError):
     INVALID: Final = 99
 
     def __init__(self, error_type: int = INVALID, msg: str = "Invalid number") -> None:

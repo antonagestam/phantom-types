@@ -12,6 +12,10 @@ test:
 test-runtime:
 	pytest $(pytest_args) $(test) tests/**{/*,}.py
 
+.PHONY: test-typing
+test-typing:
+	pytest $(pytest_args) $(test) tests/**{/*,}.yaml
+
 .PHONY: coverage
 coverage:
 	@coverage run -m pytest $(pytest_args) $(test)
