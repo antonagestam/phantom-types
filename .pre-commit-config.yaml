@@ -58,7 +58,6 @@ repos:
         additional_dependencies:
           - pytest
           - typeguard
-          - iso3166
           - phonenumbers>=8.12.33
           - pydantic
   - repo: https://github.com/mgedmin/check-manifest

@@ -40,4 +40,4 @@ format-readme:
 
 .PHONY: clean
 clean:
-	rm -rf *.egg-info **{/**,}/__pycache__ build dist .coverage
+	rm -rf {**/,}*.egg-info **{/**,}/__pycache__ build dist .coverage coverage.xml

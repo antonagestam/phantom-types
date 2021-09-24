@@ -21,6 +21,14 @@ Boolean
     :undoc-members:
     :show-inheritance:
 
+Country codes
+-------------
+
+.. automodule:: phantom.iso3166
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Datetime
 --------
 

@@ -1,7 +1,6 @@
 import pydantic
 from phantom.datetime import TZAware
 from phantom.datetime import TZNaive
-from phantom.ext.iso3166 import CountryCode
 from phantom.ext.phonenumbers import FormattedPhoneNumber
 from phantom.ext.phonenumbers import PhoneNumber
 from phantom.interval import Closed
@@ -11,6 +10,7 @@ from phantom.interval import NegativeInt
 from phantom.interval import Open
 from phantom.interval import OpenClosed
 from phantom.interval import Portion
+from phantom.iso3166 import ParsedAlpha2
 from phantom.re import FullMatch
 from phantom.re import Match
 from phantom.sized import Empty
@@ -55,7 +55,7 @@ class DataModel(pydantic.BaseModel):
     full_match: FullMatchType
     non_empty: NonEmpty[str]
     empty: Empty
-    country: CountryCode
+    country: ParsedAlpha2
     phone_number: PhoneNumber
     formatted_phone_number: FormattedPhoneNumber
 
