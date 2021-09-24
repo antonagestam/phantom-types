@@ -13,13 +13,12 @@ from typing import cast
 
 from typing_extensions import Final
 from typing_extensions import Literal
+from typing_extensions import get_args
 
 from phantom import Phantom
 from phantom import get_bound_parser
 from phantom.predicates.collection import contained
 from phantom.schema import Schema
-
-from .typing_compat import get_args
 
 __all__ = (
     "LiteralAlpha2",
