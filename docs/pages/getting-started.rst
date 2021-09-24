@@ -16,12 +16,14 @@ predicate function.
     def is_greeting(instance: str) -> bool:
         return instance.startswith(("Hello", "Hi"))
 
+
     # Since our predicate requires its argument to be a ``str``, we must make the bound
     # of the phantom type ``str`` as well. We do that by making it it's first base. Any
     # base specified before Phantom is implicitly interpreted as its bound, unless an
     # explicit bound is specified as a class argument.
     class Greeting(str, Phantom, predicate=is_greeting):
         ...
+
 
     # Now we can make the same operations as with our previous example.
     hello = "Hello there"

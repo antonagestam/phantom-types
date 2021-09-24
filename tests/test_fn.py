@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from functools import partial
 from operator import add
+from operator import attrgetter
+from operator import itemgetter
 from operator import mul
 from typing import Callable
 from typing import Sequence
@@ -10,11 +12,32 @@ from typing import TypeVar
 import pytest
 
 from phantom import Predicate
+from phantom.fn import _name
 from phantom.fn import compose2
+from phantom.fn import excepts
 from phantom.predicates.boolean import both
 from phantom.predicates.collection import count
 from phantom.predicates.collection import every
 from phantom.predicates.generic import equal
+
+
+class Test_name:
+    class Nested:
+        def method(self):
+            ...
+
+    @pytest.mark.parametrize(
+        "function, expected",
+        [
+            (lambda: None, "Test_name.<lambda>"),
+            (partial(int), "int"),
+            (Nested.method, "Test_name.Nested.method"),
+            (attrgetter("attrib"), "operator.attrgetter('attrib')"),
+            (itemgetter("key"), "operator.itemgetter('key')"),
+        ],
+    )
+    def test_can_get_name_of(self, function: Callable, expected: str) -> None:
+        assert _name(function) == expected
 
 
 def reversed_str(value: str) -> str:
@@ -59,3 +82,48 @@ class TestCompose2:
         assert is_valid_name("two.parts") is False
         assert is_valid_name("not identifier.not.valid") is False
         assert is_valid_name("") is False
+
+
+class BaseError(Exception):
+    ...
+
+
+class Error(BaseError):
+    ...
+
+
+class ErrorA(Error):
+    ...
+
+
+class ErrorB(Error):
+    ...
+
+
+def dummy_function(val: type[Exception]) -> None:
+    if val is not None:
+        raise val
+
+
+class TestExcepts:
+    @pytest.mark.parametrize(
+        "function, argument, return_value",
+        [
+            (excepts(Error)(dummy_function), ErrorA, False),
+            (excepts((ErrorA, ErrorB))(dummy_function), ErrorA, False),
+            (excepts((ErrorA, ErrorB))(dummy_function), None, True),
+            (excepts((ErrorA, ErrorB), negate=True)(dummy_function), None, False),
+            (excepts(Error, negate=True)(dummy_function), ErrorB, True),
+        ],
+    )
+    def test_returns_bool(
+        self,
+        function: Callable,
+        argument: object,
+        return_value: bool,
+    ) -> None:
+        assert function(argument) is return_value
+
+    def test_reraises(self) -> None:
+        with pytest.raises(BaseError):
+            excepts(Error)(dummy_function)(BaseError)

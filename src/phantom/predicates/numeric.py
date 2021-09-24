@@ -1,6 +1,7 @@
 from .base import Predicate
 from .boolean import negate
 from .generic import equal
+from .utils import bind_name
 
 
 def less(n: float) -> Predicate[float]:
@@ -8,6 +9,7 @@ def less(n: float) -> Predicate[float]:
     Create a new predicate that succeeds when its argument is strictly less than ``n``.
     """
 
+    @bind_name(less, n)
     def check(value: float) -> bool:
         return value < n
 
@@ -20,6 +22,7 @@ def le(n: float) -> Predicate[float]:
     ``n``.
     """
 
+    @bind_name(le, n)
     def check(value: float) -> bool:
         return value <= n
 
@@ -32,6 +35,7 @@ def greater(n: float) -> Predicate[float]:
     ``n``.
     """
 
+    @bind_name(greater, n)
     def check(value: float) -> bool:
         return value > n
 
@@ -44,6 +48,7 @@ def ge(n: float) -> Predicate[float]:
     ``n``.
     """
 
+    @bind_name(ge, n)
     def check(value: float) -> bool:
         return value >= n
 
@@ -76,6 +81,7 @@ def modulo(n: float, p: Predicate[float]) -> Predicate[float]:
     given predicate ``p``.
     """
 
+    @bind_name(modulo, n, p)
     def check(value: float) -> bool:
         return p(value % n)
 

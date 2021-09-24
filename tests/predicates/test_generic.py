@@ -6,6 +6,8 @@ import pytest
 
 from phantom.predicates import generic
 
+from .utils import assert_predicate_name_equals
+
 
 class TestEqual:
     @pytest.mark.parametrize("a, b", [(1, 1.0), (False, 0), (True, 1)])
@@ -17,6 +19,9 @@ class TestEqual:
     def test_returns_false_for_non_equal_values(self, a: object, b: object) -> None:
         assert generic.equal(a)(b) is False
         assert generic.equal(b)(a) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(generic.equal("hello"), "equal('hello')")
 
 
 class TestIdentical:
@@ -32,6 +37,9 @@ class TestIdentical:
         assert generic.identical(a)(b) is False
         assert generic.identical(b)(a) is False
 
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(generic.identical("hello"), "identical('hello')")
+
 
 class TestOfType:
     @pytest.mark.parametrize("instance,types", [(1, int), (1, (int, float))])
@@ -45,3 +53,6 @@ class TestOfType:
         self, instance: object, types: Union[Type, Tuple[Type, ...]]
     ) -> None:
         assert generic.of_type(types)(instance) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(generic.of_type(int), "of_type(int)")

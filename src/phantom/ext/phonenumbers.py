@@ -16,8 +16,8 @@ from typing_extensions import Final
 
 from phantom import Phantom
 from phantom import get_bound_parser
+from phantom.fn import excepts
 from phantom.schema import Schema
-from phantom.utils import excepts
 
 __all__ = (
     "InvalidPhoneNumber",
@@ -29,10 +29,7 @@ __all__ = (
 )
 
 
-# Ignore due to subclassing Any, since phonenumbers isn't annotated.
-class InvalidPhoneNumber(
-    phonenumbers.NumberParseException, TypeError  # type: ignore[misc]
-):
+class InvalidPhoneNumber(phonenumbers.NumberParseException, TypeError):
     INVALID: Final = 99
 
     def __init__(self, error_type: int = INVALID, msg: str = "Invalid number") -> None:

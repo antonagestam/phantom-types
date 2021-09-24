@@ -4,6 +4,8 @@ import pytest
 
 from phantom.predicates import interval
 
+from .utils import assert_predicate_name_equals
+
 Boundaries = Tuple[float, float]
 parametrize_open_edge = pytest.mark.parametrize(
     "value, boundaries",
@@ -51,6 +53,9 @@ class TestOpen:
     ) -> None:
         assert interval.open(*boundaries)(value) is False
 
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(interval.open(0, 1), "open(0, 1)")
+
 
 class TestClosed:
     def test_returns_true_for_middle_value(self) -> None:
@@ -74,6 +79,9 @@ class TestClosed:
     ) -> None:
         assert interval.closed(*boundaries)(value) is True
 
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(interval.closed(0, 1), "closed(0, 1)")
+
 
 class TestOpenClosed:
     def test_returns_true_for_middle_value(self) -> None:
@@ -89,6 +97,9 @@ class TestOpenClosed:
         assert intv(10) is False
         assert intv(9.9999) is True
 
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(interval.open_closed(0, 1), "open_closed(0, 1)")
+
 
 class TestClosedOpen:
     def test_returns_true_for_middle_value(self) -> None:
@@ -103,3 +114,6 @@ class TestClosedOpen:
         intv = interval.closed_open(5, 10)
         assert intv(10) is True
         assert intv(10.00001) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(interval.closed_open(0, 1), "closed_open(0, 1)")

@@ -4,11 +4,13 @@ from typing import Sized
 from typing import TypeVar
 
 from .base import Predicate
+from .utils import bind_name
 
 
 def contains(value: object) -> Predicate[Container]:
     """Create a new predicate that succeeds when its argument contains ``value``."""
 
+    @bind_name(contains, value)
     def compare(container: Container) -> bool:
         return value in container
 
@@ -21,6 +23,7 @@ def contained(container: Container) -> Predicate[object]:
     ``container``.
     """
 
+    @bind_name(contained, container)
     def compare(value: object) -> bool:
         return value in container
 
@@ -33,6 +36,7 @@ def count(predicate: Predicate[int]) -> Predicate[Sized]:
     ``predicate``.
     """
 
+    @bind_name(count, predicate)
     def compare(sized: Sized) -> bool:
         return predicate(len(sized))
 
@@ -48,6 +52,7 @@ def exists(predicate: Predicate[_O]) -> Predicate[Iterable]:
     ``predicate``.
     """
 
+    @bind_name(exists, predicate)
     def compare(iterable: Iterable) -> bool:
         return any(predicate(item) for item in iterable)
 
@@ -60,6 +65,7 @@ def every(predicate: Predicate[_O]) -> Predicate[Iterable]:
     ``predicate``.
     """
 
+    @bind_name(every, predicate)
     def compare(iterable: Iterable) -> bool:
         return all(predicate(item) for item in iterable)
 
