@@ -17,7 +17,7 @@ __all__ = (
 warnings.warn(
     (
         "`phantom.ext.iso3166` is deprecated in favor of `phantom.iso3166` and will be "
-        "removed in phantom-types 0.12."
+        "removed in phantom-types 0.13."
     ),
     DeprecationWarning,
 )
