@@ -2,7 +2,9 @@
 Exposes a :py:class:`CountryCode` type that is a union of a :py:class:`Literal`
 containing all ISO3166 alpha-2 codes, and a phantom type that parses alpha-2 codes at
 runtime. This allows mixing statically known values with runtime-parsed values, like
-so::
+so:
+
+.. code-block:: python
 
     countries: tuple[CountryCode] = ("SE", "DK", ParsedAlpha2.parse("FR"))
 """

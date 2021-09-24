@@ -14,7 +14,7 @@ Documentation sections
   pages/getting-started.rst
   pages/types.rst
   pages/predicates.rst
-  pages/bounds.rst
+  pages/composing-types.rst
   pages/functional-composition.rst
   pages/external-wrappers.rst
   pages/pydantic-support.rst

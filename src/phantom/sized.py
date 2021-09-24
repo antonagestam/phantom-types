@@ -8,7 +8,9 @@ Sized types are created by subclassing ``PhantomSized`` and providing a predicat
 will be called with the size of the tested collection. For instance, ``NonEmpty`` is
 implemented using ``len=numeric.greater(0)``.
 
-This made-up type would describe sized collections with between 5 and 10 ints::
+This made-up type would describe sized collections with between 5 and 10 ints:
+
+.. code-block:: python
 
     class SpecificSize(PhantomSized[int], len=interval.open(5, 10)):
         ...

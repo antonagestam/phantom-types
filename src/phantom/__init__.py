@@ -1,7 +1,7 @@
 """
 Use ``Phantom`` to create arbitrary phantom types using boolean predicates.
 
-::
+.. code-block:: python
 
     import phantom
 
