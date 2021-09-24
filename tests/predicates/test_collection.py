@@ -9,6 +9,8 @@ from phantom.predicates import collection
 from phantom.predicates import generic
 from phantom.predicates import numeric
 
+from .utils import assert_predicate_name_equals
+
 
 class TestContains:
     @pytest.mark.parametrize(
@@ -35,6 +37,11 @@ class TestContains:
     ) -> None:
         assert collection.contains(item)(container) is False
 
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            collection.contains("needle"), "contains('needle')"
+        )
+
 
 class TestContained:
     @pytest.mark.parametrize(
@@ -60,6 +67,11 @@ class TestContained:
         self, container: Container, item: object
     ) -> None:
         assert collection.contained(container)(item) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            collection.contained((1, 2, 3)), "contained((1, 2, 3))"
+        )
 
 
 class TestCount:
@@ -89,6 +101,9 @@ class TestCount:
     ) -> None:
         assert collection.count(predicate)(sized) is False
 
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(collection.count(numeric.ge(3)), "count(ge(3))")
+
 
 class TestExists:
     @pytest.mark.parametrize(
@@ -116,6 +131,11 @@ class TestExists:
         self, predicate: Predicate[object], iterable: Iterable
     ) -> None:
         assert collection.exists(predicate)(iterable) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            collection.exists(numeric.less(-3)), "exists(less(-3))"
+        )
 
 
 class TestEvery:
@@ -145,3 +165,8 @@ class TestEvery:
         self, predicate: Predicate[object], iterable: Iterable
     ) -> None:
         assert collection.every(predicate)(iterable) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            collection.every(numeric.greater(42)), "every(greater(42))"
+        )

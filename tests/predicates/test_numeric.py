@@ -2,6 +2,8 @@ import pytest
 
 from phantom.predicates import numeric
 
+from .utils import assert_predicate_name_equals
+
 
 class TestLess:
     def test_returns_true_for_values_below_limit(self) -> None:
@@ -15,6 +17,9 @@ class TestLess:
         assert predicate(10) is False
         assert predicate(11) is False
         assert predicate(123) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(numeric.less(100), "less(100)")
 
 
 class TestLE:
@@ -31,6 +36,9 @@ class TestLE:
         assert predicate(11) is False
         assert predicate(123) is False
 
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(numeric.le(-100), "le(-100)")
+
 
 class TestGreater:
     def test_returns_true_for_values_above_limit(self) -> None:
@@ -44,6 +52,9 @@ class TestGreater:
         assert predicate(120) is False
         assert predicate(119.9999) is False
         assert predicate(-120) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(numeric.greater(10), "greater(10)")
 
 
 class TestGE:
@@ -59,6 +70,9 @@ class TestGE:
         assert predicate(119.9999) is False
         assert predicate(-120) is False
         assert predicate(119) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(numeric.ge(10.134), "ge(10.134)")
 
 
 class TestPositive:
@@ -91,6 +105,13 @@ class TestNonNegative:
         assert numeric.non_negative(-1) is False
         assert numeric.non_negative(1) is True
         assert numeric.non_negative(-0.0001) is False
+
+
+class TestModulo:
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            numeric.modulo(2, numeric.greater(99)), "modulo(2, greater(99))"
+        )
 
 
 parametrize_even = pytest.mark.parametrize("value", [-8296, 0, 2, 32, 9314])
