@@ -3,7 +3,7 @@ recursive-exclude docs *
 recursive-exclude examples *
 recursive-exclude .github *
 recursive-exclude tests *
-recursive-include phantom py.typed
+recursive-include src py.typed
 exclude *.yaml
 exclude *.yml
 include README.md
