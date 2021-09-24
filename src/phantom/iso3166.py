@@ -4,7 +4,7 @@ containing all ISO3166 alpha-2 codes, and a phantom type that parses alpha-2 cod
 runtime. This allows mixing statically known values with runtime-parsed values, like
 so::
 
-    countries: tuple[CountryCode] = ("SE", "DK", PhantomAlpha2.parse("FR"))
+    countries: tuple[CountryCode] = ("SE", "DK", ParsedAlpha2.parse("FR"))
 """
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ from phantom.schema import Schema
 
 __all__ = (
     "LiteralAlpha2",
-    "PhantomAlpha2",
+    "ParsedAlpha2",
     "Alpha2",
     "CountryCode",
     "is_alpha2_country_code",
@@ -292,7 +292,7 @@ class InvalidCountryCode(TypeError):
     ...
 
 
-def normalize_alpha2_country_code(country_code: str) -> PhantomAlpha2:
+def normalize_alpha2_country_code(country_code: str) -> ParsedAlpha2:
     """
     Normalize mixed case country code.
 
@@ -301,12 +301,12 @@ def normalize_alpha2_country_code(country_code: str) -> PhantomAlpha2:
     normalized = country_code.upper()
     if not is_alpha2_country_code(normalized):
         raise InvalidCountryCode
-    return cast(PhantomAlpha2, normalized)
+    return cast(ParsedAlpha2, normalized)
 
 
-class PhantomAlpha2(str, Phantom, predicate=is_alpha2_country_code):
+class ParsedAlpha2(str, Phantom, predicate=is_alpha2_country_code):
     @classmethod
-    def parse(cls, instance: object) -> PhantomAlpha2:
+    def parse(cls, instance: object) -> ParsedAlpha2:
         """
         Normalize mixed case country code.
 
@@ -325,5 +325,5 @@ class PhantomAlpha2(str, Phantom, predicate=is_alpha2_country_code):
         }
 
 
-Alpha2 = Union[LiteralAlpha2, PhantomAlpha2]
+Alpha2 = Union[LiteralAlpha2, ParsedAlpha2]
 CountryCode = Alpha2

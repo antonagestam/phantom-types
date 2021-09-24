@@ -2,7 +2,7 @@ import warnings
 
 from phantom.iso3166 import ALPHA2
 from phantom.iso3166 import InvalidCountryCode
-from phantom.iso3166 import PhantomAlpha2 as Alpha2
+from phantom.iso3166 import ParsedAlpha2 as Alpha2
 from phantom.iso3166 import is_alpha2_country_code
 from phantom.iso3166 import normalize_alpha2_country_code
 

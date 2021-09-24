@@ -10,7 +10,7 @@ from phantom.interval import NegativeInt
 from phantom.interval import Open
 from phantom.interval import OpenClosed
 from phantom.interval import Portion
-from phantom.iso3166 import PhantomAlpha2
+from phantom.iso3166 import ParsedAlpha2
 from phantom.re import FullMatch
 from phantom.re import Match
 from phantom.sized import Empty
@@ -55,7 +55,7 @@ class DataModel(pydantic.BaseModel):
     full_match: FullMatchType
     non_empty: NonEmpty[str]
     empty: Empty
-    country: PhantomAlpha2
+    country: ParsedAlpha2
     phone_number: PhoneNumber
     formatted_phone_number: FormattedPhoneNumber
 
