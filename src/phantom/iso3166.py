@@ -282,6 +282,7 @@ LiteralAlpha2 = Literal[
     "ZM",
     "ZW",
 ]
+"""Literal of all ISO3166 alpha-2 codes. """
 
 ALPHA2: Final = frozenset(get_args(LiteralAlpha2))
 is_alpha2_country_code = contained(ALPHA2)
