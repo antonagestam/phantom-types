@@ -59,7 +59,7 @@ repos:
           - pytest
           - typeguard
           - iso3166
-          - phonenumbers
+          - phonenumbers>=8.12.33
           - pydantic
   - repo: https://github.com/mgedmin/check-manifest
     rev: "0.46"
