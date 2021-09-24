@@ -5,6 +5,8 @@ import pytest
 from phantom import Predicate
 from phantom.predicates import boolean
 
+from .utils import assert_predicate_name_equals
+
 
 class TestTrue:
     @pytest.mark.parametrize("value", [0, False, 1, "test", ()])
@@ -16,6 +18,17 @@ class TestFalse:
     @pytest.mark.parametrize("value", [0, False, 1, "test", ()])
     def test_returns_false_for_any_given_value(self, value: object) -> None:
         assert boolean.false(value) is False
+
+
+class TestNegate:
+    def test_can_negate_true(self):
+        assert boolean.negate(boolean.true)(object()) is False
+
+    def test_can_negate_false(self):
+        assert boolean.negate(boolean.false)(0) is True
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(boolean.negate(boolean.true), "negate(true)")
 
 
 parametrize_truthy = pytest.mark.parametrize("value", [1, "a", (0,), [""], True])
@@ -59,6 +72,11 @@ class TestBoth:
     ) -> None:
         assert boolean.both(a, b)(0) is False
 
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            boolean.both(boolean.true, boolean.false), "both(true, false)"
+        )
+
 
 class TestEither:
     @pytest.mark.parametrize(
@@ -76,6 +94,11 @@ class TestEither:
 
     def test_returns_false_for_two_falsy_predicates(self) -> None:
         assert boolean.either(boolean.false, boolean.false)(0) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            boolean.either(boolean.false, boolean.true), "either(false, true)"
+        )
 
 
 class TestXor:
@@ -102,6 +125,11 @@ class TestXor:
         self, a: Predicate, b: Predicate
     ) -> None:
         assert boolean.xor(a, b)(0) is False
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            boolean.xor(boolean.true, boolean.false), "xor(true, false)"
+        )
 
 
 parametrize_all_true = pytest.mark.parametrize(
@@ -161,6 +189,11 @@ class TestAllOf:
         assert predicate(0) is False
         assert predicate(0) is False
 
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            boolean.all_of([boolean.true, boolean.false]), "all_of(true, false)"
+        )
+
 
 class TestAnyOf:
     def test_returns_false_for_empty_set_of_predicates(self) -> None:
@@ -192,6 +225,11 @@ class TestAnyOf:
         predicate = boolean.any_of(predicate for predicate in predicates)
         assert predicate(0) is True
         assert predicate(0) is True
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            boolean.any_of([boolean.false, boolean.true]), "any_of(false, true)"
+        )
 
 
 class TestOneOf:
@@ -250,3 +288,8 @@ class TestOneOf:
         predicate = boolean.one_of(predicate for predicate in predicates)
         assert predicate(0) is True
         assert predicate(0) is True
+
+    def test_repr_contains_bound_parameter(self):
+        assert_predicate_name_equals(
+            boolean.one_of([boolean.true, boolean.false]), "one_of(true, false)"
+        )

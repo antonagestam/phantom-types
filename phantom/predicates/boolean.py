@@ -4,6 +4,7 @@ from typing_extensions import Literal
 
 from .base import Predicate
 from .base import T
+from .utils import bind_name
 
 
 def true(_value: object) -> Literal[True]:
@@ -19,6 +20,7 @@ def false(_value: object) -> Literal[False]:
 def negate(predicate: Predicate[T]) -> Predicate[T]:
     """Negate a given predicate."""
 
+    @bind_name(negate, predicate)
     def check(value: T) -> bool:
         return not predicate(value)
 
@@ -40,6 +42,7 @@ def both(p: Predicate[T], q: Predicate[T]) -> Predicate[T]:
     Create a new predicate that succeeds when both of the given predicates succeed.
     """
 
+    @bind_name(both, p, q)
     def check(value: T) -> bool:
         return p(value) and q(value)
 
@@ -52,6 +55,7 @@ def either(p: Predicate[T], q: Predicate[T]) -> Predicate[T]:
     succeed.
     """
 
+    @bind_name(either, p, q)
     def check(value: T) -> bool:
         return p(value) or q(value)
 
@@ -64,6 +68,7 @@ def xor(p: Predicate[T], q: Predicate[T]) -> Predicate[T]:
     not both.
     """
 
+    @bind_name(xor, p, q)
     def check(value: T) -> bool:
         return p(value) ^ q(value)
 
@@ -74,6 +79,7 @@ def all_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]:
     """Create a new predicate that succeeds when all of the given predicates succeed."""
     predicates = tuple(predicates)
 
+    @bind_name(all_of, *predicates)
     def check(value: T) -> bool:
         return all(p(value) for p in predicates)
 
@@ -87,6 +93,7 @@ def any_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]:
     """
     predicates = tuple(predicates)
 
+    @bind_name(any_of, *predicates)
     def check(value: T) -> bool:
         return any(p(value) for p in predicates)
 
@@ -100,6 +107,7 @@ def one_of(predicates: Iterable[Predicate[T]]) -> Predicate[T]:
     """
     predicates = tuple(predicates)
 
+    @bind_name(one_of, *predicates)
     def check(value: T) -> bool:
         return 1 == sum(p(value) for p in predicates)
 
