@@ -10,7 +10,7 @@ import sys
 # root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath("../src"))
 
-import phantom  # noqa: E402
+import phantom  # type: ignore[import]  # noqa: E402
 
 current_dir = pathlib.Path(__file__).resolve().parent
 
