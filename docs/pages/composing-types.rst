@@ -103,7 +103,7 @@ type. For example:
 
 
     # A phantom type that checks that a list has more than 2 items.
-    class HasMany(BaseContainer, Phantom, predicate=count(greater(2))):
+    class HasMany(Mutable, Phantom, predicate=count(greater(2))):
         ...
 
 
