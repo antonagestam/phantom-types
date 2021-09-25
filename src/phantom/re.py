@@ -1,10 +1,11 @@
 """
 Types for representing strings that match a pattern.
 
-::
+.. code-block:: python
 
     class Greeting(Match, pattern=r"^(Hi|Hello)"):
         ...
+
 
     assert isinstance("Hello Jane!", Greeting)
 """

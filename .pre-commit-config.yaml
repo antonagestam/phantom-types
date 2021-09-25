@@ -11,7 +11,7 @@ repos:
       - id: debug-statements
       - id: detect-private-key
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.26.0
+    rev: v2.27.0
     hooks:
       - id: pyupgrade
         args:
@@ -61,7 +61,7 @@ repos:
           - phonenumbers>=8.12.33
           - pydantic
   - repo: https://github.com/mgedmin/check-manifest
-    rev: "0.46"
+    rev: "0.47"
     hooks:
       - id: check-manifest
 

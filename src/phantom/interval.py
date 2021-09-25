@@ -2,7 +2,9 @@
 Types for describing narrower sets of numbers than builtin numeric types like ``int``
 and ``float``. Use the provided base classes to build custom intervals. For example, to
 represent number in the open range ``(0, 100)`` for a volume control you would define a
-type like this::
+type like this:
+
+.. code-block:: python
 
     class VolumeLevel(int, Open, low=0, high=100):
         ...
@@ -10,7 +12,7 @@ type like this::
 There is also a set of concrete ready-to-use interval types provided, that use predicate
 functions from :py:mod:`phantom.predicates.interval`.
 
-::
+.. code-block:: python
 
     def take_portion(portion: Portion, whole: Natural) -> float:
         return portion * whole

@@ -41,7 +41,9 @@ class SchemaField:
         for more information. This hook differs to pydantic's ``__modify_schema__()``
         and expects subclasses to instantiate new dicts instead of mutating a given one.
 
-        Example::
+        Example:
+
+        .. code-block:: python
 
             class Name(str, Phantom, predicate=...):
                 @classmethod

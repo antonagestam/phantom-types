@@ -9,10 +9,13 @@ implements full JSON Schema and OpenAPI support.
 .. _pydantic: https://pydantic-docs.helpmanual.io/
 
 To make a phantom type compatible with pydantic, all you need to do is override
-:func:`Phantom.__schema__() <phantom.Phantom.__schema__>`::
+:func:`Phantom.__schema__() <phantom.Phantom.__schema__>`:
+
+.. code-block:: python
 
     from phantom import Phantom
     from phantom.schema import Schema
+
 
     class Name(str, Phantom, predicate=...):
         @classmethod
@@ -33,7 +36,9 @@ Sized containers are currently only partially supported. Their validation is acc
 but their schemas aren't propagating their inner type. This likely won't be possible to
 support until pydantic exposes its ``ModelField`` to ``__modify_schema__``. To work
 around this subclasses of :class:`PhantomSized <phantom.sized.PhantomSized>` can specify
-``"items"`` like so::
+``"items"`` like so:
+
+.. code-block:: python
 
     class LimitedSize(PhantomSized[int], len=numeric.greater(10)):
         @classmethod
