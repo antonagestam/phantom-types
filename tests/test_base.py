@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Callable
 from typing import Union
 
@@ -8,7 +9,9 @@ from phantom import get_bound_parser
 from phantom.base import AbstractInstanceCheck
 from phantom.base import BoundError
 from phantom.base import PhantomMeta
+from phantom.predicates import boolean
 from phantom.predicates.numeric import positive
+from phantom.utils import MutableType
 from phantom.utils import UnresolvedClassAttribute
 
 
@@ -145,6 +148,33 @@ class TestPhantom:
             ...
 
         assert B.__bound__ is float
+
+    @pytest.mark.parametrize(
+        "bound_type",
+        [
+            list,
+            set,
+            dict,
+            dataclass(type("A", (), {})),
+        ],
+    )
+    def test_raises_mutable_type_for_mutable_bound_type(self, bound_type: type):
+        with pytest.raises(MutableType):
+
+            class A(
+                bound_type,  # type: ignore[valid-type,misc]
+                Phantom,
+                abstract=True,
+            ):
+                ...
+
+    def test_can_use_frozen_dataclass_as_bound(self):
+        @dataclass(frozen=True)
+        class A:
+            ...
+
+        class B(A, Phantom, predicate=boolean.true):
+            ...
 
     def test_abstract_instance_check_raises(self):
         class A(Phantom, bound=float, abstract=True):

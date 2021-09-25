@@ -1,3 +1,5 @@
+.. _predicates:
+
 Predicates and factories
 ========================
 
