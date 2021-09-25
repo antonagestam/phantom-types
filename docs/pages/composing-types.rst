@@ -87,7 +87,7 @@ Mutability
 
 Phantom types are completely incompatible with mutable data and should never be used to
 narrow a mutable type. The reason is that there is no way for a type checker to detect
-that a mutation changes an object to no longer satisfying the predicate of a phantom
+that a mutation changes an object to no longer satisfy the predicate of a phantom
 type. For example:
 
 .. code-block:: python
@@ -100,7 +100,7 @@ type. For example:
     # The check will pass because the list *currently* has 3 items in it.
     instance = HasMany.parse([1, 2, 3])
 
-    # But! Lists are mutable, so nothing is stopping us from removing an item, at this
+    # But! Lists are mutable, so nothing is stopping us from removing an item. At this
     # point the list will only have 2 items and won't satisfy the predicate of the
     # HasMany type anymore.
     del instance[-1]
@@ -110,16 +110,16 @@ type. For example:
     reveal_type(instance)  # Revealed type is HasMany
 
 In some cases phantom-types tries to be smart and disallow using mutable types as
-bounds, but in the general case this isn't possible to detect and so relies on developer
-discipline to stay away from mutable data types.
+bounds, but in the general case this isn't possible to detect and so it's up to you as a
+developer to make sure to not mix mutable data with phantom types.
 
 Metaclass conflicts
 ===================
 
 Phantom types are implemented using a metaclass. When creating a phantom type that
-narrows on a type that also uses metaclasses it's common to stumble into a metaclass
+narrows on a type that also uses a metaclass it's common to stumble into a metaclass
 conflict. The usual solution to such situation is to create a new metaclass that
-inherits both existing metaclasses, and use it on the new type.
+inherits both existing metaclasses and base the new type on it.
 
 .. code-block:: python
 
