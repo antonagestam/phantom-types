@@ -2,10 +2,17 @@
 # https://github.com/pytest-dev/pytest/issues/4386
 from __future__ import annotations
 
+from dataclasses import is_dataclass
 from itertools import product
+from typing import MutableMapping
+from typing import MutableSequence
+from typing import MutableSet
+from typing import NewType
 from typing import Tuple
 from typing import Union
 
+from typing_extensions import Final
+from typing_extensions import TypeGuard
 from typing_extensions import get_args
 from typing_extensions import get_origin
 
@@ -102,3 +109,27 @@ def is_subtype(a: BoundType, b: BoundType) -> bool:  # noqa: C901
 
 def fully_qualified_name(cls: type) -> str:
     return f"{cls.__module__}.{cls.__qualname__}"
+
+
+mutable: Final = (MutableSequence, MutableSet, MutableMapping)
+NotKnownMutable = NewType("NotKnownMutable", type)
+"""
+Internal type to mark types that are not known to be mutable. The term immutable is
+avoided here because there is no way to guarantee that a checked type isn't actually
+mutable, so we don't want to communicate in strong terms here.
+"""
+
+
+class MutableType(TypeError):
+    ...
+
+
+def is_not_mutable(type_: BoundType) -> TypeGuard[NotKnownMutable]:
+    if any(is_subtype(type_, mutable_type) for mutable_type in mutable):
+        raise MutableType(f"{type_!r} is a subclass of one of {mutable!r}")
+    if (
+        is_dataclass(type_)
+        and not type_.__dataclass_params__.frozen  # type: ignore[union-attr]
+    ):
+        raise MutableType(f"{type_!r} is a an unfrozen dataclass type")
+    return True
