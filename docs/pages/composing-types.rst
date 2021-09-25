@@ -1,3 +1,5 @@
+.. _composing:
+
 Composing types
 ***************
 
@@ -92,26 +94,36 @@ type. For example:
 
 .. code-block:: python
 
+    class Mutable:
+        def __init__(self, len: int):
+            self.len = len
+
+        def __len__(self) -> int:
+            return self.len
+
+
     # A phantom type that checks that a list has more than 2 items.
-    class HasMany(list, Phantom, predicate=count(greater(2))):
+    class HasMany(BaseContainer, Phantom, predicate=count(greater(2))):
         ...
 
 
-    # The check will pass because the list *currently* has 3 items in it.
-    instance = HasMany.parse([1, 2, 3])
+    # The check will pass because the instantiated object *currently* satisfies the
+    # predicate, e.g. has len() > 2.
+    instance = HasMany.parse(Mutable(3))
 
-    # But! Lists are mutable, so nothing is stopping us from removing an item. At this
-    # point the list will only have 2 items and won't satisfy the predicate of the
-    # HasMany type anymore.
-    del instance[-1]
+    # But! The object is mutable, so nothing is stopping us from altering it's length.
+    # At this point the object will no longer satisfy the HasMany predicate.
+    instance.len = 2
 
     # There is no way for a type checker to now that the predicate isn't fulfilled
     # anymore, so the revealed type here will still be HasMany.
     reveal_type(instance)  # Revealed type is HasMany
 
-In some cases phantom-types tries to be smart and disallow using mutable types as
-bounds, but in the general case this isn't possible to detect and so it's up to you as a
-developer to make sure to not mix mutable data with phantom types.
+When subclassing from :py:class:`Phantom <phantom.Phantom>`, a check is made that raises
+:py:class:`MutableType <phantom.utils.MutableType>` for known mutable types, such as
+:py:class:`list`, :py:class:`set`, :py:class:`dict` and unfrozen dataclasses. In the
+general case though, it isn't possible to detect mutability and so it's up to
+developer discipline to make sure not to mix mutable data types with phantom types.
 
 Metaclass conflicts
 ===================

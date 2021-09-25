@@ -4,8 +4,8 @@ Getting Started
 Creating phantom types
 ----------------------
 
-Phantom types are created by subclassing :class:`phantom.base.Phantom` and providing a
-predicate function.
+Phantom types are created by subclassing :py:class:`Phantom <phantom.Phantom>` and
+providing a predicate function.
 
 .. code-block:: python
 
@@ -128,3 +128,11 @@ they are pure functions with only two possible return values.
 
 Studying the phantom types shipped in this library is recommended for gaining deeper
 insight into how to implement more complicated types.
+
+Next steps
+----------
+
+- Check out the :ref:`builtin phantom types <types>` that is shipped with the library.
+- Check out the basis of :ref:`predicates and predicate<predicates>`
+  factories to build phantom types from.
+- Read more in-depth about :ref:`composing phantom types <composing>`.
