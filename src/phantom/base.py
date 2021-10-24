@@ -27,6 +27,13 @@ from .utils import is_not_mutable
 from .utils import is_subtype
 from .utils import resolve_class_attr
 
+try:
+    from types import UnionType
+except ImportError:
+
+    class UnionType:
+        ...
+
 
 @runtime_checkable
 class InstanceCheckable(Protocol):
@@ -61,6 +68,8 @@ T = TypeVar("T", covariant=True)
 def display_bound(bound: Any) -> str:
     if isinstance(bound, Iterable):
         return f"Intersection[{', '.join(display_bound(part) for part in bound)}]"
+    if isinstance(bound, UnionType):
+        return f"typing.Union[{', '.join(display_bound(part) for part in bound)}]"
     return str(getattr(bound, "__name__", bound))
 
 

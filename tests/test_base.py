@@ -1,3 +1,4 @@
+import sys
 from dataclasses import dataclass
 from typing import Callable
 from typing import Union
@@ -38,6 +39,15 @@ class TestParseBound:
 
     def test_raises_for_invalid_union(self):
         parser = get_bound_parser(Union[int, float])
+        with pytest.raises(
+            BoundError,
+            match=r"^Value is not within bound of 'typing\.Union\[int, float\]': '3'$",
+        ):
+            parser("3")
+
+    @pytest.mark.skipif(sys.version_info < (3, 10), reason="requires 3.10+")
+    def test_raises_for_invalid_pep_604_union(self):
+        parser = get_bound_parser(int | float)
         with pytest.raises(
             BoundError,
             match=r"^Value is not within bound of 'typing\.Union\[int, float\]': '3'$",
