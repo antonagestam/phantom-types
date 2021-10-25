@@ -24,24 +24,24 @@ typeguard_packages := \
 	phantom.predicates.numeric \
 	phantom.predicates.re \
 	phantom.predicates.utils
-
-pytest_args := \
-	--mypy-ini-file=setup.cfg \
-	--doctest-modules \
-	--ignore=examples \
+typeguard_arg := \
 	--typeguard-packages=$(shell echo $(typeguard_packages) | sed 's/ /,/g')
 
 .PHONY: test
 test:
-	pytest $(pytest_args) $(test)
+	pytest $(test)
 
 .PHONY: test-runtime
 test-runtime:
-	pytest $(pytest_args) $(test) tests/{**/,}*.py
+	pytest $(test) -k.py
+
+.PHONY: test-typeguard
+test-typeguard:
+	pytest $(typeguard_arg) $(test)
 
 .PHONY: test-typing
 test-typing:
-	pytest $(pytest_args) $(test) tests/**{/*,}.yaml
+	pytest $(test) -k.yaml
 
 .PHONY: coverage
 coverage:
