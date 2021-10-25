@@ -2,7 +2,34 @@ SHELL := /usr/bin/env bash
 
 .PHONY: all
 
-pytest_args = --mypy-ini-file=setup.cfg --doctest-modules --ignore=examples
+# Currently running typeguard on all modules except:
+# - phantom.interval
+# - phantom.base
+# - phantom.ext.phonenumbers
+typeguard_packages := \
+	phantom.boolean \
+	phantom.datetime \
+	phantom.fn \
+	phantom.iso3166 \
+	phantom.re \
+	phantom.schema \
+	phantom.sized \
+	phantom.utils \
+	phantom.predicates.base \
+	phantom.predicates.boolean \
+	phantom.predicates.collection \
+	phantom.predicates.datetime \
+	phantom.prediactes.generic \
+	phantom.predicates.interval \
+	phantom.predicates.numeric \
+	phantom.predicates.re \
+	phantom.predicates.utils
+
+pytest_args := \
+	--mypy-ini-file=setup.cfg \
+	--doctest-modules \
+	--ignore=examples \
+	--typeguard-packages=$(shell echo $(typeguard_packages) | sed 's/ /,/g')
 
 .PHONY: test
 test:
@@ -10,7 +37,7 @@ test:
 
 .PHONY: test-runtime
 test-runtime:
-	pytest $(pytest_args) $(test) tests/**{/*,}.py
+	pytest $(pytest_args) $(test) tests/{**/,}*.py
 
 .PHONY: test-typing
 test-typing:
