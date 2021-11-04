@@ -12,6 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
       - uses: pre-commit/action@v2.0.0
 
   docs:
@@ -45,8 +47,8 @@ jobs:
       - run: make coverage
       - run: make coverage-report
       - name: Report coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
         with:
           file: coverage.xml
           fail_ci_if_error: true
-          name: codecov-py${{ matrix.python }}
+          name: codecov-py${{ matrix.python-version }}

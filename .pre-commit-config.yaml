@@ -1,5 +1,5 @@
 default_language_version:
-  python: python3.9
+  python: python3.10
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
@@ -45,12 +45,10 @@ repos:
           - flake8-bugbear
           - flake8-comprehensions
           - flake8-tidy-imports
-# Doesn't yet support reusable workflows, see
-# https://github.com/sirosen/check-jsonschema/issues/15
-#  - repo: https://github.com/sirosen/check-jsonschema
-#    rev: 0.4.1
-#    hooks:
-#      - id: check-github-workflows
+  - repo: https://github.com/sirosen/check-jsonschema
+    rev: 0.4.1
+    hooks:
+      - id: check-github-workflows
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v0.910
     hooks:
@@ -66,6 +64,18 @@ repos:
     rev: "0.47"
     hooks:
       - id: check-manifest
+  - repo: local
+    hooks:
+      - id: format-readme
+        name: format-readme
+        language: docker_image
+        types: [markdown]
+        entry: >-
+          tmknom/prettier
+          --parser=markdown
+          --print-width=88
+          --prose-wrap=always
+          --write
 
 exclude: |
   (?x)(

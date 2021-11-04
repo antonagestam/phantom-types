@@ -8,13 +8,12 @@
     <a href=https://codecov.io/gh/antonagestam/phantom-types><img src=https://codecov.io/gh/antonagestam/phantom-types/branch/main/graph/badge.svg?token=UE85B7IA3Q alt="Test coverage report"></a>
 </p>
 
-[Phantom types][ghosts] for Python will help you make illegal states
-unrepresentable and avoid shotgun parsing by enabling you to
-practice ["Parse, don't validate"][parse].
+[Phantom types][ghosts] for Python will help you make illegal states unrepresentable and
+avoid shotgun parsing by enabling you to practice ["Parse, don't validate"][parse].
 
 _This project is in early development and fundamental changes should be expected.
-Semantic versioning will be followed after version 1.0, but before that breaking
-changes might occur between minor versions._
+Semantic versioning will be followed after version 1.0, but before that breaking changes
+might occur between minor versions._
 
 <p align=center>
     <a href=https://phantom-types.readthedocs.io/en/stable/>Checkout the complete documentation on Read the Docs →</a>
@@ -53,8 +52,8 @@ greet(joe)
 greet("bird")
 ```
 
-
 [parse]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
 [ghosts]: https://kataskeue.com/gdp.pdf
-[build-status]: https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI+branch%3Amain
+[build-status]:
+  https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI+branch%3Amain
 [coverage]: https://codecov.io/gh/antonagestam/phantom-types
