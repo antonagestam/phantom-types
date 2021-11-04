@@ -10,6 +10,7 @@ class Schema(TypedDict, total=False):
     title: str
     description: str
     type: Literal["array", "string", "float", "number"]
+    format: str
     examples: Sequence[object]
     minimum: Optional[float]
     maximum: Optional[float]
@@ -17,7 +18,6 @@ class Schema(TypedDict, total=False):
     exclusiveMaximum: Optional[float]
     minItems: Optional[int]
     maxItems: Optional[int]
-    format: str
 
 
 class SchemaField:
