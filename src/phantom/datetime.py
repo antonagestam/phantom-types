@@ -41,4 +41,5 @@ class TZNaive(datetime.datetime, Phantom, predicate=is_tz_naive):
         return {
             **super().__schema__(),  # type: ignore[misc]
             "description": "A date-time without timezone data.",
+            "format": "date-time-naive",
         }

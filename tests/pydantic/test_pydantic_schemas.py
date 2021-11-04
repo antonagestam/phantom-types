@@ -135,7 +135,7 @@ class TestShippedTypesImplementsSchema:
             "title": "TZNaive",
             "description": "A date-time without timezone data.",
             "type": "string",
-            "format": "date-time",
+            "format": "date-time-naive",
         }
 
     def test_re_match_implements_schema(self):
