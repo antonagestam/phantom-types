@@ -129,6 +129,44 @@ The code above outputs the following JSONSchema.
 }
 ```
 
+## Development
+
+Install development requirements, preferably in a virtualenv:
+
+```bash
+$ python3 -m pip install .[test,pydantic,phonenumbers]
+```
+
+Run tests:
+
+```bash
+$ pytest
+# or
+$ make test
+```
+
+Linting and static type checking is setup with [pre-commit], after installing it you can
+setup hooks with the following command, so that checks run before you push changes.
+
+```bash
+# configure hooks to run when pushing
+$ pre-commit install -t pre-push
+# or when committing
+$ pre-commit install -t pre-commit
+# run all checks
+$ pre-commit run --all-files
+# or just a single hook
+$ pre-commit run mypy --all-files
+```
+
+In addition to static type checking, the project is setup with [pytest-mypy-plugins] to
+test that exposed mypy types work as expected, these checks will run together with the
+rest of the test suite, but you can single them out with the following command.
+
+```bash
+$ make test-typing
+```
+
 [parse]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
 [ghosts]: https://kataskeue.com/gdp.pdf
 [build-status]:
@@ -140,3 +178,5 @@ The code above outputs the following JSONSchema.
 [pydantic]: https://pydantic-docs.helpmanual.io/
 [pydantic-support]:
   https://phantom-types.readthedocs.io/en/stable/pages/pydantic-support.html
+[pre-commit]: https://pre-commit.com/
+[pytest-mypy-plugins]: https://github.com/TypedDjango/pytest-mypy-plugins
