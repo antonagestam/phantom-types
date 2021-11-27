@@ -159,7 +159,7 @@ $ pre-commit run --all-files
 $ pre-commit run mypy --all-files
 ```
 
-In addition to static type checking, the project is setup with pytest-mypy-plugins to
+In addition to static type checking, the project is setup with [pytest-mypy-plugins] to
 test that exposed mypy types work as expected, these checks will run together with the
 rest of the test suite, but you can single them out with the following command.
 
