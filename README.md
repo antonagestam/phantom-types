@@ -27,8 +27,7 @@ $  python3 -m pip install phantom-types
 
 ## Examples
 
-By introducing a phantom type we can define a pre-condition for a
-function argument.
+By introducing a phantom type we can define a pre-condition for a function argument.
 
 ```python
 from phantom import Phantom
@@ -79,15 +78,14 @@ def soon(dt: TZAware) -> TZAware:
     return dt + datetime.timedelta(seconds=10)
 ```
 
-The `soon` function will now validate that both its argument and return
-value is timezone aware, e.g. pre- and post conditions.
+The `soon` function will now validate that both its argument and return value is
+timezone aware, e.g. pre- and post conditions.
 
 ### Pydantic support
 
-Phantom types are ready to use with [pydantic] and have
-[integrated support][pydantic-support] out-of-the-box. Subclasses of
-`Phantom` work with both pydantic's validation and its schema
-generation.
+Phantom types are ready to use with [pydantic] and have [integrated
+support][pydantic-support] out-of-the-box. Subclasses of `Phantom` work with both
+pydantic's validation and its schema generation.
 
 ```python
 class Name(str, Phantom, predicate=contained({"Jane", "Joe"})):
@@ -127,10 +125,7 @@ The code above outputs the following JSONSchema.
       "format": "date-time"
     }
   },
-  "required": [
-    "name",
-    "created"
-  ]
+  "required": ["name", "created"]
 }
 ```
 
@@ -143,4 +138,5 @@ The code above outputs the following JSONSchema.
 [beartype]: https://github.com/beartype/beartype
 [dbc]: https://en.wikipedia.org/wiki/Design_by_contract
 [pydantic]: https://pydantic-docs.helpmanual.io/
-[pydantic-support]: https://phantom-types.readthedocs.io/en/stable/pages/pydantic-support.html
+[pydantic-support]:
+  https://phantom-types.readthedocs.io/en/stable/pages/pydantic-support.html
