@@ -79,15 +79,60 @@ def soon(dt: TZAware) -> TZAware:
     return dt + datetime.timedelta(seconds=10)
 ```
 
-The `soon` function will now validate that both its argument and return value
-is timezone aware, e.g. pre- and post conditions.
+The `soon` function will now validate that both its argument and return
+value is timezone aware, e.g. pre- and post conditions.
 
 ### Pydantic support
 
-phantom-types come with [integrated support][pydantic-support] for [pydantic].
+Phantom types are ready to use with [pydantic] and have
+[integrated support][pydantic-support] out-of-the-box. Subclasses of
+`Phantom` work with both pydantic's validation and its schema
+generation.
 
 ```python
-    
+class Name(str, Phantom, predicate=contained({"Jane", "Joe"})):
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return super().__schema__() | {
+            "description": "Either Jane or Joe",
+            "format": "custom-name",
+        }
+
+
+class Person(BaseModel):
+    name: Name
+    created: TZAware
+
+
+print(json.dumps(Person.schema(), indent=2))
+```
+
+The code above outputs the following JSONSchema.
+
+```json
+{
+  "title": "Person",
+  "type": "object",
+  "properties": {
+    "name": {
+      "title": "Name",
+      "description": "Either Jane or Joe",
+      "format": "custom-name",
+      "type": "string"
+    },
+    "created": {
+      "title": "TZAware",
+      "description": "A date-time with timezone data.",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "name",
+    "created"
+  ]
+}
+```
 
 [parse]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
 [ghosts]: https://kataskeue.com/gdp.pdf
