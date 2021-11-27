@@ -25,7 +25,9 @@ might occur between minor versions._
 $  python3 -m pip install phantom-types
 ```
 
-## Example
+## Examples
+
+By introducing a phantom type we can define a pre-condition for a function argument.
 
 ```python
 from phantom import Phantom
@@ -38,18 +40,93 @@ class Name(str, Phantom, predicate=contained({"Jane", "Joe"})):
 
 def greet(name: Name):
     print(f"Hello {name}!")
+```
 
+Now this will be a valid call.
 
-# This is valid.
+```python
 greet(Name.parse("Jane"))
+```
 
-# And so is this.
+... and so will this.
+
+```python
 joe = "Joe"
 assert isinstance(joe, Name)
 greet(joe)
+```
 
-# But this will yield a static type checking error.
+But this will yield a static type checking error.
+
+```python
 greet("bird")
+```
+
+### Runtime type checking
+
+By combining phantom types with a runtime type-checker like [beartype] or [typeguard],
+we can achieve the same level of security as you'd gain from using [contracts][dbc].
+
+```python
+import datetime
+from beartype import beartype
+from phantom.datetime import TZAware
+
+
+@beartype
+def soon(dt: TZAware) -> TZAware:
+    return dt + datetime.timedelta(seconds=10)
+```
+
+The `soon` function will now validate that both its argument and return value is
+timezone aware, e.g. pre- and post conditions.
+
+### Pydantic support
+
+Phantom types are ready to use with [pydantic] and have [integrated
+support][pydantic-support] out-of-the-box. Subclasses of `Phantom` work with both
+pydantic's validation and its schema generation.
+
+```python
+class Name(str, Phantom, predicate=contained({"Jane", "Joe"})):
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return super().__schema__() | {
+            "description": "Either Jane or Joe",
+            "format": "custom-name",
+        }
+
+
+class Person(BaseModel):
+    name: Name
+    created: TZAware
+
+
+print(json.dumps(Person.schema(), indent=2))
+```
+
+The code above outputs the following JSONSchema.
+
+```json
+{
+  "title": "Person",
+  "type": "object",
+  "properties": {
+    "name": {
+      "title": "Name",
+      "description": "Either Jane or Joe",
+      "format": "custom-name",
+      "type": "string"
+    },
+    "created": {
+      "title": "TZAware",
+      "description": "A date-time with timezone data.",
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": ["name", "created"]
+}
 ```
 
 [parse]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
@@ -57,3 +134,9 @@ greet("bird")
 [build-status]:
   https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI+branch%3Amain
 [coverage]: https://codecov.io/gh/antonagestam/phantom-types
+[typeguard]: https://github.com/agronholm/typeguard
+[beartype]: https://github.com/beartype/beartype
+[dbc]: https://en.wikipedia.org/wiki/Design_by_contract
+[pydantic]: https://pydantic-docs.helpmanual.io/
+[pydantic-support]:
+  https://phantom-types.readthedocs.io/en/stable/pages/pydantic-support.html
