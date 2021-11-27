@@ -146,10 +146,13 @@ $ make test
 ```
 
 Linting and static type checking is setup with [pre-commit], after installing it you can
-setup hooks with the following command, and checks will run before you push.
+setup hooks with the following command, so that checks run before you push changes.
 
 ```bash
+# configure hooks to run when pushing
 $ pre-commit install -t pre-push
+# or when committing
+$ pre-commit install -t pre-commit
 # run all checks
 $ pre-commit run --all-files
 # or just a single hook
