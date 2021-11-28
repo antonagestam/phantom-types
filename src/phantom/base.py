@@ -12,6 +12,7 @@ from typing import TypeVar
 from typing import cast
 
 from typing_extensions import Protocol
+from typing_extensions import get_args
 from typing_extensions import runtime_checkable
 
 from .predicates.base import Predicate
@@ -25,6 +26,7 @@ from .utils import UnresolvedClassAttribute
 from .utils import fully_qualified_name
 from .utils import is_not_mutable
 from .utils import is_subtype
+from .utils import is_union
 from .utils import resolve_class_attr
 
 
@@ -61,6 +63,12 @@ T = TypeVar("T", covariant=True)
 def display_bound(bound: Any) -> str:
     if isinstance(bound, Iterable):
         return f"Intersection[{', '.join(display_bound(part) for part in bound)}]"
+    if is_union(bound):
+        return (
+            f"typing.Union["
+            f"{', '.join(display_bound(part) for part in get_args(bound))}"
+            f"]"
+        )
     return str(getattr(bound, "__name__", bound))
 
 

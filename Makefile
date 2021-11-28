@@ -45,7 +45,7 @@ test-typing:
 
 .PHONY: coverage
 coverage:
-	@coverage run -m pytest $(pytest_args) $(test)
+	@coverage run -m pytest $(test)
 
 .PHONY: coverage-report
 coverage-report:
