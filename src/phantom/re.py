@@ -63,7 +63,7 @@ class FullMatch(str, Phantom, abstract=True):
 
     __pattern__: Pattern[str]
 
-    def __init_subclass__(cls, pattern: Pattern[str], **kwargs: Any) -> None:
+    def __init_subclass__(cls, pattern: Pattern[str] | str, **kwargs: Any) -> None:
         resolve_class_attr(cls, "__pattern__", _compile(pattern))
         super().__init_subclass__(predicate=is_full_match(cls.__pattern__), **kwargs)
 
