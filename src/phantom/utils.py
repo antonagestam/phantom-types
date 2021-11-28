@@ -2,6 +2,7 @@
 # https://github.com/pytest-dev/pytest/issues/4386
 from __future__ import annotations
 
+import types
 from dataclasses import is_dataclass
 from itertools import product
 from typing import MutableMapping
@@ -133,3 +134,17 @@ def is_not_mutable(type_: BoundType) -> TypeGuard[NotKnownMutable]:
     ):
         raise MutableType(f"{type_!r} is a an unfrozen dataclass type")
     return True
+
+
+try:
+    MaybeUnionType = types.UnionType  # type: ignore[attr-defined]
+except AttributeError:
+    MaybeUnionType = None
+
+
+def is_union_type(value: object) -> TypeGuard[type]:
+    return MaybeUnionType and isinstance(value, MaybeUnionType)
+
+
+def is_union(value: object) -> TypeGuard[type]:
+    return get_origin(value) == Union or is_union_type(value)

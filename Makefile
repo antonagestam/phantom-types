@@ -2,23 +2,21 @@ SHELL := /usr/bin/env bash
 
 .PHONY: all
 
-pytest_args = --mypy-ini-file=setup.cfg --doctest-modules --ignore=examples
-
 .PHONY: test
 test:
-	pytest $(pytest_args) $(test)
+	pytest $(test)
 
 .PHONY: test-runtime
 test-runtime:
-	pytest $(pytest_args) $(test) tests/**{/*,}.py
+	pytest $(test) tests/**{/*,}.py
 
 .PHONY: test-typing
 test-typing:
-	pytest $(pytest_args) $(test) tests/**{/*,}.yaml
+	pytest $(test) tests/**{/*,}.yaml
 
 .PHONY: coverage
 coverage:
-	@coverage run -m pytest $(pytest_args) $(test)
+	@coverage run -m pytest $(test)
 
 .PHONY: coverage-report
 coverage-report:

@@ -4,3 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [tool.black]
 target-version = ["py38"]
+
+[tool.pytest.ini_options]
+norecursedirs = ["examples"]
+testpaths = ["tests", "src", "docs"]
+addopts = "--mypy-ini-file=setup.cfg --doctest-modules"
