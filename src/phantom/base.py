@@ -64,7 +64,11 @@ def display_bound(bound: Any) -> str:
     if isinstance(bound, Iterable):
         return f"Intersection[{', '.join(display_bound(part) for part in bound)}]"
     if is_union(bound):
-        return f"typing.Union[{', '.join(display_bound(part) for part in get_args(bound))}]"
+        return (
+            f"typing.Union["
+            f"{', '.join(display_bound(part) for part in get_args(bound))}"
+            f"]"
+        )
     return str(getattr(bound, "__name__", bound))
 
 
