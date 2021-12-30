@@ -33,10 +33,10 @@ def compose2(a: Callable[[AA], AR], b: Callable[[BA], AA]) -> Callable[[BA], AR]
     b_name = _name(b)
 
     def c(arg: BA) -> AR:
-        f"""Function composed as {a_name}({b_name}(_))."""
         return a(b(arg))
 
     c.__name__ = f"{a_name}∘{b_name}"
+    c.__doc__ = f"Function composed as {a_name}({b_name}(_))."
     return c
 
 
