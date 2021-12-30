@@ -50,7 +50,7 @@ class PhantomMeta(abc.ABCMeta):
     # With the current level of metaclass support in mypy it's unlikely that we'll be
     # able to make this context typed, hence the ignores.
     def __call__(cls, instance):  # type: ignore[no-untyped-def]
-        return cls.parse(instance)  # type: ignore[attr-defined,misc]
+        return cls.parse(instance)  # type: ignore[attr-defined]
 
 
 class BoundError(TypeError):
@@ -141,7 +141,7 @@ class Phantom(PhantomBase, Generic[T]):
       allows deferring definitions of ``predicate`` and ``bound`` to concrete subtypes.
     """
 
-    __predicate__: ClassVar[Predicate[T]]
+    __predicate__: ClassVar[Predicate[object]]
     # The bound of a phantom type is the type that its values will have at
     # runtime, so when checking if a value is an instance of a phantom type,
     # it's first checked to be within its bounds, so that the value can be
@@ -159,7 +159,7 @@ class Phantom(PhantomBase, Generic[T]):
         abstract: bool = False,
         **kwargs: Any,
     ) -> None:
-        super().__init_subclass__(**kwargs)  # type: ignore[call-arg]
+        super().__init_subclass__(**kwargs)
         resolve_class_attr(cls, "__abstract__", abstract)
         resolve_class_attr(cls, "__predicate__", predicate)
         cls._resolve_bound(bound)
