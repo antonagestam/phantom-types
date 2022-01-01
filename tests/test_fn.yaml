@@ -5,10 +5,10 @@
     from phantom.fn import compose2
     from predicates import is_valid_name
 
-    reveal_type(is_valid_name)  # N: Revealed type is "def (builtins.str*) -> builtins.bool*"
+    reveal_type(is_valid_name)  # N: Revealed type is "def (builtins.str) -> builtins.bool"
     is_valid_name(1)  # E: Argument 1 has incompatible type "int"; expected "str"  [arg-type]
     is_valid_name([])  # E: Argument 1 has incompatible type "List[<nothing>]"; expected "str"  [arg-type]
-    reveal_type(is_valid_name(""))  # N: Revealed type is "builtins.bool*"
+    reveal_type(is_valid_name(""))  # N: Revealed type is "builtins.bool"
     def takes_str_predicate(predicate: Predicate[str]) -> None: ...
     takes_str_predicate(is_valid_name)
 
