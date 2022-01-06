@@ -44,6 +44,7 @@ from .predicates import boolean
 from .predicates import collection
 from .predicates import generic
 from .predicates import numeric
+from .schema import Schema
 
 __all__ = (
     "SizedIterable",
@@ -52,7 +53,6 @@ __all__ = (
     "Empty",
 )
 
-from .schema import Schema
 
 mutable: Final = (MutableSequence, MutableSet, MutableMapping)
 T = TypeVar("T", bound=object, covariant=True)
