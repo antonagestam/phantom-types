@@ -24,6 +24,8 @@ from typing import MutableSet
 from typing import Sized
 from typing import TypeVar
 
+from numerary.types import RealLike
+
 # We attempt to import _ProtocolMeta from typing_extensions to support Python 3.7 but
 # fall back the typing module to support Python 3.8+. This is the closest I could find
 # to documentation of _ProtocolMeta.
@@ -77,9 +79,9 @@ class PhantomSized(
     bound=SizedIterable,
     abstract=True,
 ):
-    """Takes class argument ``len: Predicate[float]``."""
+    """Takes class argument ``len: Predicate[RealLike]``."""
 
-    def __init_subclass__(cls, len: Predicate[float], **kwargs: Any) -> None:
+    def __init_subclass__(cls, len: Predicate[RealLike], **kwargs: Any) -> None:
         super().__init_subclass__(
             predicate=boolean.both(
                 boolean.negate(generic.of_type(mutable)),

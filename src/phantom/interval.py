@@ -25,8 +25,9 @@ from __future__ import annotations
 
 from typing import Any
 from typing import TypeVar
-from typing import Union
 
+from numerary.types import IntegralLike
+from numerary.types import RealLike
 from typing_extensions import Final
 from typing_extensions import Protocol
 
@@ -36,7 +37,7 @@ from .predicates import interval
 from .schema import Schema
 from .utils import resolve_class_attr
 
-N = TypeVar("N", bound=float)
+N = TypeVar("N", bound=RealLike[IntegralLike[int]])
 Derived = TypeVar("Derived", bound="Interval")
 
 
@@ -49,28 +50,26 @@ inf: Final = float("inf")
 neg_inf: Final = float("-inf")
 
 
-# See issue as to why the numeric tower isn't used for kind here.
-# https://github.com/python/mypy/issues/3186
-class Interval(Phantom[float], bound=Union[int, float], abstract=True):
+class Interval(Phantom[float], bound=RealLike, abstract=True):
     """
     Base class for all interval types, providing the following class arguments:
 
     * ``check: IntervalCheck``
-    * ``low: float`` (defaults to negative infinity)
-    * ``high: float`` (defaults to positive infinity)
+    * ``low: RealLike`` (defaults to negative infinity)
+    * ``high: RealLike`` (defaults to positive infinity)
 
     Concrete subclasses must specify their runtime type bound as their first base.
     """
 
     __check__: IntervalCheck
-    __low__: float
-    __high__: float
+    __low__: RealLike
+    __high__: RealLike
 
     def __init_subclass__(
         cls,
         check: IntervalCheck | None = None,
-        low: float = neg_inf,
-        high: float = inf,
+        low: RealLike = neg_inf,
+        high: RealLike = inf,
         **kwargs: Any,
     ) -> None:
         resolve_class_attr(cls, "__low__", low)
@@ -90,7 +89,7 @@ class Interval(Phantom[float], bound=Union[int, float], abstract=True):
         )
 
 
-def _format_limit(value: float) -> str:
+def _format_limit(value: RealLike) -> str:
     if value == inf:
         return "∞"
     if value == neg_inf:
