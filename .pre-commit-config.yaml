@@ -11,7 +11,7 @@ repos:
       - id: debug-statements
       - id: detect-private-key
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.30.1
+    rev: v2.31.0
     hooks:
       - id: pyupgrade
         args:
@@ -46,11 +46,11 @@ repos:
           - flake8-comprehensions
           - flake8-tidy-imports
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: 0.9.1
+    rev: 0.10.0
     hooks:
       - id: check-github-workflows
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.930
+    rev: v0.931
     hooks:
       - id: mypy
         args: []
