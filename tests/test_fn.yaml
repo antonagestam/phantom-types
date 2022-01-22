@@ -1,24 +1,33 @@
 - case: test_compose2_can_infer_types
+  disable_cache: true
+  regex: true
   main: |
     from typing import Callable
     from phantom import Predicate
     from phantom.fn import compose2
     from predicates import is_valid_name
 
-    reveal_type(is_valid_name)  # N: Revealed type is "def (builtins.str) -> builtins.bool"
-    is_valid_name(1)  # E: Argument 1 has incompatible type "int"; expected "str"  [arg-type]
-    is_valid_name([])  # E: Argument 1 has incompatible type "List[<nothing>]"; expected "str"  [arg-type]
-    reveal_type(is_valid_name(""))  # N: Revealed type is "builtins.bool"
+    reveal_type(is_valid_name)
+    is_valid_name(1)
+    is_valid_name([])
+    reveal_type(is_valid_name(""))
     def takes_str_predicate(predicate: Predicate[str]) -> None: ...
     takes_str_predicate(is_valid_name)
 
-    reveal_type(compose2(int, str)(2))  # N: Revealed type is "builtins.int*"
+    reveal_type(compose2(int, str)(2))
     def takes_int_str_composed(fn: Callable[[int], int]) -> None: ...
     takes_int_str_composed(compose2(int, str))
 
-    reveal_type(compose2(str, int)("3"))  # N: Revealed type is "builtins.str*"
+    reveal_type(compose2(str, int)("3"))
     def takes_str_int_composed(fn: Callable[[str], str]) -> None: ...
     takes_str_int_composed(compose2(str, int))
+  out: |
+    main:6: note: Revealed type is "def \(builtins\.str\*?\) -> builtins\.bool\*?"
+    main:7: error: Argument 1 has incompatible type "int"; expected "str"  \[arg-type\]
+    main:8: error: Argument 1 has incompatible type "List\[<nothing>\]"; expected "str"  \[arg-type\]
+    main:9: note: Revealed type is "builtins.bool\*?"
+    main:13: note: Revealed type is "builtins.int\*?"
+    main:17: note: Revealed type is "builtins.str\*?"
   files:
     - path: predicates.py
       content: |
