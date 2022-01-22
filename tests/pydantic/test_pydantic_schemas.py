@@ -158,6 +158,7 @@ class TestShippedTypesImplementsSchema:
 
     def test_sized_non_empty_implements_schema(self):
         assert DataModel.schema()["properties"]["non_empty"] == {
+            "allOf": [{"type": "string"}],
             "title": "NonEmpty",
             "type": "array",
             "description": "A non-empty array.",

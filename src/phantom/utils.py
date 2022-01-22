@@ -136,6 +136,7 @@ def is_not_mutable(type_: BoundType) -> TypeGuard[NotKnownMutable]:
     return True
 
 
+MaybeUnionType: type | None
 try:
     MaybeUnionType = types.UnionType  # type: ignore[attr-defined]
 except AttributeError:
@@ -143,7 +144,7 @@ except AttributeError:
 
 
 def is_union_type(value: object) -> TypeGuard[type]:
-    return MaybeUnionType and isinstance(value, MaybeUnionType)
+    return MaybeUnionType is not None and isinstance(value, MaybeUnionType)
 
 
 def is_union(value: object) -> TypeGuard[type]:
