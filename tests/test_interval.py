@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import pytest
 
 from phantom.interval import Interval
@@ -5,6 +7,7 @@ from phantom.interval import Natural
 from phantom.interval import NegativeInt
 from phantom.interval import Open
 from phantom.interval import Portion
+from phantom.predicates import interval
 
 
 class TestInterval:
@@ -19,6 +22,20 @@ class TestInterval:
             ...
 
         assert Great.parse("10") == 10
+
+    def test_allows_decimal_bound(self):
+        class I(  # noqa: E742
+            Decimal,
+            Interval,
+            check=interval.open,
+            low=Decimal("1.15"),
+            high=Decimal("2.36"),
+        ):
+            ...
+
+        assert not isinstance(2, I)
+        assert not isinstance(1.98, I)
+        assert isinstance(Decimal("1.98"), I)
 
 
 parametrize_negative_ints = pytest.mark.parametrize("i", (-10, -1, -0, +0))
