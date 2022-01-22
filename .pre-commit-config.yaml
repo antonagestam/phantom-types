@@ -58,8 +58,9 @@ repos:
         additional_dependencies:
           - pytest
           - typeguard
-          - phonenumbers>=8.12.33
+          - phonenumbers>=8.12.41
           - pydantic
+          - types-setuptools
   - repo: https://github.com/mgedmin/check-manifest
     rev: "0.47"
     hooks:
