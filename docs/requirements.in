@@ -7,3 +7,4 @@ typeguard
 furo==2021.4.11b34
 phonenumbers
 typing-extensions
+numerary
