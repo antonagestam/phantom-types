@@ -37,7 +37,7 @@ from .predicates import interval
 from .schema import Schema
 from .utils import resolve_class_attr
 
-N = TypeVar("N", bound=RealLike[IntegralLike[int]])
+N = TypeVar("N", bound="RealLike[IntegralLike[int]]")
 Derived = TypeVar("Derived", bound="Interval")
 
 
@@ -50,7 +50,7 @@ inf: Final = float("inf")
 neg_inf: Final = float("-inf")
 
 
-class Interval(Phantom[float], bound=RealLike, abstract=True):
+class Interval(Phantom[RealLike], bound=RealLike, abstract=True):
     """
     Base class for all interval types, providing the following class arguments:
 

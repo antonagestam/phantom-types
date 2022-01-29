@@ -4,6 +4,9 @@ import functools
 from functools import partial
 from typing import Any
 from typing import Callable
+from typing import Final
+from typing import Generic
+from typing import ParamSpec
 from typing import TypeVar
 
 
@@ -40,7 +43,47 @@ def compose2(a: Callable[[AA], AR], b: Callable[[BA], AA]) -> Callable[[BA], AR]
     return c
 
 
-A = TypeVar("A")
+Y = TypeVar("Y")
+Z = TypeVar("Z")
+P = ParamSpec("P")
+
+
+class Pipe(Generic[P, Y]):
+    """
+    >>> __through__ = Pipe()
+    >>> a = lambda x: f"Hello, {x}"
+    >>> b = lambda x: f"{x}, how are you?"
+    >>> fn = (__through__ | b) | __through__ | a
+    >>> fn("Anton")
+    """
+
+    def __init__(self, func: Callable[P, Y] | None = None) -> None:
+        self.func: Final = func
+
+    def __or__(self, other: Callable[[Y], Z]) -> Callable[P, Z] | Pipe[Y, Z]:
+        if not callable(other):
+            return NotImplemented
+        if self.func is None:
+            return Pipe(other)
+        return compose2(self.func, other)
+
+
+class composable(Generic[P, Y]):
+    """
+    Decorator to compose functions with the | operator.
+    """
+
+    def __init__(self, _func: Callable[P, Y]):
+        self._func: Callable[P, Y] = _func
+
+    def __call__(self, *args: P.args, **kwargs: P.kwargs) -> Y:
+        return self._func(*args, **kwargs)
+
+    def __or__(self, other: Callable[[Y], Z]) -> composable[P, Z]:
+        def composed(*args: P.args, **kwargs: P.kwargs) -> Z:
+            return other(self(*args, **kwargs))
+
+        return composable(composed)
 
 
 def excepts(
