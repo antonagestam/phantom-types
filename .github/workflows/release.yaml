@@ -6,6 +6,6 @@ on:
 
 jobs:
   build-and-publish:
-    uses: antonagestam/python-build/.github/workflows/release.yaml@main
+    uses: less-action/reusables/.github/workflows/release.yaml@v1
     secrets:
       pypi_api_token: ${{ secrets.PYPI_API_TOKEN }}
