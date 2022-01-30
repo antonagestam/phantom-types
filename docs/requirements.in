@@ -1,9 +1,10 @@
-sphinx>=3.1,<3.2
+sphinx
 sphinx-autodoc-typehints
 recommonmark
 m2r2
 mistune<2
 typeguard
-furo==2021.4.11b34
+furo
 phonenumbers
 typing-extensions
+numerary

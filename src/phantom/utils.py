@@ -104,8 +104,6 @@ def is_subtype(a: BoundType, b: BoundType) -> bool:  # noqa: C901
     elif _is_intersection(a):
         assert isinstance(a, tuple)
         return any(issubclass(a_part, b) for a_part in a)
-    if not isinstance(a, type):
-        breakpoint()
     assert isinstance(a, type)
     return issubclass(a, b)
 
