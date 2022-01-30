@@ -37,7 +37,7 @@ from .predicates import interval
 from .schema import Schema
 from .utils import resolve_class_attr
 
-N = TypeVar("N", bound="RealLike[IntegralLike[int]]")
+N = TypeVar("N", bound=RealLike[IntegralLike[int]])
 Derived = TypeVar("Derived", bound="Interval")
 
 
