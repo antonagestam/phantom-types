@@ -47,7 +47,7 @@ class TestParseBound:
 
     @pytest.mark.skipif(sys.version_info < (3, 10), reason="requires 3.10+")
     def test_raises_for_invalid_pep_604_union(self):
-        parser = get_bound_parser(int | float)  # type: ignore[operator]
+        parser = get_bound_parser(int | float)
         with pytest.raises(
             BoundError,
             match=r"^Value is not within bound of 'typing\.Union\[int, float\]': '3'$",
