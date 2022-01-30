@@ -68,6 +68,3 @@ always_document_param_types = True
 
 # Keep source order instead of sorting members alphabetically.
 autodoc_member_order = "bysource"
-
-# Autodoc currently fails with metaclass conflicts when importing numerary types.
-autodoc_mock_imports = ["numerary"]
