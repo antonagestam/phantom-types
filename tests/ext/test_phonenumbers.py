@@ -47,7 +47,7 @@ class TestFormattedPhoneNumber:
         """Since we override parse we need to test the bound check"""
         value = 123
         with pytest.raises(
-            BoundError, match=fr"Value is not within bound of 'str': {value}"
+            BoundError, match=rf"Value is not within bound of 'str': {value}"
         ):
             FormattedPhoneNumber.parse(123)
 
