@@ -8,9 +8,13 @@ on:
 jobs:
   lint:
     name: Static analysis
-    uses: less-action/reusables/.github/workflows/pre-commit.yaml@v1
+    uses: less-action/reusables/.github/workflows/pre-commit.yaml@v2
     with:
       python-version: "3.10"
+
+  check-build:
+    name: Check packaging metadata
+    uses: less-action/reusables/.github/workflows/python-test-build.yaml@v2
 
   docs:
     name: Build Sphinx Docs
