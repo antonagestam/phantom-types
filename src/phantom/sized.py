@@ -21,8 +21,10 @@ from typing import Iterable
 from typing import MutableMapping
 from typing import MutableSequence
 from typing import MutableSet
+from typing import Optional
 from typing import Sized
 from typing import TypeVar
+from typing import Union
 
 from numerary.types import RealLike
 
@@ -45,6 +47,7 @@ from . import Predicate
 from .predicates import boolean
 from .predicates import collection
 from .predicates import generic
+from .predicates import interval
 from .predicates import numeric
 from .schema import Schema
 
@@ -98,7 +101,50 @@ class PhantomSized(
         }
 
 
-class NonEmpty(PhantomSized[T], Generic[T], len=numeric.greater(0)):
+class PhantomBounded(PhantomSized[T], Generic[T], abstract=True):
+    __min__: Optional[int]
+    __max__: Optional[int]
+
+    def __init_subclass__(
+        cls,
+        min: Optional[int] = None,
+        max: Optional[int] = None,
+        **kwargs: Any,
+    ) -> None:
+        cls.__min__ = min
+        cls.__max__ = max
+        if min and max:
+            predicate = collection.count(interval.open(min, max))
+        elif min:
+            predicate = collection.count(numeric.ge(min))
+        elif max:
+            predicate = collection.count(numeric.le(max))
+        else:
+            assert False
+        super().__init_subclass__(len=predicate, **kwargs)
+
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "type": "array",
+            "minItems": cls.__min__,
+            "maxItems": cls.__max__,
+        }
+
+
+class Foo(PhantomBounded, min=5, max=10):
+    ...
+
+
+# TODO: Must accept kwarg in schema.SchemaField.__modify_schema__, and all __schema__
+#       methods must be updated to accept this argument as well. It makes sense to
+#       document/"dictate" that __schema__ implementations accept **kwarg: Any, to
+#       future proof that contract.
+assert Foo[str].__schema__()["items"] == "str"
+
+
+class NonEmpty(PhantomBounded[T], Generic[T], min=1):
     """A sized collection with at least one item."""
 
     @classmethod
@@ -110,7 +156,7 @@ class NonEmpty(PhantomSized[T], Generic[T], len=numeric.greater(0)):
         }
 
 
-class Empty(PhantomSized[T], Generic[T], len=generic.equal(0)):
+class Empty(PhantomBounded[T], Generic[T], max=0):
     """A sized collection with exactly zero items."""
 
     @classmethod
