@@ -26,9 +26,9 @@ class SchemaField:
     def __modify_schema__(cls, field_schema: dict) -> None:
         """
         This final method is called by pydantic and collects overrides from
-        :func:`Phantom.__schema__() <phantom.Phantom.__schema__>`.
-        Override :func:`__schema__() <phantom.Phantom.__schema__>` to provide custom
-        schema representations for phantom types.
+        :func:`Phantom.__schema__() <phantom.Phantom.__schema__>`. Override
+        :func:`__schema__() <phantom.Phantom.__schema__>` to provide custom schema
+        representations for phantom types.
         """
         field_schema.update(
             {key: value for key, value in cls.__schema__().items() if value is not None}

@@ -1,3 +1,7 @@
+import sys
+
+import pytest
+
 import pydantic
 from phantom.datetime import TZAware
 from phantom.datetime import TZNaive
@@ -200,6 +204,13 @@ class TestShippedTypesImplementsSchema:
             "format": "E.164",
         }
 
+    @pytest.mark.skipif(
+        sys.version_info < (3, 9),
+        reason=(
+            "Pydantic behavior oddly differs for Python 3.8 and below, where it "
+            "instead of using the class name, uses the name of the field as title."
+        ),
+    )
     def test_sequence_not_str_implements_schema(self):
         assert DataModel.schema()["properties"]["sequence_not_str"] == {
             "title": "SequenceNotStr",
