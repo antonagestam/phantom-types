@@ -11,9 +11,9 @@ from phantom.interval import Open
 from phantom.interval import OpenClosed
 from phantom.interval import Portion
 from phantom.iso3166 import ParsedAlpha2
+from phantom.negated import SequenceNotStr
 from phantom.re import FullMatch
 from phantom.re import Match
-from phantom.sequence import SequenceNotStr
 from phantom.sized import Empty
 from phantom.sized import NonEmpty
 

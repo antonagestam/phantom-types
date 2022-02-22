@@ -4,9 +4,9 @@ immutable collections. There is a naive check that eliminates some of the most c
 mutable collections in the instance check. However, a guaranteed check is probably
 impossible to implement, so some amount of developer discipline is required.
 
-Sized types are created by subclassing ``PhantomSized`` and providing a predicate that
-will be called with the size of the tested collection. For instance, ``NonEmpty`` is
-implemented using ``len=numeric.greater(0)``.
+Sized types are created by subclassing :py:class:`PhantomSized` and providing a
+predicate that will be called with the size of the tested collection. For instance,
+:py:class:`NonEmpty` is implemented using ``len=numeric.greater(0)``.
 
 This made-up type would describe sized collections with between 5 and 10 ints:
 
@@ -18,9 +18,6 @@ This made-up type would describe sized collections with between 5 and 10 ints:
 from typing import Any
 from typing import Generic
 from typing import Iterable
-from typing import MutableMapping
-from typing import MutableSequence
-from typing import MutableSet
 from typing import Sized
 from typing import TypeVar
 
@@ -35,7 +32,6 @@ try:
 except ImportError:
     from typing import _ProtocolMeta  # type: ignore[attr-defined]
 
-from typing_extensions import Final
 from typing_extensions import Protocol
 from typing_extensions import runtime_checkable
 
@@ -48,7 +44,6 @@ from .predicates import generic
 from .predicates import numeric
 from .schema import Schema
 from .utils import is_not_mutable_instance
-from .utils import is_not_mutable_type
 
 __all__ = (
     "SizedIterable",

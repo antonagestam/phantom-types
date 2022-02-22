@@ -1,6 +1,6 @@
 - case: test_subscripted
   main: |
-    from phantom.sequence import SequenceNotStr
+    from phantom.negated import SequenceNotStr
     
     def greet(names: SequenceNotStr[str]) -> str:
         return f"Hello {', '.join(names)}"
@@ -11,7 +11,7 @@
 
 - case: test_annotated
   main: |
-    from phantom.sequence import SequenceNotStr
+    from phantom.negated import SequenceNotStr
     
     def greet(names: SequenceNotStr[str]) -> str:
         return f"Hello {', '.join(names)}"
@@ -22,7 +22,7 @@
 
 - case: test_unspecified_inner_type
   main: |
-    from phantom.sequence import SequenceNotStr
+    from phantom.negated import SequenceNotStr
     from typing import Tuple
     
     def fn(values: SequenceNotStr) -> SequenceNotStr[object]:
@@ -32,4 +32,4 @@
     assert isinstance(seq, SequenceNotStr)
     reveal_type(seq)  # N: Revealed type is "main.<subclass of "tuple" and "SequenceNotStr">"
     values = fn(seq)
-    reveal_type(values)  # N: Revealed type is "phantom.sequence.SequenceNotStr[builtins.object]"
+    reveal_type(values)  # N: Revealed type is "phantom.negated.SequenceNotStr[builtins.object]"

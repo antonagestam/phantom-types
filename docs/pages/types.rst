@@ -39,6 +39,14 @@ Datetime
     :undoc-members:
     :show-inheritance:
 
+Negated types
+-------------
+
+.. automodule:: phantom.negated
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 .. _numeric-intervals:
 
 Numeric intervals

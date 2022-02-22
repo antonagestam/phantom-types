@@ -2,7 +2,7 @@ import pytest
 from typing_extensions import get_args
 from typing_extensions import get_origin
 
-from phantom.sequence import SequenceNotStr
+from phantom.negated import SequenceNotStr
 
 parametrize_instances = pytest.mark.parametrize(
     "value",
@@ -10,6 +10,9 @@ parametrize_instances = pytest.mark.parametrize(
         ("foo", "bar", "baz"),
         (1, 2, object()),
         (b"hello", b"there"),
+        [],
+        ["foo"],
+        [b"bar"],
     ),
 )
 parametrize_non_instances = pytest.mark.parametrize(
@@ -18,9 +21,6 @@ parametrize_non_instances = pytest.mark.parametrize(
         "",
         "foo",
         object(),
-        [],
-        ["foo"],
-        [b"bar"],
         b"",
         b"foo",
         {},
