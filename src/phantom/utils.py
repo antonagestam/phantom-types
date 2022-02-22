@@ -125,7 +125,7 @@ class MutableType(TypeError):
     ...
 
 
-def is_not_mutable(type_: BoundType) -> TypeGuard[NotKnownMutable]:
+def is_not_mutable_type(type_: BoundType) -> TypeGuard[type[NotKnownMutable]]:
     if any(is_subtype(type_, mutable_type) for mutable_type in mutable):
         raise MutableType(f"{type_!r} is a subclass of one of {mutable!r}")
     if (
@@ -134,6 +134,10 @@ def is_not_mutable(type_: BoundType) -> TypeGuard[NotKnownMutable]:
     ):
         raise MutableType(f"{type_!r} is a an unfrozen dataclass type")
     return True
+
+
+def is_not_mutable_instance(value: object) -> TypeGuard[NotKnownMutable]:
+    return not isinstance(value, mutable)
 
 
 MaybeUnionType: type | None

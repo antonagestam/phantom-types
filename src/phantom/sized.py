@@ -47,6 +47,8 @@ from .predicates import collection
 from .predicates import generic
 from .predicates import numeric
 from .schema import Schema
+from .utils import is_not_mutable_instance
+from .utils import is_not_mutable_type
 
 __all__ = (
     "SizedIterable",
@@ -56,7 +58,6 @@ __all__ = (
 )
 
 
-mutable: Final = (MutableSequence, MutableSet, MutableMapping)
 T = TypeVar("T", bound=object, covariant=True)
 
 
@@ -84,7 +85,7 @@ class PhantomSized(
     def __init_subclass__(cls, len: Predicate[RealLike], **kwargs: Any) -> None:
         super().__init_subclass__(
             predicate=boolean.both(
-                boolean.negate(generic.of_type(mutable)),
+                is_not_mutable_instance,
                 collection.count(len),
             ),
             **kwargs,

@@ -24,7 +24,7 @@ from .utils import BoundType
 from .utils import NotKnownMutable
 from .utils import UnresolvedClassAttribute
 from .utils import fully_qualified_name
-from .utils import is_not_mutable
+from .utils import is_not_mutable_type
 from .utils import is_subtype
 from .utils import is_union
 from .utils import resolve_class_attr
@@ -205,7 +205,7 @@ class Phantom(PhantomBase, Generic[T]):
                 f"inherited bounds."
             )
 
-        assert is_not_mutable(bound)
+        assert is_not_mutable_type(bound)
 
         cls.__bound__ = bound
 
