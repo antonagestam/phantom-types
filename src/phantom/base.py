@@ -21,10 +21,10 @@ from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
 from .schema import SchemaField
 from .utils import BoundType
-from .utils import NotKnownMutable
+from .utils import NotKnownMutableType
 from .utils import UnresolvedClassAttribute
 from .utils import fully_qualified_name
-from .utils import is_not_mutable
+from .utils import is_not_mutable_type
 from .utils import is_subtype
 from .utils import is_union
 from .utils import resolve_class_attr
@@ -149,7 +149,7 @@ class Phantom(PhantomBase, Generic[T]):
     #
     # When subclassing, the bound of the new type must be a subtype of the bound
     # of the super class.
-    __bound__: ClassVar[NotKnownMutable]
+    __bound__: ClassVar[NotKnownMutableType]
     __abstract__: ClassVar[bool]
 
     def __init_subclass__(
@@ -205,7 +205,7 @@ class Phantom(PhantomBase, Generic[T]):
                 f"inherited bounds."
             )
 
-        assert is_not_mutable(bound)
+        assert is_not_mutable_type(bound)
 
         cls.__bound__ = bound
 
