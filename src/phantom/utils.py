@@ -113,7 +113,7 @@ def fully_qualified_name(cls: type) -> str:
 
 
 mutable: Final = (MutableSequence, MutableSet, MutableMapping)
-NotKnownMutable = NewType("NotKnownMutable", type)
+NotKnownMutableType = NewType("NotKnownMutableType", type)
 """
 Internal type to mark types that are not known to be mutable. The term immutable is
 avoided here because there is no way to guarantee that a checked type isn't actually
@@ -125,7 +125,7 @@ class MutableType(TypeError):
     ...
 
 
-def is_not_mutable_type(type_: BoundType) -> TypeGuard[type[NotKnownMutable]]:
+def is_not_mutable_type(type_: BoundType) -> TypeGuard[NotKnownMutableType]:
     if any(is_subtype(type_, mutable_type) for mutable_type in mutable):
         raise MutableType(f"{type_!r} is a subclass of one of {mutable!r}")
     if (
@@ -136,7 +136,7 @@ def is_not_mutable_type(type_: BoundType) -> TypeGuard[type[NotKnownMutable]]:
     return True
 
 
-def is_not_mutable_instance(value: object) -> TypeGuard[NotKnownMutable]:
+def is_not_mutable_instance(value: object) -> bool:
     return not isinstance(value, mutable)
 
 
