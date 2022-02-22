@@ -24,6 +24,9 @@ jobs:
       - uses: ammaraskar/sphinx-action@0.4
         with:
           docs-folder: "docs/"
+          # Fail build on warnings.
+          # https://github.com/ammaraskar/sphinx-action/issues/24
+          build-command: "sphinx-build -W -b html . _build"
 
   test:
     name: Test
