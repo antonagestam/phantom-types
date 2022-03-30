@@ -1,5 +1,7 @@
 import pytest
 from typing_extensions import Final
+from typing_extensions import get_args
+from typing_extensions import get_origin
 
 from phantom.sized import Empty
 from phantom.sized import NonEmpty
@@ -36,8 +38,8 @@ class TestNonEmpty:
 
     def test_subscription_returns_type_alias(self):
         alias = NonEmpty[tuple]
-        assert alias.__origin__ is NonEmpty
-        (arg,) = alias.__args__
+        assert get_origin(alias) is NonEmpty
+        (arg,) = get_args(alias)
         assert arg is tuple
 
 
@@ -66,6 +68,6 @@ class TestEmpty:
 
     def test_subscription_returns_type_alias(self):
         alias = Empty[frozenset]
-        assert alias.__origin__ is Empty
-        (arg,) = alias.__args__
+        assert get_origin(alias) is Empty
+        (arg,) = get_args(alias)
         assert arg is frozenset
