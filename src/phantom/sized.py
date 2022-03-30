@@ -28,9 +28,9 @@ from numerary.types import RealLike
 # to documentation of _ProtocolMeta.
 # https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
 try:
-    from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
+    from typing_extensions import _ProtocolMeta
 except ImportError:
-    from typing import _ProtocolMeta  # type: ignore[attr-defined]
+    from typing import _ProtocolMeta  # type: ignore[attr-defined,no-redef]
 
 from typing_extensions import Protocol
 from typing_extensions import runtime_checkable
@@ -61,9 +61,7 @@ class SizedIterable(Sized, Iterable[T], Protocol[T]):
     """Intersection of :py:class:`typing.Sized` and :py:class:`typing.Iterable`."""
 
 
-# This raises a mypy error because disallow_subclassing_any is enabled and _ProtocolMeta
-# isn't publicly typed.
-class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):  # type: ignore[misc]
+class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):
     ...
 
 
