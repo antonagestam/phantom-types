@@ -18,6 +18,8 @@ class Schema(TypedDict, total=False):
     exclusiveMaximum: Optional[float]
     minItems: Optional[int]
     maxItems: Optional[int]
+    minLength: Optional[int]
+    maxLength: Optional[int]
 
 
 class SchemaField:
