@@ -30,11 +30,11 @@ from phantom import Phantom
 from phantom.predicates.collection import contained
 
 
-class Name(str, Phantom, predicate=contained({"Jane", "Joe"})):
+class Name(str, Phantom[object], predicate=contained({"Jane", "Joe"})):
     ...
 
 
-def greet(name: Name):
+def greet(name: Name) -> None:
     print(f"Hello {name}!")
 ```
 
