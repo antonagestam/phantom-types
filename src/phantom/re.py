@@ -34,7 +34,7 @@ class Match(str, Phantom, abstract=True):
     """
     Takes ``pattern: Pattern[str] | str`` as class argument as either a compiled
     :py:class:`Pattern` or a :py:class:`str` to be compiled. Uses the
-    :py:func:`phantom.predicate.re.is_match` predicate.
+    :py:func:`phantom.predicates.re.is_match` predicate.
     """
 
     __pattern__: Pattern[str]
@@ -58,7 +58,7 @@ class FullMatch(str, Phantom, abstract=True):
     """
     Takes ``pattern: Pattern[str] | str`` as class argument as either a compiled
     :py:class:`Pattern` or a :py:class:`str` to be compiled. Uses the
-    :py:func:`phantom.predicate.re.is_full_match` predicate.
+    :py:func:`phantom.predicates.re.is_full_match` predicate.
     """
 
     __pattern__: Pattern[str]
