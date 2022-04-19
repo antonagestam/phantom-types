@@ -1,4 +1,5 @@
 exclude Makefile
+exclude .editorconfig
 recursive-exclude docs *
 recursive-exclude examples *
 recursive-exclude .github *
