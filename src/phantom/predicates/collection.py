@@ -3,8 +3,8 @@ from typing import Iterable
 from typing import Sized
 from typing import TypeVar
 
-from .base import Predicate
-from .utils import bind_name
+from ._base import Predicate
+from ._utils import bind_name
 
 
 def contains(value: object) -> Predicate[Container]:

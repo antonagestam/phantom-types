@@ -1,7 +1,7 @@
 from typing import Pattern
 
-from .base import Predicate
-from .utils import bind_name
+from ._base import Predicate
+from ._utils import bind_name
 
 
 def is_match(pattern: Pattern[str]) -> Predicate[str]:

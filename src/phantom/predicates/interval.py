@@ -5,8 +5,8 @@ use these predicates in :py:mod:`phantom.interval`.
 """
 from numerary.types import RealLike
 
-from .base import Predicate
-from .utils import bind_name
+from ._base import Predicate
+from ._utils import bind_name
 
 
 def open(low: RealLike, high: RealLike) -> Predicate[RealLike]:

@@ -21,8 +21,6 @@ from typing import Iterable
 from typing import Sized
 from typing import TypeVar
 
-from numerary.types import RealLike
-
 # We attempt to import _ProtocolMeta from typing_extensions to support Python 3.7 but
 # fall back the typing module to support Python 3.8+. This is the closest I could find
 # to documentation of _ProtocolMeta.
@@ -38,12 +36,12 @@ from typing_extensions import runtime_checkable
 from . import Phantom
 from . import PhantomMeta
 from . import Predicate
+from ._utils.misc import is_not_mutable_instance
 from .predicates import boolean
 from .predicates import collection
 from .predicates import generic
 from .predicates import numeric
 from .schema import Schema
-from .utils import is_not_mutable_instance
 
 __all__ = (
     "SizedIterable",
@@ -73,9 +71,9 @@ class PhantomSized(
     bound=SizedIterable,
     abstract=True,
 ):
-    """Takes class argument ``len: Predicate[RealLike]``."""
+    """Takes class argument ``len: Predicate[int]``."""
 
-    def __init_subclass__(cls, len: Predicate[RealLike], **kwargs: Any) -> None:
+    def __init_subclass__(cls, len: Predicate[int], **kwargs: Any) -> None:
         super().__init_subclass__(
             predicate=boolean.both(
                 is_not_mutable_instance,

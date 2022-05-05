@@ -15,19 +15,19 @@ from typing_extensions import Protocol
 from typing_extensions import get_args
 from typing_extensions import runtime_checkable
 
-from .predicates.base import Predicate
+from ._utils.misc import BoundType
+from ._utils.misc import NotKnownMutableType
+from ._utils.misc import UnresolvedClassAttribute
+from ._utils.misc import fully_qualified_name
+from ._utils.misc import is_not_mutable_type
+from ._utils.misc import is_subtype
+from ._utils.misc import is_union
+from ._utils.misc import resolve_class_attr
+from .predicates._base import Predicate
 from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
 from .schema import SchemaField
-from .utils import BoundType
-from .utils import NotKnownMutableType
-from .utils import UnresolvedClassAttribute
-from .utils import fully_qualified_name
-from .utils import is_not_mutable_type
-from .utils import is_subtype
-from .utils import is_union
-from .utils import resolve_class_attr
 
 
 @runtime_checkable

@@ -10,7 +10,7 @@ from typing import Generic
 from typing import Sequence
 from typing import TypeVar
 
-from .base import Phantom
+from ._base import Phantom
 from .predicates import boolean
 from .predicates.generic import of_type
 

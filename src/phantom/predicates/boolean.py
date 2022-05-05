@@ -1,10 +1,12 @@
 from typing import Iterable
+from typing import TypeVar
 
 from typing_extensions import Literal
 
-from .base import Predicate
-from .base import T
-from .utils import bind_name
+from ._base import Predicate
+from ._utils import bind_name
+
+T = TypeVar("T", bound=object, contravariant=True)
 
 
 def true(_value: object) -> Literal[True]:

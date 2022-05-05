@@ -68,7 +68,6 @@ repos:
           - phonenumbers>=8.12.41
           - pydantic
           - types-setuptools
-          - numerary
   - repo: https://github.com/mgedmin/check-manifest
     rev: "0.48"
     hooks:
