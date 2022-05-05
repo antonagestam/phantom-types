@@ -1,5 +1,6 @@
-from typing import Protocol
 from typing import TypeVar
+
+from typing_extensions import Protocol
 
 T_contra = TypeVar("T_contra", contravariant=True)
 U_co = TypeVar("U_co", covariant=True)
