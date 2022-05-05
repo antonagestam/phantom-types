@@ -41,6 +41,22 @@ class Comparable(
     ...
 
 
+class SupportsLeGe(SupportsLe[T_contra], SupportsGe[T_contra], Protocol[T_contra]):
+    ...
+
+
+class SupportsLeGt(SupportsLe[T_contra], SupportsGt[T_contra], Protocol[T_contra]):
+    ...
+
+
+class SupportsLtGe(SupportsLt[T_contra], SupportsGe[T_contra], Protocol[T_contra]):
+    ...
+
+
+class SupportsLtGt(SupportsLt[T_contra], SupportsLeGt[T_contra], Protocol[T_contra]):
+    ...
+
+
 class SupportsMod(Protocol[T_contra, U_co]):
     def __mod__(self, other: T_contra) -> U_co:
         ...
