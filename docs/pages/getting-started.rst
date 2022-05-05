@@ -25,11 +25,6 @@ providing a predicate function.
         ...
 
 
-    # Now we can make the same operations as with our previous example.
-    hello = "Hello there"
-    assert isinstance(hello, Greeting)
-    hi = Greeting.parse("Hi there")
-
     hello = "Hello there"
     # We can narrow types using mypy's type guards
     assert isinstance(hello, Greeting)
