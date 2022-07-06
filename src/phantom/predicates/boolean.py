@@ -4,7 +4,7 @@ from typing import TypeVar
 from typing_extensions import Literal
 
 from . import Predicate
-from .utils import bind_name
+from ._utils import bind_name
 
 T_contra = TypeVar("T_contra", bound=object, contravariant=True)
 

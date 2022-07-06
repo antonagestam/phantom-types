@@ -10,10 +10,10 @@ from phantom import Phantom
 from phantom import PhantomMeta
 from phantom import get_bound_parser
 from phantom._base import AbstractInstanceCheck
+from phantom._utils.misc import MutableType
+from phantom._utils.misc import UnresolvedClassAttribute
 from phantom.predicates import boolean
 from phantom.predicates.numeric import positive
-from phantom.utils import MutableType
-from phantom.utils import UnresolvedClassAttribute
 
 
 class TestParseBound:

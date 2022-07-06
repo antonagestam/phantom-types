@@ -16,10 +16,10 @@ from typing import Any
 from typing import Pattern
 
 from . import Phantom
+from ._utils.misc import resolve_class_attr
 from .predicates.re import is_full_match
 from .predicates.re import is_match
 from .schema import Schema
-from .utils import resolve_class_attr
 
 __all__ = ("Match", "FullMatch")
 

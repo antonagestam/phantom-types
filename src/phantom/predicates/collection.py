@@ -4,7 +4,7 @@ from typing import Sized
 from typing import TypeVar
 
 from . import Predicate
-from .utils import bind_name
+from ._utils import bind_name
 
 
 def contains(value: object) -> Predicate[Container]:
