@@ -21,7 +21,7 @@ T = TypeVar("T")
 
 class SequenceNotStr(
     Sequence[T],
-    Phantom,
+    Phantom[object],
     Generic[T],
     # Note: We don't eliminate mutable types here like in PhantomSized. This is because
     # the property of not being a str cannot change by mutation, so this specific
