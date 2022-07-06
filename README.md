@@ -6,6 +6,9 @@
     <a href=https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI+branch%3Amain><img src=https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg alt="CI Build Status"></a>
     <a href=https://phantom-types.readthedocs.io/en/stable/><img src=https://readthedocs.org/projects/phantom-types/badge/?version=main alt="Documentation Build Status"></a>
     <a href=https://codecov.io/gh/antonagestam/phantom-types><img src=https://codecov.io/gh/antonagestam/phantom-types/branch/main/graph/badge.svg?token=UE85B7IA3Q alt="Test coverage report"></a>
+    <br>
+    <a href=https://pypi.org/project/phantom-types/><img src=https://img.shields.io/pypi/v/phantom-types.svg?color=informational&label=PyPI alt="PyPI Package"></a>
+    <a href=https://pypi.org/project/phantom-types/><img src=https://img.shields.io/pypi/pyversions/phantom-types.svg?color=informational&label=Python alt="Python versions"></a>
 </p>
 
 [Phantom types][ghosts] for Python will help you make illegal states unrepresentable and
