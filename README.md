@@ -14,9 +14,9 @@
 [Phantom types][ghosts] for Python will help you make illegal states unrepresentable and
 avoid shotgun parsing by enabling you to practice ["Parse, don't validate"][parse].
 
-<p align=center>
+<h4 align=center>
     <a href=https://phantom-types.readthedocs.io/en/stable/>Checkout the complete documentation on Read the Docs →</a>
-</p>
+</h4>
 
 ## Installation
 
