@@ -121,23 +121,24 @@ mutable, so we don't want to communicate in strong terms here.
 """
 
 
-class MutableType(TypeError):
-    ...
+def is_not_known_mutable_type(type_: BoundType) -> TypeGuard[NotKnownMutableType]:
+    return not (
+        any(is_subtype(type_, mutable_type) for mutable_type in mutable)
+        or (
+            is_dataclass(type_)
+            and not type_.__dataclass_params__.frozen  # type: ignore[union-attr]
+        )
+    )
 
 
-def is_not_mutable_type(type_: BoundType) -> TypeGuard[NotKnownMutableType]:
-    if any(is_subtype(type_, mutable_type) for mutable_type in mutable):
-        raise MutableType(f"{type_!r} is a subclass of one of {mutable!r}")
-    if (
-        is_dataclass(type_)
-        and not type_.__dataclass_params__.frozen  # type: ignore[union-attr]
-    ):
-        raise MutableType(f"{type_!r} is a an unfrozen dataclass type")
-    return True
-
-
-def is_not_mutable_instance(value: object) -> bool:
-    return not isinstance(value, mutable)
+def is_not_known_mutable_instance(value: object) -> bool:
+    return not (
+        isinstance(value, mutable)
+        or (
+            is_dataclass(value)
+            and not value.__dataclass_params__.frozen  # type: ignore[attr-defined]
+        )
+    )
 
 
 MaybeUnionType: type | None

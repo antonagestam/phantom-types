@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 import pytest
 from typing_extensions import Final
 from typing_extensions import get_args
@@ -6,11 +8,19 @@ from typing_extensions import get_origin
 from phantom.sized import Empty
 from phantom.sized import NonEmpty
 
+
+@dataclass
+class MutableDataclass:
+    value: str = "foo"
+
+
 parametrize_non_empty: Final = pytest.mark.parametrize(
     "container", ((1,), frozenset({1}), "foo")
 )
 parametrize_empty: Final = pytest.mark.parametrize("container", ((), frozenset(), ""))
-parametrize_mutable: Final = pytest.mark.parametrize("container", ([], set(), {}))
+parametrize_mutable: Final = pytest.mark.parametrize(
+    "container", ([], set(), {}, MutableDataclass())
+)
 
 
 class TestNonEmpty:

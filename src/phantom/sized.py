@@ -36,7 +36,7 @@ from typing_extensions import runtime_checkable
 from . import Phantom
 from . import PhantomMeta
 from . import Predicate
-from ._utils.misc import is_not_mutable_instance
+from ._utils.misc import is_not_known_mutable_instance
 from .predicates import boolean
 from .predicates import collection
 from .predicates import generic
@@ -76,7 +76,7 @@ class PhantomSized(
     def __init_subclass__(cls, len: Predicate[int], **kwargs: Any) -> None:
         super().__init_subclass__(
             predicate=boolean.both(
-                is_not_mutable_instance,
+                is_not_known_mutable_instance,
                 collection.count(len),
             ),
             **kwargs,
