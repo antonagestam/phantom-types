@@ -28,9 +28,9 @@ from numerary.types import RealLike
 # to documentation of _ProtocolMeta.
 # https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
 try:
-    from typing_extensions import _ProtocolMeta
+    from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
 except ImportError:
-    from typing import _ProtocolMeta  # type: ignore[attr-defined,no-redef]
+    from typing import _ProtocolMeta
 
 from typing_extensions import Protocol
 from typing_extensions import runtime_checkable
@@ -61,7 +61,7 @@ class SizedIterable(Sized, Iterable[T], Protocol[T]):
     """Intersection of :py:class:`typing.Sized` and :py:class:`typing.Iterable`."""
 
 
-class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):
+class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):  # type: ignore[misc]
     ...
 
 
