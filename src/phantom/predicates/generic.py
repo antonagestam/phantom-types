@@ -5,10 +5,10 @@ from typing import Union
 import typeguard
 from typing_extensions import get_args
 
-from phantom.utils import is_union_type
+from phantom._utils.misc import is_union_type
 
 from . import Predicate
-from .utils import bind_name
+from ._utils import bind_name
 
 
 def equal(a: object) -> Predicate[object]:

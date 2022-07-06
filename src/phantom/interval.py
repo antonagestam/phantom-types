@@ -26,18 +26,18 @@ from __future__ import annotations
 from typing import Any
 from typing import TypeVar
 
-from numerary.types import IntegralLike
-from numerary.types import RealLike
 from typing_extensions import Final
 from typing_extensions import Protocol
 
 from . import Phantom
 from . import Predicate
+from ._utils.misc import resolve_class_attr
+from ._utils.types import Comparable
+from ._utils.types import SupportsEq
 from .predicates import interval
 from .schema import Schema
-from .utils import resolve_class_attr
 
-N = TypeVar("N", bound=RealLike[IntegralLike[int]])
+N = TypeVar("N", bound=Comparable)
 Derived = TypeVar("Derived", bound="Interval")
 
 
@@ -50,26 +50,26 @@ inf: Final = float("inf")
 neg_inf: Final = float("-inf")
 
 
-class Interval(Phantom[RealLike], bound=RealLike, abstract=True):
+class Interval(Phantom[Comparable], bound=Comparable, abstract=True):
     """
     Base class for all interval types, providing the following class arguments:
 
     * ``check: IntervalCheck``
-    * ``low: RealLike`` (defaults to negative infinity)
-    * ``high: RealLike`` (defaults to positive infinity)
+    * ``low: Comparable`` (defaults to negative infinity)
+    * ``high: Comparable`` (defaults to positive infinity)
 
     Concrete subclasses must specify their runtime type bound as their first base.
     """
 
     __check__: IntervalCheck
-    __low__: RealLike
-    __high__: RealLike
+    __low__: Comparable
+    __high__: Comparable
 
     def __init_subclass__(
         cls,
         check: IntervalCheck | None = None,
-        low: RealLike = neg_inf,
-        high: RealLike = inf,
+        low: Comparable = neg_inf,
+        high: Comparable = inf,
         **kwargs: Any,
     ) -> None:
         resolve_class_attr(cls, "__low__", low)
@@ -89,7 +89,7 @@ class Interval(Phantom[RealLike], bound=RealLike, abstract=True):
         )
 
 
-def _format_limit(value: RealLike) -> str:
+def _format_limit(value: SupportsEq) -> str:
     if value == inf:
         return "∞"
     if value == neg_inf:
