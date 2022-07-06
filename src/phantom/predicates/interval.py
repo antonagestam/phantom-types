@@ -5,7 +5,7 @@ use these predicates in :py:mod:`phantom.interval`.
 """
 from numerary.types import RealLike
 
-from .base import Predicate
+from . import Predicate
 from .utils import bind_name
 
 

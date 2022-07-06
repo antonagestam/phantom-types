@@ -9,7 +9,7 @@ providing a predicate function.
 
 .. code-block:: python
 
-    from phantom.base import Phantom
+    from phantom import Phantom
 
     # A boolean predicate that checks if a given string is a greeting. This function is
     # of type ``Predicate[str]`` as it requires its argument to be a ``str``.

@@ -5,11 +5,11 @@ from typing import Union
 
 import pytest
 
+from phantom import BoundError
 from phantom import Phantom
+from phantom import PhantomMeta
 from phantom import get_bound_parser
-from phantom.base import AbstractInstanceCheck
-from phantom.base import BoundError
-from phantom.base import PhantomMeta
+from phantom._base import AbstractInstanceCheck
 from phantom.predicates import boolean
 from phantom.predicates.numeric import positive
 from phantom.utils import MutableType

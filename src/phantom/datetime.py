@@ -4,7 +4,7 @@ Types for narrowing on the builtin datetime types.
 
 import datetime
 
-from .base import Phantom
+from . import Phantom
 from .predicates.datetime import is_tz_aware
 from .predicates.datetime import is_tz_naive
 from .schema import Schema

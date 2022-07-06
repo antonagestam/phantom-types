@@ -1,6 +1,6 @@
 from numerary.types import RealLike
 
-from .base import Predicate
+from . import Predicate
 from .boolean import negate
 from .generic import equal
 from .utils import bind_name

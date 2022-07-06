@@ -15,7 +15,7 @@ import re
 from typing import Any
 from typing import Pattern
 
-from .base import Phantom
+from . import Phantom
 from .predicates.re import is_full_match
 from .predicates.re import is_match
 from .schema import Schema
