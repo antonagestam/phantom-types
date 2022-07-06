@@ -19,7 +19,7 @@ from ._utils.misc import BoundType
 from ._utils.misc import NotKnownMutableType
 from ._utils.misc import UnresolvedClassAttribute
 from ._utils.misc import fully_qualified_name
-from ._utils.misc import is_not_mutable_type
+from ._utils.misc import is_not_known_mutable_type
 from ._utils.misc import is_subtype
 from ._utils.misc import is_union
 from ._utils.misc import resolve_class_attr
@@ -122,6 +122,10 @@ class AbstractInstanceCheck(TypeError):
     ...
 
 
+class MutableType(TypeError):
+    ...
+
+
 class Phantom(PhantomBase, Generic[T]):
     """
     Base class for predicate-based phantom types.
@@ -201,11 +205,12 @@ class Phantom(PhantomBase, Generic[T]):
 
         if inherited is not None and not is_subtype(bound, inherited):
             raise BoundError(
-                f"The bounds of {cls.__qualname__} are not compatible with its "
+                f"The bound of {cls.__qualname__} is not compatible with its "
                 f"inherited bounds."
             )
 
-        assert is_not_mutable_type(bound)
+        if not is_not_known_mutable_type(bound):
+            raise MutableType(f"The bound of {cls.__qualname__} is mutable.")
 
         cls.__bound__ = bound
 
