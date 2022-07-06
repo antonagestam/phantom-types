@@ -3,7 +3,7 @@ from typing import Iterable
 from typing import Sized
 from typing import TypeVar
 
-from .base import Predicate
+from . import Predicate
 from .utils import bind_name
 
 

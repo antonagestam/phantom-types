@@ -7,7 +7,7 @@ from typing_extensions import get_args
 
 from phantom.utils import is_union_type
 
-from .base import Predicate
+from . import Predicate
 from .utils import bind_name
 
 

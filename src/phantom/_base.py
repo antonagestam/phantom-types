@@ -15,7 +15,7 @@ from typing_extensions import Protocol
 from typing_extensions import get_args
 from typing_extensions import runtime_checkable
 
-from .predicates.base import Predicate
+from .predicates import Predicate
 from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type

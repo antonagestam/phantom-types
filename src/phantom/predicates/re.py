@@ -1,6 +1,6 @@
 from typing import Pattern
 
-from .base import Predicate
+from . import Predicate
 from .utils import bind_name
 
 
