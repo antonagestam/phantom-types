@@ -1,8 +1,8 @@
 from typing import TypeVar
-from typing import runtime_checkable
 
 from numerary.types import CachingProtocolMeta  # type: ignore[attr-defined]
 from typing_extensions import Protocol
+from typing_extensions import runtime_checkable
 
 T_contra = TypeVar("T_contra", contravariant=True)
 U_co = TypeVar("U_co", covariant=True)
