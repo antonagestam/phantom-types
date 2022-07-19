@@ -15,7 +15,7 @@ class TestNormalizeAlpha2CountryCode:
     ) -> None:
         assert normalize_alpha2_country_code(given) == normalized
 
-    @pytest.mark.parametrize("invalid", ("UK", "not a country code"))
+    @pytest.mark.parametrize("invalid", ("SU", "not a country code"))
     def test_raises_for_invalid_country_code(self, invalid: str) -> None:
         with pytest.raises(InvalidCountryCode):
             normalize_alpha2_country_code(invalid)

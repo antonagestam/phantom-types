@@ -270,6 +270,7 @@ LiteralAlpha2 = Literal[
     "AE",
     "GB",
     "US",
+    "UK",  # Part of "exceptional reservations" but included for convenience
     "UM",
     "UY",
     "UZ",
