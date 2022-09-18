@@ -7,6 +7,7 @@ from typing_extensions import get_origin
 
 from phantom.sized import Empty
 from phantom.sized import NonEmpty
+from phantom.sized import NonEmptyStr
 
 
 @dataclass
@@ -49,6 +50,36 @@ class TestNonEmpty:
     def test_subscription_returns_type_alias(self):
         alias = NonEmpty[tuple]
         assert get_origin(alias) is NonEmpty
+        (arg,) = get_args(alias)
+        assert arg is tuple
+
+
+class TestNonEmptyStr:
+    @parametrize_non_empty
+    def test_non_empty_container_is_instance(self, container):
+        assert isinstance(container, NonEmptyStr)
+
+    @parametrize_empty
+    def test_empty_container_is_instance(self, container):
+        assert not isinstance(container, NonEmptyStr)
+
+    @parametrize_empty
+    def test_instantiation_raises_for_empty_container(self, container):
+        with pytest.raises(TypeError):
+            NonEmptyStr.parse(container)
+
+    @parametrize_mutable
+    def test_instantiation_raises_for_mutable(self, container):
+        with pytest.raises(TypeError):
+            NonEmptyStr.parse(container)
+
+    @parametrize_non_empty
+    def test_instantiation_returns_instance(self, container):
+        assert container is NonEmptyStr.parse(container)
+
+    def test_subscription_returns_type_alias(self):
+        alias = NonEmptyStr
+        assert get_origin(alias) is NonEmptyStr
         (arg,) = get_args(alias)
         assert arg is tuple
 

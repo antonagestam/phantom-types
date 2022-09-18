@@ -15,21 +15,13 @@ This made-up type would describe sized collections with between 5 and 10 ints:
     class SpecificSize(PhantomSized[int], len=interval.open(5, 10)):
         ...
 """
+from __future__ import annotations
+
 from typing import Any
 from typing import Generic
 from typing import Iterable
-from typing import Optional
 from typing import Sized
 from typing import TypeVar
-
-# We attempt to import _ProtocolMeta from typing_extensions to support Python 3.7 but
-# fall back the typing module to support Python 3.8+. This is the closest I could find
-# to documentation of _ProtocolMeta.
-# https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
-try:
-    from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
-except ImportError:
-    from typing import _ProtocolMeta
 
 from typing_extensions import Protocol
 from typing_extensions import runtime_checkable
@@ -40,10 +32,18 @@ from . import Predicate
 from ._utils.misc import is_not_known_mutable_instance
 from .predicates import boolean
 from .predicates import collection
-from .predicates import generic
 from .predicates import interval
 from .predicates import numeric
 from .schema import Schema
+
+# We attempt to import _ProtocolMeta from typing_extensions to support Python 3.7 but
+# fall back the typing module to support Python 3.8+. This is the closest I could find
+# to documentation of _ProtocolMeta.
+# https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
+try:
+    from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
+except ImportError:
+    from typing import _ProtocolMeta
 
 __all__ = (
     "SizedIterable",
@@ -92,50 +92,97 @@ class PhantomSized(
         }
 
 
-class PhantomBounded(PhantomSized[T], Generic[T], abstract=True):
-    __min__: Optional[int]
-    __max__: Optional[int]
-
-    def __init_subclass__(
-        cls,
-        min: Optional[int] = None,
-        max: Optional[int] = None,
-        **kwargs: Any,
-    ) -> None:
-        cls.__min__ = min
-        cls.__max__ = max
-        if min and max:
-            predicate = collection.count(interval.open(min, max))
-        elif min:
-            predicate = collection.count(numeric.ge(min))
-        elif max:
-            predicate = collection.count(numeric.le(max))
-        else:
-            assert False
-        super().__init_subclass__(len=predicate, **kwargs)
-
-    @classmethod
-    def __schema__(cls) -> Schema:
-        return {
-            **super().__schema__(),  # type: ignore[misc]
-            "type": "array",
-            "minItems": cls.__min__,
-            "maxItems": cls.__max__,
-        }
-
-
-class Foo(PhantomBounded, min=5, max=10):
+class UnresolvedBounds(Exception):
     ...
 
 
-# TODO: Must accept kwarg in schema.SchemaField.__modify_schema__, and all __schema__
-#       methods must be updated to accept this argument as well. It makes sense to
-#       document/"dictate" that __schema__ implementations accept **kwarg: Any, to
-#       future proof that contract.
-assert Foo[str].__schema__()["items"] == "str"
+class InvalidBound(Exception):
+    ...
 
 
-class NonEmpty(PhantomBounded[T], Generic[T], min=1):
+class PhantomBound(
+    Phantom[Sized],
+    SizedIterable[T],
+    Generic[T],
+    metaclass=SizedIterablePhantomMeta,
+    bound=SizedIterable,
+    abstract=True,
+):
+    """Takes class arguments ``min: int``, ``max: int``."""
+
+    __min__: int | None
+    __max__: int | None
+
+    # FIXME: Too complex :)
+    def __init_subclass__(  # noqa
+        cls,
+        min: int | None = None,
+        max: int | None = None,
+        **kwargs: Any,
+    ) -> None:
+        inherited_min = getattr(cls, "__min__", None)
+        inherited_max = getattr(cls, "__max__", None)
+        min = inherited_min if min is None else min
+        max = inherited_max if max is None else max
+
+        if min is not None:
+            if inherited_min is not None and min < inherited_min:
+                raise InvalidBound(
+                    f"Cannot set a smaller min than inherited ({min} < "
+                    f"{inherited_min})."
+                )
+            cls.__min__ = min
+
+        if max is not None:
+            if inherited_max is not None and max > inherited_max:
+                raise InvalidBound(
+                    f"Cannot set a larger max than inherited ({max} > {inherited_max})."
+                )
+            cls.__max__ = max
+
+        if min is not None and max is not None:
+            size = interval.open(min, max)
+        elif min is not None:
+            size = numeric.ge(min)
+        elif max is not None:
+            size = numeric.le(max)
+        elif getattr(cls, "__abstract__", False):
+            super().__init_subclass__(**kwargs)
+            return
+        else:
+            raise UnresolvedBounds(
+                f"Concrete type {cls.__qualname__} must provide either min or max, or "
+                f"both."
+            )
+
+        super().__init_subclass__(
+            predicate=boolean.both(
+                is_not_known_mutable_instance,
+                collection.count(size),
+            ),
+            **kwargs,
+        )
+
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return (
+            {
+                **super().__schema__(),  # type: ignore[misc]
+                "type": "string",
+                "minLength": cls.__min__,
+                "maxLength": cls.__max__,
+            }
+            if str in cls.__mro__
+            else {
+                **super().__schema__(),  # type: ignore[misc]
+                "type": "array",
+                "minItems": cls.__min__,
+                "maxItems": cls.__max__,
+            }
+        )
+
+
+class NonEmpty(PhantomBound[T], Generic[T], min=1):
     """A sized collection with at least one item."""
 
     @classmethod
@@ -143,11 +190,21 @@ class NonEmpty(PhantomBounded[T], Generic[T], min=1):
         return {
             **super().__schema__(),  # type: ignore[misc]
             "description": "A non-empty array.",
-            "minItems": 1,
         }
 
 
-class Empty(PhantomBounded[T], Generic[T], max=0):
+class NonEmptyStr(str, NonEmpty[str]):
+    """A sized str with at least one character."""
+
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "description": "A non-empty string.",
+        }
+
+
+class Empty(PhantomBound[T], Generic[T], max=0):
     """A sized collection with exactly zero items."""
 
     @classmethod
@@ -155,5 +212,4 @@ class Empty(PhantomBounded[T], Generic[T], max=0):
         return {
             **super().__schema__(),  # type: ignore[misc]
             "description": "An empty array.",
-            "maxItems": 0,
         }
