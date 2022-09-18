@@ -20,6 +20,7 @@ from phantom.re import FullMatch
 from phantom.re import Match
 from phantom.sized import Empty
 from phantom.sized import NonEmpty
+from phantom.sized import NonEmptyStr
 
 
 class OpenType(int, Open, low=0, high=100):
@@ -58,8 +59,9 @@ class DataModel(pydantic.BaseModel):
     tz_naive: TZNaive
     match: MatchType
     full_match: FullMatchType
-    non_empty: NonEmpty[str]
+    non_empty: NonEmpty[int]
     empty: Empty
+    non_empty_str: NonEmptyStr
     country: ParsedAlpha2
     phone_number: PhoneNumber
     formatted_phone_number: FormattedPhoneNumber
@@ -164,7 +166,7 @@ class TestShippedTypesImplementsSchema:
 
     def test_sized_non_empty_implements_schema(self):
         assert DataModel.schema()["properties"]["non_empty"] == {
-            "allOf": [{"type": "string"}],
+            "allOf": [{"type": "integer"}],
             "title": "NonEmpty",
             "type": "array",
             "description": "A non-empty array.",
@@ -177,6 +179,14 @@ class TestShippedTypesImplementsSchema:
             "type": "array",
             "description": "An empty array.",
             "maxItems": 0,
+        }
+
+    def test_sized_non_empty_str_implements_schema(self):
+        assert DataModel.schema()["properties"]["non_empty_str"] == {
+            "title": "NonEmptyStr",
+            "type": "string",
+            "description": "A non-empty string.",
+            "minLength": 1,
         }
 
     def test_country_code_implements_schema(self):
