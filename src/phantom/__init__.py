@@ -23,7 +23,7 @@ from ._base import PhantomMeta
 from ._base import get_bound_parser
 from .predicates import Predicate
 
-__version__ = "0.17.1"
+__version__ = "0.18.0"
 __all__ = (
     "BoundError",
     "Phantom",
