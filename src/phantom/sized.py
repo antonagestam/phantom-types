@@ -96,7 +96,7 @@ class UnresolvedBounds(Exception):
     ...
 
 
-class InvalidBound(Exception):
+class LSPViolation(Exception):
     ...
 
 
@@ -113,7 +113,6 @@ class PhantomBound(
     __min__: int | None
     __max__: int | None
 
-    # FIXME: Too complex :)
     def __init_subclass__(  # noqa
         cls,
         min: int | None = None,
@@ -122,30 +121,37 @@ class PhantomBound(
     ) -> None:
         inherited_min = getattr(cls, "__min__", None)
         inherited_max = getattr(cls, "__max__", None)
-        min = inherited_min if min is None else min
-        max = inherited_max if max is None else max
+        cls.__min__ = inherited_min if min is None else min
+        cls.__max__ = inherited_max if max is None else max
 
-        if min is not None:
-            if inherited_min is not None and min < inherited_min:
-                raise InvalidBound(
-                    f"Cannot set a smaller min than inherited ({min} < "
-                    f"{inherited_min})."
-                )
-            cls.__min__ = min
+        # Note: There's possibly value in generalizing this, to be able to declaratively
+        #       describe the relationship between an attribute and its inherited value.
+        if (
+            cls.__min__ is not None
+            and inherited_min is not None
+            and cls.__min__ < inherited_min
+        ):
+            raise LSPViolation(
+                f"Cannot set a smaller min than inherited ({cls.__min__} < "
+                f"{inherited_min})."
+            )
 
-        if max is not None:
-            if inherited_max is not None and max > inherited_max:
-                raise InvalidBound(
-                    f"Cannot set a larger max than inherited ({max} > {inherited_max})."
-                )
-            cls.__max__ = max
+        if (
+            cls.__max__ is not None
+            and inherited_max is not None
+            and cls.__max__ > inherited_max
+        ):
+            raise LSPViolation(
+                f"Cannot set a larger max than inherited ({cls.__max__} > "
+                f"{inherited_max})."
+            )
 
-        if min is not None and max is not None:
-            size = interval.open(min, max)
-        elif min is not None:
-            size = numeric.ge(min)
-        elif max is not None:
-            size = numeric.le(max)
+        if cls.__min__ is not None and cls.__max__ is not None:
+            size = interval.open(cls.__min__, cls.__max__)
+        elif cls.__min__ is not None:
+            size = numeric.ge(cls.__min__)
+        elif cls.__max__ is not None:
+            size = numeric.le(cls.__max__)
         elif getattr(cls, "__abstract__", False):
             super().__init_subclass__(**kwargs)
             return
