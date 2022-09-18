@@ -15,11 +15,11 @@ import re
 from typing import Any
 from typing import Pattern
 
-from .base import Phantom
+from . import Phantom
+from ._utils.misc import resolve_class_attr
 from .predicates.re import is_full_match
 from .predicates.re import is_match
 from .schema import Schema
-from .utils import resolve_class_attr
 
 __all__ = ("Match", "FullMatch")
 
@@ -34,7 +34,7 @@ class Match(str, Phantom, abstract=True):
     """
     Takes ``pattern: Pattern[str] | str`` as class argument as either a compiled
     :py:class:`Pattern` or a :py:class:`str` to be compiled. Uses the
-    :py:func:`phantom.predicate.re.is_match` predicate.
+    :py:func:`phantom.predicates.re.is_match` predicate.
     """
 
     __pattern__: Pattern[str]
@@ -58,7 +58,7 @@ class FullMatch(str, Phantom, abstract=True):
     """
     Takes ``pattern: Pattern[str] | str`` as class argument as either a compiled
     :py:class:`Pattern` or a :py:class:`str` to be compiled. Uses the
-    :py:func:`phantom.predicate.re.is_full_match` predicate.
+    :py:func:`phantom.predicates.re.is_full_match` predicate.
     """
 
     __pattern__: Pattern[str]

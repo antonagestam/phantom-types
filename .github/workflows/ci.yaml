@@ -4,50 +4,55 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
+
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#concurrency
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   lint:
     name: Static analysis
-    uses: less-action/reusables/.github/workflows/pre-commit.yaml@v2
+    uses: less-action/reusables/.github/workflows/pre-commit.yaml@v6
     with:
       python-version: "3.10"
 
   check-build:
     name: Check packaging metadata
-    uses: less-action/reusables/.github/workflows/python-test-build.yaml@v2
+    uses: less-action/reusables/.github/workflows/python-test-build.yaml@v6
 
   docs:
     name: Build Sphinx Docs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: ammaraskar/sphinx-action@0.4
         with:
           docs-folder: "docs/"
+          # Fail build on warnings.
+          # https://github.com/ammaraskar/sphinx-action/issues/24
+          build-command: "sphinx-build -W -b html . _build"
 
   test:
     name: Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11-dev"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: pip cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('setup.cfg') }}
-          restore-keys: ${{ runner.os }}-pip
+          cache: pip
+          cache-dependency-path: setup.cfg
       - run: pip install -e '.[phonenumbers,pydantic,test]'
       - run: make coverage
       - run: make coverage-report
       - name: Report coverage
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           file: coverage.xml
           fail_ci_if_error: true

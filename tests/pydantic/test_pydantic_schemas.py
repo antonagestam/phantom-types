@@ -1,3 +1,7 @@
+import sys
+
+import pytest
+
 import pydantic
 from phantom.datetime import TZAware
 from phantom.datetime import TZNaive
@@ -11,6 +15,7 @@ from phantom.interval import Open
 from phantom.interval import OpenClosed
 from phantom.interval import Portion
 from phantom.iso3166 import ParsedAlpha2
+from phantom.negated import SequenceNotStr
 from phantom.re import FullMatch
 from phantom.re import Match
 from phantom.sized import Empty
@@ -58,6 +63,7 @@ class DataModel(pydantic.BaseModel):
     country: ParsedAlpha2
     phone_number: PhoneNumber
     formatted_phone_number: FormattedPhoneNumber
+    sequence_not_str: SequenceNotStr[int]
 
 
 class TestShippedTypesImplementsSchema:
@@ -196,4 +202,18 @@ class TestShippedTypesImplementsSchema:
             "description": "A valid E.164 phone number.",
             "type": "string",
             "format": "E.164",
+        }
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 9),
+        reason=(
+            "Pydantic behavior oddly differs for Python 3.8 and below, where it "
+            "instead of using the class name, uses the name of the field as title."
+        ),
+    )
+    def test_sequence_not_str_implements_schema(self):
+        assert DataModel.schema()["properties"]["sequence_not_str"] == {
+            "title": "SequenceNotStr",
+            "type": "array",
+            "items": {"type": "integer"},
         }

@@ -4,9 +4,9 @@ immutable collections. There is a naive check that eliminates some of the most c
 mutable collections in the instance check. However, a guaranteed check is probably
 impossible to implement, so some amount of developer discipline is required.
 
-Sized types are created by subclassing ``PhantomSized`` and providing a predicate that
-will be called with the size of the tested collection. For instance, ``NonEmpty`` is
-implemented using ``len=numeric.greater(0)``.
+Sized types are created by subclassing :py:class:`PhantomSized` and providing a
+predicate that will be called with the size of the tested collection. For instance,
+:py:class:`NonEmpty` is implemented using ``len=numeric.greater(0)``.
 
 This made-up type would describe sized collections with between 5 and 10 ints:
 
@@ -18,15 +18,9 @@ This made-up type would describe sized collections with between 5 and 10 ints:
 from typing import Any
 from typing import Generic
 from typing import Iterable
-from typing import MutableMapping
-from typing import MutableSequence
-from typing import MutableSet
 from typing import Optional
 from typing import Sized
 from typing import TypeVar
-from typing import Union
-
-from numerary.types import RealLike
 
 # We attempt to import _ProtocolMeta from typing_extensions to support Python 3.7 but
 # fall back the typing module to support Python 3.8+. This is the closest I could find
@@ -35,15 +29,15 @@ from numerary.types import RealLike
 try:
     from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
 except ImportError:
-    from typing import _ProtocolMeta  # type: ignore[attr-defined]
+    from typing import _ProtocolMeta
 
-from typing_extensions import Final
 from typing_extensions import Protocol
 from typing_extensions import runtime_checkable
 
 from . import Phantom
 from . import PhantomMeta
 from . import Predicate
+from ._utils.misc import is_not_known_mutable_instance
 from .predicates import boolean
 from .predicates import collection
 from .predicates import generic
@@ -59,7 +53,6 @@ __all__ = (
 )
 
 
-mutable: Final = (MutableSequence, MutableSet, MutableMapping)
 T = TypeVar("T", bound=object, covariant=True)
 
 
@@ -68,8 +61,6 @@ class SizedIterable(Sized, Iterable[T], Protocol[T]):
     """Intersection of :py:class:`typing.Sized` and :py:class:`typing.Iterable`."""
 
 
-# This raises a mypy error because disallow_subclassing_any is enabled and _ProtocolMeta
-# isn't publicly typed.
 class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):  # type: ignore[misc]
     ...
 
@@ -82,12 +73,12 @@ class PhantomSized(
     bound=SizedIterable,
     abstract=True,
 ):
-    """Takes class argument ``len: Predicate[RealLike]``."""
+    """Takes class argument ``len: Predicate[int]``."""
 
-    def __init_subclass__(cls, len: Predicate[RealLike], **kwargs: Any) -> None:
+    def __init_subclass__(cls, len: Predicate[int], **kwargs: Any) -> None:
         super().__init_subclass__(
             predicate=boolean.both(
-                boolean.negate(generic.of_type(mutable)),
+                is_not_known_mutable_instance,
                 collection.count(len),
             ),
             **kwargs,

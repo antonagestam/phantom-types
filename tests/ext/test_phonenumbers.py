@@ -1,6 +1,6 @@
 import pytest
 
-from phantom.base import BoundError
+from phantom import BoundError
 from phantom.ext.phonenumbers import FormattedPhoneNumber
 from phantom.ext.phonenumbers import InvalidPhoneNumber
 from phantom.ext.phonenumbers import PhoneNumber

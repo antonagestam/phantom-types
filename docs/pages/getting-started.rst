@@ -9,7 +9,7 @@ providing a predicate function.
 
 .. code-block:: python
 
-    from phantom.base import Phantom
+    from phantom import Phantom
 
     # A boolean predicate that checks if a given string is a greeting. This function is
     # of type ``Predicate[str]`` as it requires its argument to be a ``str``.
@@ -24,11 +24,6 @@ providing a predicate function.
     class Greeting(str, Phantom, predicate=is_greeting):
         ...
 
-
-    # Now we can make the same operations as with our previous example.
-    hello = "Hello there"
-    assert isinstance(hello, Greeting)
-    hi = Greeting.parse("Hi there")
 
     hello = "Hello there"
     # We can narrow types using mypy's type guards

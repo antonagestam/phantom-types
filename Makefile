@@ -4,7 +4,7 @@ SHELL := /usr/bin/env bash
 
 # Currently running typeguard on all modules except:
 # - phantom.interval
-# - phantom.base
+# - phantom._base
 # - phantom.ext.phonenumbers
 typeguard_packages := \
 	phantom.boolean \
@@ -15,7 +15,7 @@ typeguard_packages := \
 	phantom.schema \
 	phantom.sized \
 	phantom.utils \
-	phantom.predicates.base \
+	phantom.predicates._base \
 	phantom.predicates.boolean \
 	phantom.predicates.collection \
 	phantom.predicates.datetime \

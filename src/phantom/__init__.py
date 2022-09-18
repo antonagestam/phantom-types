@@ -3,7 +3,7 @@ Use ``Phantom`` to create arbitrary phantom types using boolean predicates.
 
 .. code-block:: python
 
-    import phantom
+    from phantom import Phantom
 
 
     def is_big(value: int) -> bool:
@@ -16,11 +16,19 @@ Use ``Phantom`` to create arbitrary phantom types using boolean predicates.
 
     assert isinstance(10, Big)  # this passes
 """
-from .base import Phantom
-from .base import PhantomBase
-from .base import PhantomMeta
-from .base import get_bound_parser
-from .predicates.base import Predicate
+from ._base import BoundError
+from ._base import Phantom
+from ._base import PhantomBase
+from ._base import PhantomMeta
+from ._base import get_bound_parser
+from .predicates import Predicate
 
-__version__ = "0.15.1"
-__all__ = ("PhantomBase", "Phantom", "Predicate", "get_bound_parser", "PhantomMeta")
+__version__ = "0.17.1"
+__all__ = (
+    "BoundError",
+    "Phantom",
+    "PhantomBase",
+    "PhantomMeta",
+    "get_bound_parser",
+    "Predicate",
+)

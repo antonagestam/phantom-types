@@ -113,7 +113,7 @@ def fully_qualified_name(cls: type) -> str:
 
 
 mutable: Final = (MutableSequence, MutableSet, MutableMapping)
-NotKnownMutable = NewType("NotKnownMutable", type)
+NotKnownMutableType = NewType("NotKnownMutableType", type)
 """
 Internal type to mark types that are not known to be mutable. The term immutable is
 avoided here because there is no way to guarantee that a checked type isn't actually
@@ -121,19 +121,24 @@ mutable, so we don't want to communicate in strong terms here.
 """
 
 
-class MutableType(TypeError):
-    ...
+def is_not_known_mutable_type(type_: BoundType) -> TypeGuard[NotKnownMutableType]:
+    return not (
+        any(is_subtype(type_, mutable_type) for mutable_type in mutable)
+        or (
+            is_dataclass(type_)
+            and not type_.__dataclass_params__.frozen  # type: ignore[union-attr]
+        )
+    )
 
 
-def is_not_mutable(type_: BoundType) -> TypeGuard[NotKnownMutable]:
-    if any(is_subtype(type_, mutable_type) for mutable_type in mutable):
-        raise MutableType(f"{type_!r} is a subclass of one of {mutable!r}")
-    if (
-        is_dataclass(type_)
-        and not type_.__dataclass_params__.frozen  # type: ignore[union-attr]
-    ):
-        raise MutableType(f"{type_!r} is a an unfrozen dataclass type")
-    return True
+def is_not_known_mutable_instance(value: object) -> bool:
+    return not (
+        isinstance(value, mutable)
+        or (
+            is_dataclass(value)
+            and not value.__dataclass_params__.frozen  # type: ignore[attr-defined]
+        )
+    )
 
 
 MaybeUnionType: type | None

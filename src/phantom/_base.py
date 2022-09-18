@@ -15,19 +15,19 @@ from typing_extensions import Protocol
 from typing_extensions import get_args
 from typing_extensions import runtime_checkable
 
-from .predicates.base import Predicate
+from ._utils.misc import BoundType
+from ._utils.misc import NotKnownMutableType
+from ._utils.misc import UnresolvedClassAttribute
+from ._utils.misc import fully_qualified_name
+from ._utils.misc import is_not_known_mutable_type
+from ._utils.misc import is_subtype
+from ._utils.misc import is_union
+from ._utils.misc import resolve_class_attr
+from .predicates import Predicate
 from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
 from .schema import SchemaField
-from .utils import BoundType
-from .utils import NotKnownMutable
-from .utils import UnresolvedClassAttribute
-from .utils import fully_qualified_name
-from .utils import is_not_mutable
-from .utils import is_subtype
-from .utils import is_union
-from .utils import resolve_class_attr
 
 
 @runtime_checkable
@@ -122,6 +122,10 @@ class AbstractInstanceCheck(TypeError):
     ...
 
 
+class MutableType(TypeError):
+    ...
+
+
 class Phantom(PhantomBase, Generic[T]):
     """
     Base class for predicate-based phantom types.
@@ -149,7 +153,7 @@ class Phantom(PhantomBase, Generic[T]):
     #
     # When subclassing, the bound of the new type must be a subtype of the bound
     # of the super class.
-    __bound__: ClassVar[NotKnownMutable]
+    __bound__: ClassVar[NotKnownMutableType]
     __abstract__: ClassVar[bool]
 
     def __init_subclass__(
@@ -201,11 +205,12 @@ class Phantom(PhantomBase, Generic[T]):
 
         if inherited is not None and not is_subtype(bound, inherited):
             raise BoundError(
-                f"The bounds of {cls.__qualname__} are not compatible with its "
+                f"The bound of {cls.__qualname__} is not compatible with its "
                 f"inherited bounds."
             )
 
-        assert is_not_mutable(bound)
+        if not is_not_known_mutable_type(bound):
+            raise MutableType(f"The bound of {cls.__qualname__} is mutable.")
 
         cls.__bound__ = bound
 

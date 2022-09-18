@@ -3,7 +3,7 @@ Types describing objects that coerce to either ``True`` or ``False`` respectivel
 calling ``bool()`` on them.
 """
 
-from .base import Phantom
+from . import Phantom
 from .predicates import boolean
 
 

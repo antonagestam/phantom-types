@@ -2,8 +2,8 @@ from typing import Union
 
 import pytest
 
-from phantom.utils import BoundType
-from phantom.utils import is_subtype
+from phantom._utils.misc import BoundType
+from phantom._utils.misc import is_subtype
 
 
 class A:
