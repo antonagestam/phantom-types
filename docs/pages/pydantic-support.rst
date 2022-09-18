@@ -28,27 +28,3 @@ To make a phantom type compatible with pydantic, all you need to do is override
 As can be seen in the example, ``__schema__()`` implementations are expected to return a
 dict extending its ``super().__schema__()``, however this is not a requirement and any
 :class:`Schema <phantom.schema.Schema>`-compatible ``dict`` can be returned.
-
-Caveats
--------
-
-Sized containers are currently only partially supported. Their validation is accurate
-but their schemas aren't propagating their inner type. This likely won't be possible to
-support until pydantic exposes its ``ModelField`` to ``__modify_schema__``. To work
-around this subclasses of :class:`PhantomSized <phantom.sized.PhantomSized>` can specify
-``"items"`` like so:
-
-.. code-block:: python
-
-    class LimitedSize(PhantomSized[int], len=numeric.greater(10)):
-        @classmethod
-        def __schema__(cls) -> Schema:
-            return super().__schema__() | Schema(
-                minItems=10,
-                items={"type": "integer"},
-            )
-
-As seen in the example, phantom sized types also currently need to manually specify
-``"minItems"`` and ``"maxItems"``. This is planned to be remedied by introducing an
-intermediary ``BoundedSize`` type that provides introspection capabilities for those
-attributes.
