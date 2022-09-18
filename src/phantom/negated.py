@@ -21,9 +21,7 @@ T = TypeVar("T")
 
 class SequenceNotStr(
     Sequence[T],
-    # Explicitly pass object here as workaround for this issue:
-    # https://github.com/python/cpython/issues/94607
-    Phantom[object],
+    Phantom,
     Generic[T],
     # Note: We don't eliminate mutable types here like in PhantomSized. This is because
     # the property of not being a str cannot change by mutation, so this specific
