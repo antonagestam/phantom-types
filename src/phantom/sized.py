@@ -133,6 +133,7 @@ class PhantomBound(
         cls,
         min: int | None = None,
         max: int | None = None,
+        abstract: bool = False,
         **kwargs: Any,
     ) -> None:
         inherited_min = getattr(cls, "__min__", None)
@@ -168,8 +169,8 @@ class PhantomBound(
             size = numeric.ge(cls.__min__)
         elif cls.__max__ is not None:
             size = numeric.le(cls.__max__)
-        elif getattr(cls, "__abstract__", False):
-            super().__init_subclass__(**kwargs)
+        elif abstract:
+            super().__init_subclass__(abstract=abstract, **kwargs)
             return
         else:
             raise UnresolvedBounds(
@@ -182,6 +183,7 @@ class PhantomBound(
                 is_not_known_mutable_instance,
                 collection.count(size),
             ),
+            abstract=abstract,
             **kwargs,
         )
 
