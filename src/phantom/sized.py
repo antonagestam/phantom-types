@@ -4,16 +4,25 @@ immutable collections. There is a naive check that eliminates some of the most c
 mutable collections in the instance check. However, a guaranteed check is probably
 impossible to implement, so some amount of developer discipline is required.
 
-Sized types are created by subclassing :py:class:`PhantomSized` and providing a
-predicate that will be called with the size of the tested collection. For instance,
-:py:class:`NonEmpty` is implemented using ``len=numeric.greater(0)``.
+Sized types are created by subclassing :py:class:`PhantomBound` and providing a minimum,
+maximum, or both as the ``min`` and ``max`` class arguments. For instance,
+:py:class:`NonEmpty` is implemented using ``min=1``.
 
 This made-up type would describe sized collections with between 5 and 10 ints:
 
 .. code-block:: python
 
-    class SpecificSize(PhantomSized[int], len=interval.open(5, 10)):
+    class SpecificSize(PhantomBound[int], min=5, max=10):
         ...
+
+
+This example creates a type that accepts strings with 255 or less characters:
+
+.. code-block:: python
+
+    class SizedStr(str, PhantomBound[str], max=255):
+        ...
+
 """
 from __future__ import annotations
 
@@ -48,7 +57,9 @@ except ImportError:
 __all__ = (
     "SizedIterable",
     "PhantomSized",
+    "PhantomBound",
     "NonEmpty",
+    "NonEmptyStr",
     "Empty",
 )
 
@@ -73,7 +84,12 @@ class PhantomSized(
     bound=SizedIterable,
     abstract=True,
 ):
-    """Takes class argument ``len: Predicate[int]``."""
+    """
+    Takes class argument ``len: Predicate[int]``.
+
+    Discouraged in favor of :py:class:`PhantomBound`, which better supports automatic
+    schema generation.
+    """
 
     def __init_subclass__(cls, len: Predicate[int], **kwargs: Any) -> None:
         super().__init_subclass__(
