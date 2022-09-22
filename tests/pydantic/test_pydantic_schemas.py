@@ -78,18 +78,18 @@ class DataModel(pydantic.BaseModel):
 class TestShippedTypesImplementsSchema:
     def test_interval_open_implements_schema(self):
         assert DataModel.schema()["properties"]["open"] == {
-            "minimum": 0,
-            "maximum": 100,
-            "description": "A value in the inclusive range (0, 100).",
+            "exclusiveMinimum": 0,
+            "exclusiveMaximum": 100,
+            "description": "A value in the exclusive range (0, 100).",
             "title": "OpenType",
             "type": "integer",
         }
 
     def test_interval_closed_implements_schema(self):
         assert DataModel.schema()["properties"]["closed"] == {
-            "description": "A value in the exclusive range [-1, 1].",
-            "exclusiveMinimum": -1,
-            "exclusiveMaximum": 1,
+            "description": "A value in the inclusive range [-1, 1].",
+            "minimum": -1,
+            "maximum": 1,
             "title": "ClosedType",
             "type": "number",
         }
@@ -97,8 +97,8 @@ class TestShippedTypesImplementsSchema:
     def test_interval_open_closed_implements_schema(self):
         assert DataModel.schema()["properties"]["open_closed"] == {
             "description": "A value in the half-open range (0, 100].",
-            "minimum": 0,
-            "exclusiveMaximum": 100,
+            "exclusiveMinimum": 0,
+            "maximum": 100,
             "title": "OpenClosedType",
             "type": "number",
         }
@@ -107,8 +107,8 @@ class TestShippedTypesImplementsSchema:
         assert DataModel.schema()["properties"]["closed_open"] == {
             "title": "ClosedOpenType",
             "description": "A value in the half-open range [-100, 0).",
-            "exclusiveMinimum": -100,
-            "maximum": 0,
+            "minimum": -100,
+            "exclusiveMaximum": 0,
             "type": "number",
         }
 
@@ -116,14 +116,14 @@ class TestShippedTypesImplementsSchema:
         assert DataModel.schema()["properties"]["negative_int"] == {
             "title": "NegativeInt",
             "maximum": 0,
-            "description": "An integer value in the inclusive range (-∞, 0).",
+            "description": "An integer value in the inclusive range (-∞, 0].",
             "type": "integer",
         }
 
     def test_interval_natural_implements_schema(self):
         assert DataModel.schema()["properties"]["natural"] == {
             "title": "Natural",
-            "description": "An integer value in the inclusive range (0, ∞).",
+            "description": "An integer value in the inclusive range [0, ∞).",
             "minimum": 0,
             "type": "integer",
         }
@@ -131,7 +131,7 @@ class TestShippedTypesImplementsSchema:
     def test_interval_portion_implements_schema(self):
         assert DataModel.schema()["properties"]["portion"] == {
             "title": "Portion",
-            "description": "A float value in the inclusive range (0, 1).",
+            "description": "A float value in the inclusive range [0, 1].",
             "minimum": 0,
             "maximum": 1,
             "type": "number",

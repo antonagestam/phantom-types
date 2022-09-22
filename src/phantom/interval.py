@@ -105,11 +105,11 @@ class Open(Interval, check=interval.open, abstract=True):
         return {
             **super().__schema__(),  # type: ignore[misc]
             "description": (
-                f"A value in the inclusive range ({_format_limit(cls.__low__)}, "
+                f"A value in the exclusive range ({_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)})."
             ),
-            "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "maximum": cls.__high__ if cls.__high__ != inf else None,
+            "exclusiveMinimum": cls.__low__ if cls.__low__ != neg_inf else None,
+            "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
 
@@ -121,11 +121,11 @@ class Closed(Interval, check=interval.closed, abstract=True):
         return {
             **super().__schema__(),  # type: ignore[misc]
             "description": (
-                f"A value in the exclusive range [{_format_limit(cls.__low__)}, "
+                f"A value in the inclusive range [{_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)}]."
             ),
-            "exclusiveMinimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
+            "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
+            "maximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
 
@@ -140,8 +140,8 @@ class OpenClosed(Interval, check=interval.open_closed, abstract=True):
                 f"A value in the half-open range ({_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)}]."
             ),
-            "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
+            "exclusiveMinimum": cls.__low__ if cls.__low__ != neg_inf else None,
+            "maximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
 
@@ -156,39 +156,39 @@ class ClosedOpen(Interval, check=interval.closed_open, abstract=True):
                 f"A value in the half-open range [{_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)})."
             ),
-            "exclusiveMinimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "maximum": cls.__high__ if cls.__high__ != inf else None,
+            "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
+            "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
 
-class Natural(int, Open, low=0):
-    """Represents integer values in the inclusive range ``(0, ∞)``."""
+class Natural(int, ClosedOpen, low=0):
+    """Represents integer values in the inclusive range ``[0, ∞)``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
         return {
             **super().__schema__(),  # type: ignore[misc]
-            "description": "An integer value in the inclusive range (0, ∞).",
+            "description": "An integer value in the inclusive range [0, ∞).",
         }
 
 
-class NegativeInt(int, Open, high=0):
-    """Represents integer values in the inclusive range ``(-∞, 0)``."""
+class NegativeInt(int, OpenClosed, high=0):
+    """Represents integer values in the inclusive range ``(-∞, 0]``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
         return {
             **super().__schema__(),  # type: ignore[misc]
-            "description": "An integer value in the inclusive range (-∞, 0).",
+            "description": "An integer value in the inclusive range (-∞, 0].",
         }
 
 
-class Portion(float, Open, low=0, high=1):
-    """Represents float values in the inclusive range ``(0, 1)``."""
+class Portion(float, Closed, low=0, high=1):
+    """Represents float values in the inclusive range ``[0, 1]``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
         return {
             **super().__schema__(),  # type: ignore[misc]
-            "description": "A float value in the inclusive range (0, 1).",
+            "description": "A float value in the inclusive range [0, 1].",
         }
