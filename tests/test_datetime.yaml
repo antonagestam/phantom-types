@@ -28,3 +28,14 @@
     reveal_type(dt.tzinfo) # N: Revealed type is "Union[datetime.tzinfo, None]"
     assert isinstance(dt, TZAware)
     reveal_type(dt.tzinfo) # N: Revealed type is "datetime.tzinfo"
+- case: bound_is_not_erased
+  main: |
+    import datetime
+    from phantom.datetime import TZAware, TZNaive
+
+    o: datetime.datetime
+    aware = TZAware.parse(o)
+    naive = TZNaive.parse(o)
+
+    reveal_type(aware.month) # N: Revealed type is "builtins.int"
+    reveal_type(naive.month) # N: Revealed type is "builtins.int"
