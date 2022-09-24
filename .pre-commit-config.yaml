@@ -60,6 +60,7 @@ repos:
     hooks:
       - id: mypy
         exclude: ^examples/
+        pass_filenames: false
         additional_dependencies:
           - typing-extensions==4.3.0
           - pytest==7.1.3
