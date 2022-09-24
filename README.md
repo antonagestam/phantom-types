@@ -29,6 +29,23 @@ You can install all extras with the `[all]` marker, all indivudually with
 to enable certain features. The documentation has further information about which
 functionality requires extra dependencies.
 
+#### Extras
+
+- `phantom-types[dateutil]` installs [python-dateutil]. Required to use [`TZAware` and
+  `TZNaive`][phantom-datetime] for parsing strings.
+- `phantom-types[phonenumbers]` installs [phonenumbers]. Required to use
+  [`phantom.ext.phonenumbers`][phantom-phonenumbers].
+- `phantom-types[pydantic]` installs [pydantic].
+- `phantom-types[all]` installs all of the above.
+
+[python-dateutil]: https://pypi.org/project/python-dateutil/
+[phonenumbers]: https://pypi.org/project/phonenumbers/
+[pydantic]: https://pypi.org/project/pydantic/
+[phantom-datetime]:
+  https://phantom-types.readthedocs.io/en/main/pages/types.html#module-phantom.datetime
+[phantom-phonenumbers]:
+  https://phantom-types.readthedocs.io/en/main/pages/external-wrappers.html#module-phantom.ext.phonenumbers
+
 ```bash
 $  python3 -m pip install phantom-types[all]
 ```
