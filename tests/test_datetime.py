@@ -114,6 +114,7 @@ class TestTZAware:
         with pytest.raises(BoundError):
             TZAware.parse(value)
 
+    @pytest.mark.external
     @parametrize_invalid_str
     def test_parse_rejects_invalid_str(self, value: object):
         with pytest.raises(TypeError):
@@ -166,6 +167,7 @@ class TestTZNaive:
         with pytest.raises(BoundError):
             TZNaive.parse(value)
 
+    @pytest.mark.external
     @parametrize_invalid_str
     def test_parse_rejects_invalid_str(self, value: object):
         with pytest.raises(TypeError):
