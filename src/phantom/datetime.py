@@ -20,6 +20,10 @@ class TZAware(datetime.datetime, Phantom, predicate=is_tz_aware):
     True
     """
 
+    # A property of being aware is (dt.tzinfo != None), so we can safely narrow this
+    # attribute to not include None.
+    tzinfo: datetime.tzinfo
+
     @classmethod
     def __schema__(cls) -> Schema:
         return {
