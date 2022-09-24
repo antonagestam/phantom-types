@@ -34,6 +34,23 @@ parametrize_invalid_type = pytest.mark.parametrize(
         1,
         1.1,
         (),
+        # https://github.com/pydantic/pydantic/security/advisories/GHSA-5jqp-qgf6-3pvh
+        float("inf"),
+        float("-inf"),
+    ),
+)
+parametrize_invalid_str = pytest.mark.parametrize(
+    "value",
+    (
+        # https://github.com/pydantic/pydantic/security/advisories/GHSA-5jqp-qgf6-3pvh
+        "infinity",
+        "inf",
+        "-infinity",
+        "-inf",
+        "2022-13-24",
+        "20222-12-24",
+        "2022-12-32",
+        "foo",
     ),
 )
 min_utc = datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
@@ -97,6 +114,11 @@ class TestTZAware:
         with pytest.raises(BoundError):
             TZAware.parse(value)
 
+    @parametrize_invalid_str
+    def test_parse_rejects_invalid_str(self, value: object):
+        with pytest.raises(TypeError):
+            TZAware.parse(value)
+
     @pytest.mark.external
     @parametrize_naive_str
     def test_parse_rejects_naive_str(self, value: str, expected: datetime.datetime):
@@ -142,6 +164,11 @@ class TestTZNaive:
     @parametrize_invalid_type
     def test_parse_rejects_non_str_object(self, value: object):
         with pytest.raises(BoundError):
+            TZNaive.parse(value)
+
+    @parametrize_invalid_str
+    def test_parse_rejects_invalid_str(self, value: object):
+        with pytest.raises(TypeError):
             TZNaive.parse(value)
 
     @pytest.mark.external

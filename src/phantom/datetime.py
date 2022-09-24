@@ -19,11 +19,14 @@ from .predicates.datetime import is_tz_naive
 from .schema import Schema
 
 try:
-    from dateutil.parser import parse as parse_datetime_str
+    import dateutil.parser
+
+    parse_datetime_str = dateutil.parser.parse
+    DateutilParseError = dateutil.parser.ParserError
 except ImportError as e:
     exception = e
 
-    def parse_datetime_str(  # type: ignore[misc]
+    def parse_datetime_str(
         *_: object,
         **__: object,
     ) -> datetime.datetime:
@@ -32,11 +35,21 @@ except ImportError as e:
             "can be installed with the phantom-types[dateutil] extra."
         ) from exception
 
+    class DateutilParseError(Exception):  # type: ignore[no-redef]
+        ...
+
+
+__all__ = ("TZAware", "TZNaive")
+
 
 def parse_datetime(value: object) -> datetime.datetime:
     if isinstance(value, datetime.datetime):
         return value
-    return parse_datetime_str(parse_str(value))
+    str_value = parse_str(value)
+    try:
+        return parse_datetime_str(str_value)
+    except DateutilParseError as exc:
+        raise TypeError("Could not parse datetime from given string") from exc
 
 
 class TZAware(datetime.datetime, Phantom, predicate=is_tz_aware):

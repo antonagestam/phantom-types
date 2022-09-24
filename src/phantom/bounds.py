@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Any
 from typing import Callable
 from typing import Iterable
@@ -49,4 +51,4 @@ def get_bound_parser(bound: Any) -> Callable[[object], T]:
     return parser
 
 
-parse_str: Final = get_bound_parser(str)
+parse_str: Final[Callable[[object], str]] = get_bound_parser(str)
