@@ -98,7 +98,7 @@ def _format_limit(value: SupportsEq) -> str:
 
 
 class Exclusive(Interval, check=interval.exclusive, abstract=True):
-    """Uses :py:func:`phantom.predicate.interval.exclusive` as ``check``."""
+    """Uses :py:func:`phantom.predicates.interval.exclusive` as ``check``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
@@ -114,7 +114,7 @@ class Exclusive(Interval, check=interval.exclusive, abstract=True):
 
 
 class Inclusive(Interval, check=interval.inclusive, abstract=True):
-    """Uses :py:func:`phantom.predicate.interval.inclusive` as ``check``."""
+    """Uses :py:func:`phantom.predicates.interval.inclusive` as ``check``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
@@ -130,7 +130,7 @@ class Inclusive(Interval, check=interval.inclusive, abstract=True):
 
 
 class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=True):
-    """Uses :py:func:`phantom.predicate.interval.exclusive_inclusive` as ``check``."""
+    """Uses :py:func:`phantom.predicates.interval.exclusive_inclusive` as ``check``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
@@ -146,7 +146,7 @@ class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=
 
 
 class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=True):
-    """Uses :py:func:`phantom.predicate.interval.inclusive_exclusive` as ``check``."""
+    """Uses :py:func:`phantom.predicates.interval.inclusive_exclusive` as ``check``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
