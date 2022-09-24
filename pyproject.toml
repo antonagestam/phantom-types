@@ -9,3 +9,7 @@ target-version = ["py38"]
 norecursedirs = ["examples"]
 testpaths = ["tests", "src", "docs"]
 addopts = "--mypy-ini-file=setup.cfg --mypy-only-local-stub --doctest-modules"
+markers = [
+  "external: mark tests that require extra dependencies",
+  "no_external: mark tests that will fail if run with extra dependencies",
+]

@@ -18,7 +18,7 @@ from typing_extensions import Literal
 from typing_extensions import get_args
 
 from phantom import Phantom
-from phantom import get_bound_parser
+from phantom.bounds import parse_str
 from phantom.predicates.collection import contained
 from phantom.schema import Schema
 
@@ -288,7 +288,6 @@ LiteralAlpha2 = Literal[
 
 ALPHA2: Final = frozenset(get_args(LiteralAlpha2))
 is_alpha2_country_code = contained(ALPHA2)
-parse_str = get_bound_parser(str)
 
 
 class InvalidCountryCode(TypeError):

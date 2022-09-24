@@ -1,0 +1,6 @@
+class BoundError(TypeError):
+    ...
+
+
+class MissingDependency(Exception):
+    ...
