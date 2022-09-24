@@ -48,7 +48,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
           cache-dependency-path: setup.cfg
-      - run: pip install -e '.[phonenumbers,pydantic,test]'
+      - run: pip install -e '.[all,test]'
       - run: make coverage
       - run: make coverage-report
       - name: Report coverage
