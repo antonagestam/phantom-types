@@ -16,11 +16,11 @@ Use ``Phantom`` to create arbitrary phantom types using boolean predicates.
 
     assert isinstance(10, Big)  # this passes
 """
-from ._base import BoundError
 from ._base import Phantom
 from ._base import PhantomBase
 from ._base import PhantomMeta
-from ._base import get_bound_parser
+from .bounds import get_bound_parser
+from .errors import BoundError
 from .predicates import Predicate
 
 __version__ = "0.18.0"

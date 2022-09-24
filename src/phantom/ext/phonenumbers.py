@@ -15,7 +15,7 @@ import phonenumbers
 from typing_extensions import Final
 
 from phantom import Phantom
-from phantom import get_bound_parser
+from phantom.bounds import parse_str
 from phantom.fn import excepts
 from phantom.schema import Schema
 
@@ -64,7 +64,6 @@ def normalize_phone_number(
 
 
 is_phone_number = excepts(InvalidPhoneNumber)(_deconstruct_phone_number)
-parse_str = get_bound_parser(str)
 
 
 def is_formatted_phone_number(number: str) -> bool:
