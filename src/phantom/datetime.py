@@ -1,5 +1,11 @@
 """
 Types for narrowing on the builtin datetime types.
+
+These types can be used without installing any extra dependencies, however, to parse
+strings, python-dateutil must be installed or a
+:py:class:`phantom.errors.MissingDependency` error will be raised when calling parse.
+
+You can install python-dateutil by using the ``[dateutil]`` or ``[all]`` extras.
 """
 from __future__ import annotations
 
