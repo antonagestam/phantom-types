@@ -24,11 +24,6 @@ avoid shotgun parsing by enabling you to practice ["Parse, don't validate"][pars
 $  python3 -m pip install phantom-types
 ```
 
-You can install all extras with the `[all]` marker, all indivudually with
-`[phonenumbers]`, `[dateutil]` and `[pydantic]`, respectively. These extras are required
-to enable certain features. The documentation has further information about which
-functionality requires extra dependencies.
-
 #### Extras
 
 - `phantom-types[dateutil]` installs [python-dateutil]. Required to use [`TZAware` and
