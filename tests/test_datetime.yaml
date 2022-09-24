@@ -19,3 +19,12 @@
       TZAware.parse(datetime.datetime.now(tz=datetime.timezone.utc))
     )
     reveal_type(b) # N: Revealed type is "phantom.datetime.TZAware"
+- case: narrowing_to_tz_aware_makes_tzinfo_non_optional
+  main: |
+    import datetime
+    from phantom.datetime import TZAware
+
+    dt: datetime.datetime
+    reveal_type(dt.tzinfo) # N: Revealed type is "Union[datetime.tzinfo, None]"
+    assert isinstance(dt, TZAware)
+    reveal_type(dt.tzinfo) # N: Revealed type is "datetime.tzinfo"
