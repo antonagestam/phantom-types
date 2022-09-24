@@ -24,6 +24,8 @@ from phantom.sized import NonEmpty
 from phantom.sized import NonEmptyStr
 from phantom.sized import PhantomSized
 
+pytestmark = [pytest.mark.external]
+
 
 class OpenType(int, Open, low=0, high=100):
     ...

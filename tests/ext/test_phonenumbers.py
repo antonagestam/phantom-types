@@ -1,6 +1,6 @@
 import pytest
 
-from phantom import BoundError
+from phantom.errors import BoundError
 from phantom.ext.phonenumbers import FormattedPhoneNumber
 from phantom.ext.phonenumbers import InvalidPhoneNumber
 from phantom.ext.phonenumbers import PhoneNumber
@@ -8,6 +8,8 @@ from phantom.ext.phonenumbers import _deconstruct_phone_number
 from phantom.ext.phonenumbers import is_formatted_phone_number
 from phantom.ext.phonenumbers import is_phone_number
 from phantom.ext.phonenumbers import normalize_phone_number
+
+pytestmark = [pytest.mark.external]
 
 
 class TestPhoneNumber:

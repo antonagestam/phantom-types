@@ -5,13 +5,13 @@ from typing import Union
 
 import pytest
 
-from phantom import BoundError
 from phantom import Phantom
 from phantom import PhantomMeta
-from phantom import get_bound_parser
 from phantom._base import AbstractInstanceCheck
 from phantom._base import MutableType
 from phantom._utils.misc import UnresolvedClassAttribute
+from phantom.bounds import get_bound_parser
+from phantom.errors import BoundError
 from phantom.predicates import boolean
 from phantom.predicates.numeric import positive
 

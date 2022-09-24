@@ -24,6 +24,27 @@ avoid shotgun parsing by enabling you to practice ["Parse, don't validate"][pars
 $  python3 -m pip install phantom-types
 ```
 
+#### Extras
+
+- `phantom-types[dateutil]` installs [python-dateutil]. Required to use [`TZAware` and
+  `TZNaive`][phantom-datetime] for parsing strings.
+- `phantom-types[phonenumbers]` installs [phonenumbers]. Required to use
+  [`phantom.ext.phonenumbers`][phantom-phonenumbers].
+- `phantom-types[pydantic]` installs [pydantic].
+- `phantom-types[all]` installs all of the above.
+
+[python-dateutil]: https://pypi.org/project/python-dateutil/
+[phonenumbers]: https://pypi.org/project/phonenumbers/
+[pydantic]: https://pypi.org/project/pydantic/
+[phantom-datetime]:
+  https://phantom-types.readthedocs.io/en/main/pages/types.html#module-phantom.datetime
+[phantom-phonenumbers]:
+  https://phantom-types.readthedocs.io/en/main/pages/external-wrappers.html#module-phantom.ext.phonenumbers
+
+```bash
+$  python3 -m pip install phantom-types[all]
+```
+
 ## Examples
 
 By introducing a phantom type we can define a pre-condition for a function argument.
@@ -133,7 +154,7 @@ The code above outputs the following JSONSchema.
 Install development requirements, preferably in a virtualenv:
 
 ```bash
-$ python3 -m pip install .[test,pydantic,phonenumbers]
+$ python3 -m pip install .[all,test]
 ```
 
 Run tests:
