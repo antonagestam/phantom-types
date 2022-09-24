@@ -2,10 +2,10 @@ from decimal import Decimal
 
 import pytest
 
+from phantom.interval import Inclusive
 from phantom.interval import Interval
 from phantom.interval import Natural
 from phantom.interval import NegativeInt
-from phantom.interval import Open
 from phantom.interval import Portion
 from phantom.predicates import interval
 
@@ -18,7 +18,7 @@ class TestInterval:
                 ...
 
     def test_parse_coerces_str(self):
-        class Great(int, Open, low=10):
+        class Great(int, Inclusive, low=10):
             ...
 
         assert Great.parse("10") == 10
@@ -27,7 +27,7 @@ class TestInterval:
         class I(  # noqa: E742
             Decimal,
             Interval,
-            check=interval.open,
+            check=interval.exclusive,
             low=Decimal("1.15"),
             high=Decimal("2.36"),
         ):

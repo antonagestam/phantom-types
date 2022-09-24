@@ -17,49 +17,49 @@ from ._utils import bind_name
 T = TypeVar("T")
 
 
-def open(low: T, high: T) -> Predicate[SupportsLeGe[T]]:
+def exclusive(low: T, high: T) -> Predicate[SupportsLtGt[T]]:
     """
     Create a predicate that succeeds when its argument is in the range ``(low, high)``.
     """
 
-    @bind_name(open, low, high)
-    def check(value: SupportsLeGe[T]) -> bool:
-        return low <= value <= high
+    @bind_name(exclusive, low, high)
+    def check(value: SupportsLtGt[T]) -> bool:
+        return low < value < high
 
     return check
 
 
-def open_closed(low: T, high: T) -> Predicate[SupportsLtGe[T]]:
+def exclusive_inclusive(low: T, high: T) -> Predicate[SupportsLeGt[T]]:
     """
     Create a predicate that succeeds when its argument is in the range ``(low, high]``.
     """
 
-    @bind_name(open_closed, low, high)
-    def check(value: SupportsLtGe[T]) -> bool:
-        return low <= value < high
-
-    return check
-
-
-def closed_open(low: T, high: T) -> Predicate[SupportsLeGt[T]]:
-    """
-    Create a predicate that succeeds when its argument is in the range ``[low, high)``.
-    """
-
-    @bind_name(closed_open, low, high)
+    @bind_name(exclusive_inclusive, low, high)
     def check(value: SupportsLeGt[T]) -> bool:
         return low < value <= high
 
     return check
 
 
-def closed(low: T, high: T) -> Predicate[SupportsLtGt[T]]:
+def inclusive_exclusive(low: T, high: T) -> Predicate[SupportsLtGe[T]]:
+    """
+    Create a predicate that succeeds when its argument is in the range ``[low, high)``.
+    """
+
+    @bind_name(inclusive_exclusive, low, high)
+    def check(value: SupportsLtGe[T]) -> bool:
+        return low <= value < high
+
+    return check
+
+
+def inclusive(low: T, high: T) -> Predicate[SupportsLeGe[T]]:
     """
     Create a predicate that succeeds when its argument is in the range ``[low, high]``.
     """
 
-    @bind_name(closed, low, high)
-    def check(value: SupportsLtGt[T]) -> bool:
-        return low < value < high
+    @bind_name(inclusive, low, high)
+    def check(value: SupportsLeGe[T]) -> bool:
+        return low <= value <= high
 
     return check

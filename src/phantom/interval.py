@@ -1,12 +1,12 @@
 """
 Types for describing narrower sets of numbers than builtin numeric types like ``int``
 and ``float``. Use the provided base classes to build custom intervals. For example, to
-represent number in the open range ``(0, 100)`` for a volume control you would define a
-type like this:
+represent number in the closed range ``[0, 100]`` for a volume control you would define
+a type like this:
 
 .. code-block:: python
 
-    class VolumeLevel(int, Open, low=0, high=100):
+    class VolumeLevel(int, Inclusive, low=0, high=100):
         ...
 
 There is also a set of concrete ready-to-use interval types provided, that use predicate
@@ -97,40 +97,40 @@ def _format_limit(value: SupportsEq) -> str:
     return str(value)
 
 
-class Open(Interval, check=interval.open, abstract=True):
-    """Uses :py:func:`phantom.predicate.interval.open` as ``check``."""
+class Exclusive(Interval, check=interval.exclusive, abstract=True):
+    """Uses :py:func:`phantom.predicates.interval.exclusive` as ``check``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
         return {
             **super().__schema__(),  # type: ignore[misc]
             "description": (
-                f"A value in the inclusive range ({_format_limit(cls.__low__)}, "
+                f"A value in the exclusive range ({_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)})."
-            ),
-            "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "maximum": cls.__high__ if cls.__high__ != inf else None,
-        }
-
-
-class Closed(Interval, check=interval.closed, abstract=True):
-    """Uses :py:func:`phantom.predicate.interval.closed` as ``check``."""
-
-    @classmethod
-    def __schema__(cls) -> Schema:
-        return {
-            **super().__schema__(),  # type: ignore[misc]
-            "description": (
-                f"A value in the exclusive range [{_format_limit(cls.__low__)}, "
-                f"{_format_limit(cls.__high__)}]."
             ),
             "exclusiveMinimum": cls.__low__ if cls.__low__ != neg_inf else None,
             "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
 
-class OpenClosed(Interval, check=interval.open_closed, abstract=True):
-    """Uses :py:func:`phantom.predicate.interval.open_closed` as ``check``."""
+class Inclusive(Interval, check=interval.inclusive, abstract=True):
+    """Uses :py:func:`phantom.predicates.interval.inclusive` as ``check``."""
+
+    @classmethod
+    def __schema__(cls) -> Schema:
+        return {
+            **super().__schema__(),  # type: ignore[misc]
+            "description": (
+                f"A value in the inclusive range [{_format_limit(cls.__low__)}, "
+                f"{_format_limit(cls.__high__)}]."
+            ),
+            "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
+            "maximum": cls.__high__ if cls.__high__ != inf else None,
+        }
+
+
+class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=True):
+    """Uses :py:func:`phantom.predicates.interval.exclusive_inclusive` as ``check``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
@@ -140,13 +140,13 @@ class OpenClosed(Interval, check=interval.open_closed, abstract=True):
                 f"A value in the half-open range ({_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)}]."
             ),
-            "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
+            "exclusiveMinimum": cls.__low__ if cls.__low__ != neg_inf else None,
+            "maximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
 
-class ClosedOpen(Interval, check=interval.closed_open, abstract=True):
-    """Uses :py:func:`phantom.predicate.interval.closed_open` as ``check``."""
+class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=True):
+    """Uses :py:func:`phantom.predicates.interval.inclusive_exclusive` as ``check``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
@@ -156,39 +156,39 @@ class ClosedOpen(Interval, check=interval.closed_open, abstract=True):
                 f"A value in the half-open range [{_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)})."
             ),
-            "exclusiveMinimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "maximum": cls.__high__ if cls.__high__ != inf else None,
+            "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
+            "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
 
-class Natural(int, Open, low=0):
-    """Represents integer values in the inclusive range ``(0, ∞)``."""
+class Natural(int, InclusiveExclusive, low=0):
+    """Represents integer values in the inclusive range ``[0, ∞)``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
         return {
             **super().__schema__(),  # type: ignore[misc]
-            "description": "An integer value in the inclusive range (0, ∞).",
+            "description": "An integer value in the inclusive range [0, ∞).",
         }
 
 
-class NegativeInt(int, Open, high=0):
-    """Represents integer values in the inclusive range ``(-∞, 0)``."""
+class NegativeInt(int, ExclusiveInclusive, high=0):
+    """Represents integer values in the inclusive range ``(-∞, 0]``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
         return {
             **super().__schema__(),  # type: ignore[misc]
-            "description": "An integer value in the inclusive range (-∞, 0).",
+            "description": "An integer value in the inclusive range (-∞, 0].",
         }
 
 
-class Portion(float, Open, low=0, high=1):
-    """Represents float values in the inclusive range ``(0, 1)``."""
+class Portion(float, Inclusive, low=0, high=1):
+    """Represents float values in the inclusive range ``[0, 1]``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
         return {
             **super().__schema__(),  # type: ignore[misc]
-            "description": "A float value in the inclusive range (0, 1).",
+            "description": "A float value in the inclusive range [0, 1].",
         }
