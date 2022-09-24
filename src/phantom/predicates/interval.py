@@ -17,12 +17,12 @@ from ._utils import bind_name
 T = TypeVar("T")
 
 
-def open(low: T, high: T) -> Predicate[SupportsLtGt[T]]:
+def exclusive(low: T, high: T) -> Predicate[SupportsLtGt[T]]:
     """
     Create a predicate that succeeds when its argument is in the range ``(low, high)``.
     """
 
-    @bind_name(open, low, high)
+    @bind_name(exclusive, low, high)
     def check(value: SupportsLtGt[T]) -> bool:
         return low < value < high
 
@@ -53,12 +53,12 @@ def inclusive_exclusive(low: T, high: T) -> Predicate[SupportsLtGe[T]]:
     return check
 
 
-def closed(low: T, high: T) -> Predicate[SupportsLeGe[T]]:
+def inclusive(low: T, high: T) -> Predicate[SupportsLeGe[T]]:
     """
     Create a predicate that succeeds when its argument is in the range ``[low, high]``.
     """
 
-    @bind_name(closed, low, high)
+    @bind_name(inclusive, low, high)
     def check(value: SupportsLeGe[T]) -> bool:
         return low <= value <= high
 

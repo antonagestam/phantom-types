@@ -164,7 +164,7 @@ class PhantomBound(
             )
 
         if cls.__min__ is not None and cls.__max__ is not None:
-            size = interval.closed(cls.__min__, cls.__max__)
+            size = interval.inclusive(cls.__min__, cls.__max__)
         elif cls.__min__ is not None:
             size = numeric.ge(cls.__min__)
         elif cls.__max__ is not None:

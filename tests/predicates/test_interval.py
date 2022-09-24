@@ -39,54 +39,54 @@ parametrize_outside = pytest.mark.parametrize(
 
 class TestExclusive:
     def test_returns_true_for_middle_value(self) -> None:
-        assert interval.open(1, 3)(2) is True
+        assert interval.exclusive(1, 3)(2) is True
 
     @parametrize_inside
     def test_returns_true_for_inside_value(
         self, value: float, boundaries: Boundaries
     ) -> None:
-        assert interval.open(*boundaries)(value) is True
+        assert interval.exclusive(*boundaries)(value) is True
 
     @parametrize_on_edge
     def test_returns_false_for_edge_value(
         self, value: float, boundaries: Boundaries
     ) -> None:
-        assert interval.open(*boundaries)(value) is False
+        assert interval.exclusive(*boundaries)(value) is False
 
     @parametrize_outside
     def test_returns_false_for_outside_value(
         self, value: float, boundaries: Boundaries
     ) -> None:
-        assert interval.open(*boundaries)(value) is False
+        assert interval.exclusive(*boundaries)(value) is False
 
     def test_repr_contains_bound_parameter(self):
-        assert_predicate_name_equals(interval.open(0, 1), "open(0, 1)")
+        assert_predicate_name_equals(interval.exclusive(0, 1), "exclusive(0, 1)")
 
 
 class TestInclusive:
     def test_returns_true_for_middle_value(self) -> None:
-        assert interval.closed(1, 3)(2) is True
+        assert interval.inclusive(1, 3)(2) is True
 
     @parametrize_inside
     def test_returns_true_for_inside_value(
         self, value: float, boundaries: Boundaries
     ) -> None:
-        assert interval.closed(*boundaries)(value) is True
+        assert interval.inclusive(*boundaries)(value) is True
 
     @parametrize_on_edge
     def test_returns_true_for_edge_value(
         self, value: float, boundaries: Boundaries
     ) -> None:
-        assert interval.closed(*boundaries)(value) is True
+        assert interval.inclusive(*boundaries)(value) is True
 
     @parametrize_outside
     def test_returns_false_for_outside_value(
         self, value: float, boundaries: Boundaries
     ) -> None:
-        assert interval.closed(*boundaries)(value) is False
+        assert interval.inclusive(*boundaries)(value) is False
 
     def test_repr_contains_bound_parameter(self):
-        assert_predicate_name_equals(interval.closed(0, 1), "closed(0, 1)")
+        assert_predicate_name_equals(interval.inclusive(0, 1), "inclusive(0, 1)")
 
 
 class TestInclusiveExclusive:

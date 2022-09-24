@@ -27,7 +27,7 @@ class TestInterval:
         class I(  # noqa: E742
             Decimal,
             Interval,
-            check=interval.open,
+            check=interval.exclusive,
             low=Decimal("1.15"),
             high=Decimal("2.36"),
         ):

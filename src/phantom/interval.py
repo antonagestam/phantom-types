@@ -97,8 +97,8 @@ def _format_limit(value: SupportsEq) -> str:
     return str(value)
 
 
-class Exclusive(Interval, check=interval.open, abstract=True):
-    """Uses :py:func:`phantom.predicate.interval.open` as ``check``."""
+class Exclusive(Interval, check=interval.exclusive, abstract=True):
+    """Uses :py:func:`phantom.predicate.interval.exclusive` as ``check``."""
 
     @classmethod
     def __schema__(cls) -> Schema:
@@ -113,8 +113,8 @@ class Exclusive(Interval, check=interval.open, abstract=True):
         }
 
 
-class Inclusive(Interval, check=interval.closed, abstract=True):
-    """Uses :py:func:`phantom.predicate.interval.closed` as ``check``."""
+class Inclusive(Interval, check=interval.inclusive, abstract=True):
+    """Uses :py:func:`phantom.predicate.interval.inclusive` as ``check``."""
 
     @classmethod
     def __schema__(cls) -> Schema:

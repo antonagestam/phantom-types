@@ -54,8 +54,8 @@ class OddSize(PhantomSized[int], len=odd):
 
 
 class DataModel(pydantic.BaseModel):
-    open: ExclusiveType
-    closed: InclusiveType
+    exclusive: ExclusiveType
+    inclusive: InclusiveType
     exclusive_inclusive: ExclusiveInclusiveType
     inclusive_exclusive: InclusiveExclusiveType
     negative_int: NegativeInt
@@ -77,7 +77,7 @@ class DataModel(pydantic.BaseModel):
 
 class TestShippedTypesImplementsSchema:
     def test_interval_open_implements_schema(self):
-        assert DataModel.schema()["properties"]["open"] == {
+        assert DataModel.schema()["properties"]["exclusive"] == {
             "exclusiveMinimum": 0,
             "exclusiveMaximum": 100,
             "description": "A value in the exclusive range (0, 100).",
@@ -86,7 +86,7 @@ class TestShippedTypesImplementsSchema:
         }
 
     def test_interval_closed_implements_schema(self):
-        assert DataModel.schema()["properties"]["closed"] == {
+        assert DataModel.schema()["properties"]["inclusive"] == {
             "description": "A value in the inclusive range [-1, 1].",
             "minimum": -1,
             "maximum": 1,
