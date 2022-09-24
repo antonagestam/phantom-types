@@ -48,23 +48,21 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
           cache-dependency-path: setup.cfg
-
       - name: Install minimum requirements
         run: pip install --upgrade -e '.[test]'
       - name: Run all tests that don't require extra dependencies
         run: >-
           coverage run -m pytest
-            -m "no_external or not external"
-            --ignore=src/phantom/ext
-            --ignore=tests/pydantic
-            --ignore=tests/ext
-
+          -m "no_external or not external"
+          --ignore=src/phantom/ext
+          --ignore=tests/pydantic
+          --ignore=tests/ext
       - name: Install extra requirements
         run: pip install --upgrade -e '.[all,test]'
       - name: Run all tests that require extra dependencies
-        run: |
-          coverage run -m pytest -m "external"
-
+        run: >-
+          coverage run -m pytest
+          -m "external"
       - name: Collect coverage
         run: |
           coverage report
