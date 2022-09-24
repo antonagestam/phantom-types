@@ -52,7 +52,7 @@ jobs:
         run: pip install --upgrade -e '.[test]'
       - name: Run all tests that don't require extra dependencies
         run: >-
-          coverage run -m pytest
+          coverage run --append -m pytest
           -m "no_external or not external"
           --ignore=src/phantom/ext
           --ignore=tests/pydantic
@@ -61,7 +61,7 @@ jobs:
         run: pip install --upgrade -e '.[all,test]'
       - name: Run all tests that require extra dependencies
         run: >-
-          coverage run -m pytest
+          coverage run --append -m pytest
           -m "external"
       - name: Collect coverage
         run: |
