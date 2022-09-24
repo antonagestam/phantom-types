@@ -9,6 +9,8 @@ from phantom.ext.phonenumbers import is_formatted_phone_number
 from phantom.ext.phonenumbers import is_phone_number
 from phantom.ext.phonenumbers import normalize_phone_number
 
+pytestmark = [pytest.mark.external]
+
 
 class TestPhoneNumber:
     def test_unparsable_number_is_not_instance(self):

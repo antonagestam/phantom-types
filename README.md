@@ -24,6 +24,15 @@ avoid shotgun parsing by enabling you to practice ["Parse, don't validate"][pars
 $  python3 -m pip install phantom-types
 ```
 
+You can install all extras with the `[all]` marker, all indivudually with
+`[phonenumbers]`, `[dateutil]` and `[pydantic]`, respectively. These extras are required
+to enable certain features. The documentation has further information about which
+functionality requires extra dependencies.
+
+```bash
+$  python3 -m pip install phantom-types[all]
+```
+
 ## Examples
 
 By introducing a phantom type we can define a pre-condition for a function argument.
@@ -133,7 +142,7 @@ The code above outputs the following JSONSchema.
 Install development requirements, preferably in a virtualenv:
 
 ```bash
-$ python3 -m pip install .[test,pydantic,phonenumbers]
+$ python3 -m pip install .[all,test]
 ```
 
 Run tests:
