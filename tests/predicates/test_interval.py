@@ -37,7 +37,7 @@ parametrize_outside = pytest.mark.parametrize(
 )
 
 
-class TestOpen:
+class TestExclusive:
     def test_returns_true_for_middle_value(self) -> None:
         assert interval.open(1, 3)(2) is True
 
@@ -63,7 +63,7 @@ class TestOpen:
         assert_predicate_name_equals(interval.open(0, 1), "open(0, 1)")
 
 
-class TestClosed:
+class TestInclusive:
     def test_returns_true_for_middle_value(self) -> None:
         assert interval.closed(1, 3)(2) is True
 
@@ -89,37 +89,41 @@ class TestClosed:
         assert_predicate_name_equals(interval.closed(0, 1), "closed(0, 1)")
 
 
-class TestClosedOpen:
+class TestInclusiveExclusive:
     def test_returns_true_for_middle_value(self) -> None:
-        assert interval.closed_open(1, 3)(2) is True
+        assert interval.inclusive_exclusive(1, 3)(2) is True
 
     def test_lower_bound(self) -> None:
-        intv = interval.closed_open(5, 10)
+        intv = interval.inclusive_exclusive(5, 10)
         assert intv(5) is True
         assert intv(4.9999) is False
 
     def test_upper_bound(self) -> None:
-        intv = interval.closed_open(5, 10)
+        intv = interval.inclusive_exclusive(5, 10)
         assert intv(10) is False
         assert intv(9.9999) is True
 
     def test_repr_contains_bound_parameter(self):
-        assert_predicate_name_equals(interval.closed_open(0, 1), "closed_open(0, 1)")
+        assert_predicate_name_equals(
+            interval.inclusive_exclusive(0, 1), "inclusive_exclusive(0, 1)"
+        )
 
 
-class TestOpenClosed:
+class TestExclusiveInclusive:
     def test_returns_true_for_middle_value(self) -> None:
-        assert interval.open_closed(1, 3)(2) is True
+        assert interval.exclusive_inclusive(1, 3)(2) is True
 
     def test_lower_bound(self) -> None:
-        intv = interval.open_closed(5, 10)
+        intv = interval.exclusive_inclusive(5, 10)
         assert intv(5.0001) is True
         assert intv(5) is False
 
     def test_upper_bound(self) -> None:
-        intv = interval.open_closed(5, 10)
+        intv = interval.exclusive_inclusive(5, 10)
         assert intv(10) is True
         assert intv(10.00001) is False
 
     def test_repr_contains_bound_parameter(self):
-        assert_predicate_name_equals(interval.open_closed(0, 1), "open_closed(0, 1)")
+        assert_predicate_name_equals(
+            interval.exclusive_inclusive(0, 1), "exclusive_inclusive(0, 1)"
+        )

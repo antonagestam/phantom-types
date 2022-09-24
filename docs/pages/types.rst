@@ -62,22 +62,22 @@ Base classes
     :undoc-members:
     :show-inheritance:
 
-.. autoclass:: phantom.interval.Open
+.. autoclass:: phantom.interval.Exclusive
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. autoclass:: phantom.interval.Closed
+.. autoclass:: phantom.interval.Inclusive
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. autoclass:: phantom.interval.OpenClosed
+.. autoclass:: phantom.interval.ExclusiveInclusive
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. autoclass:: phantom.interval.ClosedOpen
+.. autoclass:: phantom.interval.InclusiveExclusive
     :members:
     :undoc-members:
     :show-inheritance:

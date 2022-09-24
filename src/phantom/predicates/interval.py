@@ -29,24 +29,24 @@ def open(low: T, high: T) -> Predicate[SupportsLtGt[T]]:
     return check
 
 
-def open_closed(low: T, high: T) -> Predicate[SupportsLeGt[T]]:
+def exclusive_inclusive(low: T, high: T) -> Predicate[SupportsLeGt[T]]:
     """
     Create a predicate that succeeds when its argument is in the range ``(low, high]``.
     """
 
-    @bind_name(open_closed, low, high)
+    @bind_name(exclusive_inclusive, low, high)
     def check(value: SupportsLeGt[T]) -> bool:
         return low < value <= high
 
     return check
 
 
-def closed_open(low: T, high: T) -> Predicate[SupportsLtGe[T]]:
+def inclusive_exclusive(low: T, high: T) -> Predicate[SupportsLtGe[T]]:
     """
     Create a predicate that succeeds when its argument is in the range ``[low, high)``.
     """
 
-    @bind_name(closed_open, low, high)
+    @bind_name(inclusive_exclusive, low, high)
     def check(value: SupportsLtGe[T]) -> bool:
         return low <= value < high
 

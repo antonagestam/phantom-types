@@ -8,13 +8,13 @@ from pydantic import BaseModel
 from phantom.datetime import TZAware
 from phantom.iso3166 import CountryCode
 from phantom.interval import Natural
-from phantom.predicates.interval import closed_open
+from phantom.predicates.interval import exclusive_inclusive
 from phantom.re import Match
 from phantom.sized import NonEmpty
 from phantom.sized import PhantomSized
 
 
-class Name(str, PhantomSized[str], len=closed_open(0, 20)):
+class Name(str, PhantomSized[str], len=exclusive_inclusive(0, 20)):
     @classmethod
     def __schema__(cls):
         return {
