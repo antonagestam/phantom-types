@@ -1,4 +1,4 @@
-<p align=center><img src=docs/phantom.svg alt="Depiction of phantom types in the wild"></p>
+<p align=center><img src=https://raw.githubusercontent.com/antonagestam/phantom-types/main/docs/phantom.svg></p>
 
 <h1 align=center>phantom-types</h1>
 
