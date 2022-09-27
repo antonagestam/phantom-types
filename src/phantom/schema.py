@@ -1,9 +1,12 @@
 from typing import Optional
 from typing import Sequence
 
+from typing_extensions import ClassVar
 from typing_extensions import Literal
 from typing_extensions import TypedDict
 from typing_extensions import final
+
+import textwrap
 
 
 class Schema(TypedDict, total=False):
@@ -22,7 +25,25 @@ class Schema(TypedDict, total=False):
     maxLength: Optional[int]
 
 
+def desc_from_docstring(cls) -> str:
+    # ds = (next(filter(lambda x: x.__doc__, cls.__mro__), cls).__doc__ or "").strip()
+    ds = (cls.__doc__ or "").strip()
+
+    if not ds:
+        return ""
+    lines = ds.split("\n", maxsplit=1)
+    if len(lines) == 1:
+        return ds
+    rest = textwrap.dedent(lines[1])
+    if fst := lines[0].strip():
+        return f"{fst}\n{rest}"
+    else:
+        return rest
+
+
 class SchemaField:
+    __use_docstring__: ClassVar[str]
+
     @classmethod
     @final
     def __modify_schema__(cls, field_schema: dict) -> None:
@@ -35,6 +56,9 @@ class SchemaField:
         field_schema.update(
             {key: value for key, value in cls.__schema__().items() if value is not None}
         )
+        if cls.__use_docstring__:
+            if ds := desc_from_docstring(cls):
+                field_schema["description"] = ds
 
     @classmethod
     def __schema__(cls) -> Schema:
