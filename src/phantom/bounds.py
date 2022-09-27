@@ -8,6 +8,7 @@ from typing import TypeVar
 from typing import cast
 
 from typing_extensions import Final
+from typing_extensions import TypeAlias
 from typing_extensions import get_args
 
 from ._utils.misc import is_union
@@ -16,9 +17,10 @@ from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
 
-__all__ = ("get_bound_parser", "parse_str")
+__all__ = ("get_bound_parser", "parse_str", "Parser")
 
 T = TypeVar("T", covariant=True)
+Parser: TypeAlias = Callable[[object], T]
 
 
 def display_bound(bound: Any) -> str:
@@ -33,7 +35,7 @@ def display_bound(bound: Any) -> str:
     return str(getattr(bound, "__name__", bound))
 
 
-def get_bound_parser(bound: Any) -> Callable[[object], T]:
+def get_bound_parser(bound: type[T] | Any) -> Parser[T]:
     within_bound = (
         # Interpret sequence as intersection
         all_of(of_type(t) for t in bound)

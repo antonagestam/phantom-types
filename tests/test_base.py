@@ -10,6 +10,7 @@ from phantom import PhantomMeta
 from phantom._base import AbstractInstanceCheck
 from phantom._base import MutableType
 from phantom._utils.misc import UnresolvedClassAttribute
+from phantom.bounds import Parser
 from phantom.bounds import get_bound_parser
 from phantom.errors import BoundError
 from phantom.predicates import boolean
@@ -22,7 +23,7 @@ class TestParseBound:
         assert get_bound_parser(int)(value) is value
 
     def test_raises_for_invalid_value(self):
-        parser = get_bound_parser(int)
+        parser: Parser[int] = get_bound_parser(int)
         with pytest.raises(
             BoundError,
             match=r"^Value is not within bound of 'int': '1'$",
@@ -30,7 +31,7 @@ class TestParseBound:
             parser("1")
 
     def test_raises_for_invalid_intersection(self):
-        parser = get_bound_parser((int, float))
+        parser: Parser[float] = get_bound_parser((int, float))
         with pytest.raises(
             BoundError,
             match=r"^Value is not within bound of 'Intersection\[int, float\]': '2'$",
@@ -38,7 +39,7 @@ class TestParseBound:
             parser("2")
 
     def test_raises_for_invalid_union(self):
-        parser = get_bound_parser(Union[int, float])
+        parser: Parser[Union[int, float]] = get_bound_parser(Union[int, float])
         with pytest.raises(
             BoundError,
             match=r"^Value is not within bound of 'typing\.Union\[int, float\]': '3'$",
@@ -47,7 +48,9 @@ class TestParseBound:
 
     @pytest.mark.skipif(sys.version_info < (3, 10), reason="requires 3.10+")
     def test_raises_for_invalid_pep_604_union(self):
-        parser = get_bound_parser(int | float)  # type: ignore[operator]
+        parser: Parser[int | float] = get_bound_parser(  # type: ignore[misc]
+            int | float  # type: ignore[operator]
+        )
         with pytest.raises(
             BoundError,
             match=r"^Value is not within bound of 'typing\.Union\[int, float\]': '3'$",
@@ -64,7 +67,7 @@ class TestParseBound:
         class C(A, B):
             ...
 
-        parser = get_bound_parser((A, B))
+        parser: Parser[C] = get_bound_parser((A, B))
         value = C()
         assert parser(value) is value
 
