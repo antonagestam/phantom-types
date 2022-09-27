@@ -17,7 +17,7 @@ from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
 
-__all__ = ("get_bound_parser", "parse_str")
+__all__ = ("get_bound_parser", "parse_str", "Parser")
 
 T = TypeVar("T", covariant=True)
 Parser: TypeAlias = Callable[[object], T]
