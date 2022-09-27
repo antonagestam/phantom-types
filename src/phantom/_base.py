@@ -19,6 +19,7 @@ from ._utils.misc import fully_qualified_name
 from ._utils.misc import is_not_known_mutable_type
 from ._utils.misc import is_subtype
 from ._utils.misc import resolve_class_attr
+from .bounds import Parser
 from .bounds import get_bound_parser
 from .errors import BoundError
 from .predicates import Predicate
@@ -181,8 +182,9 @@ class Phantom(PhantomBase, Generic[T]):
             raise AbstractInstanceCheck(
                 "Abstract phantom types cannot be used in instance checks"
             )
+        bound_parser: Parser[T] = get_bound_parser(cls.__bound__)
         try:
-            instance = get_bound_parser(cls.__bound__)(instance)
+            instance = bound_parser(instance)
         except BoundError:
             return False
         return cls.__predicate__(instance)
