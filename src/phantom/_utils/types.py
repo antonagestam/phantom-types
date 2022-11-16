@@ -1,6 +1,6 @@
 from typing import TypeVar
 
-from numerary.types import CachingProtocolMeta  # type: ignore[attr-defined]
+from numerary.protocol import CachingProtocolMeta
 from typing_extensions import Protocol
 from typing_extensions import runtime_checkable
 
