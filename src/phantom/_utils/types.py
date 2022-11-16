@@ -1,6 +1,10 @@
+import sys
 from typing import TypeVar
 
-from numerary.protocol import CachingProtocolMeta
+if sys.version_info > (3, 7):
+    from numerary.protocol import CachingProtocolMeta
+else:
+    from numerary.types import CachingProtocolMeta  # type: ignore[attr-defined]
 from typing_extensions import Protocol
 from typing_extensions import runtime_checkable
 
