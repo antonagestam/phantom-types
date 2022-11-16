@@ -1,7 +1,7 @@
 import sys
 from typing import TypeVar
 
-if sys.version_info > (3, 7):
+if sys.version_info >= (3, 8):
     from numerary.protocol import CachingProtocolMeta
 else:
     from numerary.types import CachingProtocolMeta  # type: ignore[attr-defined]
