@@ -16,7 +16,7 @@ jobs:
     name: Static analysis
     uses: less-action/reusables/.github/workflows/pre-commit.yaml@main
     with:
-      python-version: "3.10"
+      python-version: "3.11"
 
   check-build:
     name: Check packaging metadata
@@ -27,12 +27,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ammaraskar/sphinx-action@0.4
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          docs-folder: "docs/"
-          # Fail build on warnings.
-          # https://github.com/ammaraskar/sphinx-action/issues/24
-          build-command: "sphinx-build -W -b html . _build"
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: docs/requirements.txt
+      - name: Install dependencies
+        run: pip install --require-hashes -r docs/requirements.txt
+      - name: Build docs
+        run: sphinx-build -W -b html docs docs/_build
 
   test:
     name: Test
