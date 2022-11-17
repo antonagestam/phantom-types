@@ -48,7 +48,7 @@ class TestParseBound:
 
     @pytest.mark.skipif(sys.version_info < (3, 10), reason="requires 3.10+")
     def test_raises_for_invalid_pep_604_union(self):
-        parser: Parser[int | float] = get_bound_parser(  # type: ignore[misc]
+        parser: Parser[int | float] = get_bound_parser(  # type: ignore[syntax]
             int | float  # type: ignore[operator]
         )
         with pytest.raises(

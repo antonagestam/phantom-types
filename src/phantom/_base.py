@@ -41,7 +41,9 @@ class PhantomMeta(abc.ABCMeta):
     def __instancecheck__(self, instance: object) -> bool:
         if not issubclass(self, InstanceCheckable):
             return False
-        return self.__instancecheck__(instance)
+        return self.__instancecheck__(  # type: ignore[no-any-return,attr-defined]
+            instance,
+        )
 
     # With the current level of metaclass support in mypy it's unlikely that we'll be
     # able to make this context typed, hence the ignores.
