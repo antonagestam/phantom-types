@@ -52,14 +52,13 @@ repos:
           - flake8-bugbear
           - flake8-comprehensions
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: "0.19.1"
+    rev: "0.19.2"
     hooks:
       - id: check-github-workflows
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: "v0.991"
     hooks:
       - id: mypy
-        exclude: ^examples/
         pass_filenames: false
         additional_dependencies:
           - typing-extensions==4.3.0
@@ -86,23 +85,4 @@ repos:
       - id: check-manifest
         args: ["--no-build-isolation"]
         additional_dependencies:
-          - setuptools==65.3.0
-
-exclude: |
-  (?x)(
-    /(
-      \.eggs
-      | \.git
-      | \.hg
-      | \.mypy_cache
-      | \.pytest_cache
-      | \.nox
-      | \.tox
-      | \.venv
-      | _build
-      | buck-out
-      | build
-      | dist
-    )/
-    | ^examples/
-  )
+          - setuptools==65.5.1
