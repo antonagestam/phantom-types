@@ -1,5 +1,0 @@
-phantom-types
-pydantic
-pytest
-pytest-mypy-plugins
-mypy>=0.900

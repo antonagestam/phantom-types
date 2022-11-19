@@ -1,12 +1,11 @@
 [build-system]
-requires = ["setuptools>=65.3.0", "wheel"]
+requires = ["setuptools>=65.5.1", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.black]
 target-version = ["py38"]
 
 [tool.pytest.ini_options]
-norecursedirs = ["examples"]
 testpaths = ["tests", "src", "docs"]
 addopts = "--mypy-ini-file=setup.cfg --mypy-only-local-stub --doctest-modules"
 markers = [
