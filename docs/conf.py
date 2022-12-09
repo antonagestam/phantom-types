@@ -42,7 +42,6 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
-    "m2r2",
 ]  #
 
 # Add any paths that contain templates here, relative to this directory.
@@ -53,8 +52,7 @@ templates_path = ["_templates"]
 # html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for a list of
-# builtin themes.
+# The theme to use for HTML and HTML Help pages.
 html_theme = "furo"
 # Set typing.TYPE_CHECKING to True to enable "expensive" typing imports.
 set_type_checking_flag = True
