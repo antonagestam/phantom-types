@@ -6,6 +6,13 @@ on:
   workflow_dispatch: {}
 
 jobs:
+  setup-pages:
+    name: Setup Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v2
+
   build:
     name: Build Sphinx Docs
     runs-on: ubuntu-latest
@@ -21,8 +28,15 @@ jobs:
         run: pip install --require-hashes -r docs/requirements.txt
       - name: Build docs
         run: sphinx-build -W -b html docs docs/_build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: docs/_build
 
   publish:
+    needs:
+      - build
+      - setup-pages
     name: Publish docs on Github Pages
     runs-on: ubuntu-latest
     permissions:
