@@ -50,3 +50,5 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v1
+        with:
+          preview: true
