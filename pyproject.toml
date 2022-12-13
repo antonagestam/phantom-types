@@ -12,3 +12,53 @@ markers = [
   "external: mark tests that require extra dependencies",
   "no_external: mark tests that will fail if run with extra dependencies",
 ]
+
+[tool.ruff]
+fix = true
+target-version = "py37"
+extend-select = [
+  # bugbear
+  "B",
+  # comprehensions
+  "C4",
+  # mccabe
+  "C90",
+  # bandit
+  "S",
+  # blind exception
+  # Bare excepts are caught without this, but this also catches `except Exception: ...`.
+  "BLE",
+  # builtins
+  "A",
+  # Enforce valid noqa comments.
+  "RUF100",
+  # pycodestyle
+  "W",
+  # pyupgrade
+  "UP",
+  # debugger
+  "T10",
+  # print
+  "T20",
+  # quotes
+  "Q",
+  # return
+  # This gives 3 false positives, would be nice otherwise probably.
+  # "RET",
+  # simplify
+  "SIM",
+  # tidy imports
+  # We use this to only outlaw relative parent imports.
+  "TID",
+]
+extend-ignore = [
+  # There's no reason to outlaw asserts.
+  # https://stackoverflow.com/a/68429294/1220706
+  "S101",
+]
+
+[tool.ruff.mccabe]
+max-complexity = 8
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "parents"

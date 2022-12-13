@@ -42,7 +42,7 @@ def _deconstruct_phone_number(
     try:
         parsed_number = phonenumbers.parse(phone_number, region=country_code)
     except phonenumbers.NumberParseException as e:
-        raise InvalidPhoneNumber(e.error_type, e._msg)
+        raise InvalidPhoneNumber(e.error_type, e._msg) from e
     if not phonenumbers.is_valid_number(parsed_number):
         raise InvalidPhoneNumber
     return parsed_number
