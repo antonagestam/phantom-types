@@ -91,7 +91,11 @@ class PhantomSized(
     schema generation.
     """
 
-    def __init_subclass__(cls, len: Predicate[int], **kwargs: Any) -> None:
+    def __init_subclass__(
+        cls,
+        len: Predicate[int],  # noqa: A002
+        **kwargs: Any,
+    ) -> None:
         super().__init_subclass__(
             predicate=boolean.both(
                 is_not_known_mutable_instance,
@@ -129,10 +133,10 @@ class PhantomBound(
     __min__: int | None
     __max__: int | None
 
-    def __init_subclass__(  # noqa
+    def __init_subclass__(
         cls,
-        min: int | None = None,
-        max: int | None = None,
+        min: int | None = None,  # noqa: A002
+        max: int | None = None,  # noqa: A002
         abstract: bool = False,
         **kwargs: Any,
     ) -> None:

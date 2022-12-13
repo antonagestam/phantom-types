@@ -19,9 +19,9 @@ class HasTZAware(pydantic.BaseModel):
 class TestPydanticTZAware:
     @parametrize_aware_str
     def test_can_parse_tz_aware(self, value: str, expected: datetime.datetime):
-        object = HasTZAware.parse_obj({"created_at": value})
-        assert type(object.created_at) is datetime.datetime
-        assert object.created_at == expected
+        obj = HasTZAware.parse_obj({"created_at": value})
+        assert type(obj.created_at) is datetime.datetime
+        assert obj.created_at == expected
 
     def test_tz_aware_rejects_naive_datetime(self):
         with pytest.raises(ValidationError):
@@ -35,9 +35,9 @@ class HasTZNaive(pydantic.BaseModel):
 class TestPydanticTZNaive:
     @parametrize_naive_str
     def test_can_parse_tz_naive(self, value: str, expected: datetime.datetime):
-        object = HasTZNaive.parse_obj({"time_of_day": value})
-        assert type(object.time_of_day) is datetime.datetime
-        assert object.time_of_day == expected
+        obj = HasTZNaive.parse_obj({"time_of_day": value})
+        assert type(obj.time_of_day) is datetime.datetime
+        assert obj.time_of_day == expected
 
     def test_tz_naive_rejects_aware_datetime(self):
         with pytest.raises(ValidationError):
