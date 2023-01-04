@@ -110,9 +110,7 @@ class Phantom(PhantomBase, Generic[T]):
       allows deferring definitions of ``predicate`` and ``bound`` to concrete subtypes.
     * ``use_docstring: bool`` - Set to ``True`` to override the schema description
       with the class docstring. This will take precedence over any descriptions
-      given in ``__schema__``. The behavior is inherited (i.e. the respective class
-      docstring will be used as description) until a subclass sets ``use_docstring``
-      back to ``False``.
+      given in ``__schema__``.
     """
 
     __predicate__: Predicate[T]
@@ -126,12 +124,15 @@ class Phantom(PhantomBase, Generic[T]):
     __bound__: ClassVar[NotKnownMutableType]
     __abstract__: ClassVar[bool]
 
+    # used in SchemaField, but needed here for resolve_class_attr
+    __use_docstring__: ClassVar[bool]
+
     def __init_subclass__(
         cls,
         predicate: Predicate[T] | None = None,
         bound: type[T] | None = None,
         abstract: bool = False,
-        use_docstring: Optional[bool] = None,
+        use_docstring: bool = False,
         **kwargs: Any,
     ) -> None:
         if kwargs:
@@ -140,16 +141,8 @@ class Phantom(PhantomBase, Generic[T]):
         super().__init_subclass__(**kwargs)
         resolve_class_attr(cls, "__abstract__", abstract)
         resolve_class_attr(cls, "__predicate__", predicate)
+        resolve_class_attr(cls, "__use_docstring__", use_docstring)
         cls._resolve_bound(bound)
-
-        if use_docstring is not None:  # manual override
-            setattr(cls, "__use_docstring__", use_docstring)
-        elif not hasattr(cls, "__use_docstring__"):  # missing, set default
-            setattr(cls, "__use_docstring__", False)
-        if getattr(cls, "__use_docstring__") and not cls.__doc__:
-            msg = f"{cls} has no docstring, but use_docstring is set or inherited!"
-            raise RuntimeError(msg)
-
 
     @classmethod
     def _interpret_implicit_bound(cls) -> BoundType:
