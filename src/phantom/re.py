@@ -12,6 +12,7 @@ Types for representing strings that match a pattern.
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Pattern
 
@@ -20,6 +21,9 @@ from ._utils.misc import resolve_class_attr
 from .predicates.re import is_full_match
 from .predicates.re import is_match
 from .schema import Schema
+
+if TYPE_CHECKING:
+    from hypothesis.strategies import SearchStrategy
 
 __all__ = ("Match", "FullMatch")
 
@@ -74,3 +78,9 @@ class FullMatch(str, Phantom, abstract=True):
             "description": "A string that matches the format regular expression.",
             "format": str(cls.__pattern__.pattern),
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> SearchStrategy | None:
+        from hypothesis.strategies import from_regex
+
+        return from_regex(cls.__pattern__, fullmatch=True)

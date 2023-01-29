@@ -10,6 +10,7 @@ so:
 """
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from typing import Union
 from typing import cast
 
@@ -21,6 +22,9 @@ from phantom import Phantom
 from phantom.bounds import parse_str
 from phantom.predicates.collection import contained
 from phantom.schema import Schema
+
+if TYPE_CHECKING:
+    from hypothesis.strategies import SearchStrategy
 
 __all__ = (
     "LiteralAlpha2",
@@ -325,6 +329,12 @@ class ParsedAlpha2(str, Phantom, predicate=is_alpha2_country_code):
             "format": "iso3166-1 alpha-2",
             "title": "Alpha2",
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> None | SearchStrategy:
+        from hypothesis.strategies import sampled_from
+
+        return sampled_from(sorted(ALPHA2))
 
 
 Alpha2 = Union[LiteralAlpha2, ParsedAlpha2]

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import abc
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import Callable
 from typing import ClassVar
@@ -24,6 +25,18 @@ from .bounds import get_bound_parser
 from .errors import BoundError
 from .predicates import Predicate
 from .schema import SchemaField
+
+if TYPE_CHECKING:
+    from hypothesis.strategies import SearchStrategy
+
+register_type_strategy: Callable[
+    [type, SearchStrategy | Callable[[type[T]], SearchStrategy[T]]], None] | None
+
+
+try:
+    from hypothesis.strategies import register_type_strategy
+except ImportError:
+    register_type_strategy = None
 
 
 @runtime_checkable
@@ -52,6 +65,7 @@ class PhantomMeta(abc.ABCMeta):
 
 
 T = TypeVar("T", covariant=True)
+U = TypeVar("U")
 
 
 Derived = TypeVar("Derived", bound="PhantomBase")
@@ -132,6 +146,11 @@ class Phantom(PhantomBase, Generic[T]):
         resolve_class_attr(cls, "__predicate__", predicate)
         cls._resolve_bound(bound)
 
+        if register_type_strategy is not None and not cls.__abstract__:
+            strategy = cls.__register_strategy__()
+            if strategy is not None:
+                register_type_strategy(cls, strategy)
+
     @classmethod
     def _interpret_implicit_bound(cls) -> BoundType:
         def discover_bounds() -> Iterable[type]:
@@ -190,3 +209,7 @@ class Phantom(PhantomBase, Generic[T]):
         except BoundError:
             return False
         return cls.__predicate__(instance)
+
+    @classmethod
+    def __register_strategy__(cls) -> SearchStrategy | Callable[[type[U]], SearchStrategy[U] | None] | None:
+        return None

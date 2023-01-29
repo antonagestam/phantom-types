@@ -26,13 +26,16 @@ This example creates a type that accepts strings with 255 or less characters:
 """
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from typing import Any
+from typing import Callable
 from typing import Generic
 from typing import Iterable
 from typing import Sized
 from typing import TypeVar
 
 from typing_extensions import Protocol
+from typing_extensions import get_args
 from typing_extensions import runtime_checkable
 
 from . import Phantom
@@ -44,6 +47,9 @@ from .predicates import collection
 from .predicates import interval
 from .predicates import numeric
 from .schema import Schema
+
+if TYPE_CHECKING:
+    from hypothesis.strategies import SearchStrategy
 
 # We attempt to import _ProtocolMeta from typing_extensions to support Python 3.7 but
 # fall back the typing module to support Python 3.8+. This is the closest I could find
@@ -209,6 +215,36 @@ class PhantomBound(
             }
         )
 
+    @classmethod
+    def __register_strategy__(cls) -> Callable[[type[T]], SearchStrategy[T] | None]:
+        from hypothesis.strategies import DrawFn
+        from hypothesis.strategies import composite
+        from hypothesis.strategies import from_type
+        from hypothesis.strategies import lists
+        from hypothesis.strategies import text
+
+        def create_strategy(type_: type[T]) -> SearchStrategy[T] | None:
+            if cls.__bound__ == str:
+                return text(min_size=cls.__min__, max_size=cls.__max__)
+
+            try:
+                (inner_type,) = get_args(type_)
+            except ValueError:
+                return None
+
+            @composite
+            def tuples(draw: DrawFn) -> tuple:
+                strategy = lists(
+                    from_type(inner_type),
+                    min_size=cls.__min__,
+                    max_size=cls.__max__,
+                )
+                return tuple(draw(strategy))
+
+            return tuples()
+
+        return create_strategy
+
 
 class NonEmpty(PhantomBound[T], Generic[T], min=1):
     """A sized collection with at least one item."""
@@ -241,3 +277,9 @@ class Empty(PhantomBound[T], Generic[T], max=0):
             **super().__schema__(),  # type: ignore[misc]
             "description": "An empty array.",
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> SearchStrategy:
+        from hypothesis.strategies import just
+
+        return just(())

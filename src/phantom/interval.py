@@ -23,6 +23,7 @@ minimums and maximums to their schema representations.
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import TypeVar
 
@@ -36,6 +37,9 @@ from ._utils.types import Comparable
 from ._utils.types import SupportsEq
 from .predicates import interval
 from .schema import Schema
+
+if TYPE_CHECKING:
+    from hypothesis.strategies import SearchStrategy
 
 N = TypeVar("N", bound=Comparable)
 Derived = TypeVar("Derived", bound="Interval")
@@ -112,6 +116,25 @@ class Exclusive(Interval, check=interval.exclusive, abstract=True):
             "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
+    @classmethod
+    def __register_strategy__(cls) -> None | SearchStrategy:
+        from hypothesis.strategies import floats
+        from hypothesis.strategies import integers
+
+        if issubclass(cls.__bound__, int):
+            return integers(
+                min_value=cls.__low__ + 1 if cls.__low__ != neg_inf else None,
+                max_value=cls.__high__ - 1 if cls.__high__ != inf else None,
+            )
+        if issubclass(cls.__bound__, float):
+            return floats(
+                min_value=(cls.__low__ if cls.__low__ != neg_inf else None),
+                max_value=(cls.__high__ if cls.__high__ != inf else None),
+                exclude_min=True,
+                exclude_max=True,
+            )
+        return None
+
 
 class Inclusive(Interval, check=interval.inclusive, abstract=True):
     """Uses :py:func:`phantom.predicates.interval.inclusive` as ``check``."""
@@ -127,6 +150,22 @@ class Inclusive(Interval, check=interval.inclusive, abstract=True):
             "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
             "maximum": cls.__high__ if cls.__high__ != inf else None,
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> None | SearchStrategy:
+        from hypothesis.strategies import floats
+        from hypothesis.strategies import integers
+
+        low = cls.__low__ if cls.__low__ != neg_inf else None
+        high = cls.__high__ if cls.__high__ != inf else None
+        if issubclass(cls.__bound__, int):
+            return integers(min_value=low, max_value=high)
+        if issubclass(cls.__bound__, float):
+            return floats(
+                min_value=low,
+                max_value=high,
+            )
+        return None
 
 
 class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=True):
@@ -144,6 +183,25 @@ class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=
             "maximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
+    @classmethod
+    def __register_strategy__(cls) -> None | SearchStrategy:
+        from hypothesis.strategies import floats
+        from hypothesis.strategies import integers
+
+        high = cls.__high__ if cls.__high__ != inf else None
+        if issubclass(cls.__bound__, int):
+            return integers(
+                min_value=cls.__low__ + 1 if cls.__low__ != neg_inf else None,
+                max_value=high,
+            )
+        if issubclass(cls.__bound__, float):
+            return floats(
+                min_value=cls.__low__ if cls.__low__ != neg_inf else None,
+                max_value=high,
+                exclude_min=True,
+            )
+        return None
+
 
 class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=True):
     """Uses :py:func:`phantom.predicates.interval.inclusive_exclusive` as ``check``."""
@@ -159,6 +217,25 @@ class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=
             "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
             "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> None | SearchStrategy:
+        from hypothesis.strategies import floats
+        from hypothesis.strategies import integers
+
+        low = cls.__low__ if cls.__low__ != neg_inf else None
+        if issubclass(cls.__bound__, int):
+            return integers(
+                min_value=low,
+                max_value=cls.__high__ - 1 if cls.__high__ != inf else None,
+            )
+        if issubclass(cls.__bound__, float):
+            return floats(
+                min_value=low,
+                max_value=(cls.__high__ if cls.__high__ != inf else None),
+                exclude_max=True,
+            )
+        return None
 
 
 class Natural(int, InclusiveExclusive, low=0):
