@@ -30,7 +30,8 @@ if TYPE_CHECKING:
     from hypothesis.strategies import SearchStrategy
 
 register_type_strategy: Callable[
-    [type, SearchStrategy | Callable[[type[T]], SearchStrategy[T]]], None] | None
+    [type, SearchStrategy | Callable[[type[T]], SearchStrategy[T]]], None
+] | None
 
 
 try:
@@ -211,5 +212,7 @@ class Phantom(PhantomBase, Generic[T]):
         return cls.__predicate__(instance)
 
     @classmethod
-    def __register_strategy__(cls) -> SearchStrategy | Callable[[type[U]], SearchStrategy[U] | None] | None:
+    def __register_strategy__(
+        cls,
+    ) -> SearchStrategy | Callable[[type[U]], SearchStrategy[U] | None] | None:
         return None

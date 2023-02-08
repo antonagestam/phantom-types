@@ -175,7 +175,7 @@ class TestPhantom:
         with pytest.raises(MutableType):
 
             class A(
-                bound_type,  # type: ignore[valid-type,misc]
+                bound_type,  # type: ignore[misc]
                 Phantom,
                 abstract=True,
             ):

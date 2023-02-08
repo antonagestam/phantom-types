@@ -1,13 +1,14 @@
 from __future__ import annotations
+
 from dataclasses import dataclass
 from dataclasses import fields
 from typing import Generic
 from typing import TypeVar
-from typing_extensions import get_origin
 
 from hypothesis import given
 from hypothesis import settings
 from hypothesis.strategies import builds
+from typing_extensions import get_origin
 
 from phantom.boolean import Falsy
 from phantom.boolean import Truthy
