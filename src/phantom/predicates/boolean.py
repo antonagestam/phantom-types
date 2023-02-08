@@ -111,6 +111,6 @@ def one_of(predicates: Iterable[Predicate[T_contra]]) -> Predicate[T_contra]:
 
     @bind_name(one_of, *predicates)
     def check(value: T_contra) -> bool:
-        return 1 == sum(p(value) for p in predicates)
+        return sum(p(value) for p in predicates) == 1
 
     return check
