@@ -26,9 +26,7 @@ This example creates a type that accepts strings with 255 or less characters:
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
 from typing import Any
-from typing import Callable
 from typing import Generic
 from typing import Iterable
 from typing import Sized
@@ -41,15 +39,13 @@ from typing_extensions import runtime_checkable
 from . import Phantom
 from . import PhantomMeta
 from . import Predicate
+from . import _hypothesis
 from ._utils.misc import is_not_known_mutable_instance
 from .predicates import boolean
 from .predicates import collection
 from .predicates import interval
 from .predicates import numeric
 from .schema import Schema
-
-if TYPE_CHECKING:
-    from hypothesis.strategies import SearchStrategy
 
 # We attempt to import _ProtocolMeta from typing_extensions to support Python 3.7 but
 # fall back the typing module to support Python 3.8+. This is the closest I could find
@@ -216,18 +212,21 @@ class PhantomBound(
         )
 
     @classmethod
-    def __register_strategy__(cls) -> Callable[[type[T]], SearchStrategy[T] | None]:
+    def __register_strategy__(cls) -> _hypothesis.HypothesisStrategy:
         from hypothesis.strategies import DrawFn
         from hypothesis.strategies import composite
         from hypothesis.strategies import from_type
         from hypothesis.strategies import lists
         from hypothesis.strategies import text
 
-        def create_strategy(type_: type[T]) -> SearchStrategy[T] | None:
+        def create_strategy(type_: type[T]) -> _hypothesis.SearchStrategy[T] | None:
             min_size = cls.__min__ or 0
 
-            if cls.__bound__ == str:
-                return text(min_size=min_size, max_size=cls.__max__)
+            if cls.__bound__ is str:
+                return text(  # type: ignore[return-value]
+                    min_size=min_size,
+                    max_size=cls.__max__,
+                )
 
             try:
                 (inner_type,) = get_args(type_)
@@ -243,7 +242,7 @@ class PhantomBound(
                 )
                 return tuple(draw(strategy))
 
-            return tuples()
+            return tuples()  # type: ignore[return-value]
 
         return create_strategy
 
@@ -281,7 +280,7 @@ class Empty(PhantomBound[T], Generic[T], max=0):
         }
 
     @classmethod
-    def __register_strategy__(cls) -> SearchStrategy:
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy:
         from hypothesis.strategies import just
 
         return just(())

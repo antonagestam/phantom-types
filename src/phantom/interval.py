@@ -118,7 +118,7 @@ class Exclusive(Interval, check=interval.exclusive, abstract=True):
         }
 
     @classmethod
-    def __register_strategy__(cls) -> None | SearchStrategy:
+    def __register_strategy__(cls) -> SearchStrategy | None:
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
@@ -164,7 +164,7 @@ class Inclusive(Interval, check=interval.inclusive, abstract=True):
         }
 
     @classmethod
-    def __register_strategy__(cls) -> None | SearchStrategy:
+    def __register_strategy__(cls) -> SearchStrategy | None:
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
@@ -204,7 +204,7 @@ class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=
         }
 
     @classmethod
-    def __register_strategy__(cls) -> None | SearchStrategy:
+    def __register_strategy__(cls) -> SearchStrategy | None:
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
@@ -249,7 +249,7 @@ class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=
         }
 
     @classmethod
-    def __register_strategy__(cls) -> None | SearchStrategy:
+    def __register_strategy__(cls) -> SearchStrategy | None:
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 

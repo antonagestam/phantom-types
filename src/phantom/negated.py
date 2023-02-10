@@ -7,8 +7,6 @@ sequence.
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-from typing import Callable
 from typing import Generic
 from typing import Sequence
 from typing import TypeVar
@@ -16,11 +14,9 @@ from typing import TypeVar
 from typing_extensions import get_args
 
 from . import Phantom
+from . import _hypothesis
 from .predicates import boolean
 from .predicates.generic import of_type
-
-if TYPE_CHECKING:
-    from hypothesis.strategies import SearchStrategy
 
 __all__ = ("SequenceNotStr",)
 
@@ -37,11 +33,11 @@ class SequenceNotStr(
     predicate=boolean.negate(of_type((str, bytes))),
 ):
     @classmethod
-    def __register_strategy__(cls) -> Callable[[type[T]], SearchStrategy[T]]:
+    def __register_strategy__(cls) -> _hypothesis.HypothesisStrategy:
         from hypothesis.strategies import from_type
         from hypothesis.strategies import tuples
 
-        def create_strategy(type_: type[T]) -> SearchStrategy[T] | None:
+        def create_strategy(type_: type[T]) -> _hypothesis.SearchStrategy[T] | None:
             try:
                 (inner_type,) = get_args(type_)
             except ValueError:

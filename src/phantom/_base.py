@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import abc
-from typing import TYPE_CHECKING
 from typing import Any
 from typing import Callable
 from typing import ClassVar
@@ -11,11 +10,10 @@ from typing import Iterator
 from typing import TypeVar
 
 from typing_extensions import Protocol
-from typing_extensions import TypeAlias
 from typing_extensions import runtime_checkable
 
+from . import _hypothesis
 from ._utils.misc import BoundType
-from ._utils.misc import NotKnownMutableType
 from ._utils.misc import UnresolvedClassAttribute
 from ._utils.misc import fully_qualified_name
 from ._utils.misc import is_not_known_mutable_type
@@ -26,20 +24,6 @@ from .bounds import get_bound_parser
 from .errors import BoundError
 from .predicates import Predicate
 from .schema import SchemaField
-
-if TYPE_CHECKING:
-    from hypothesis.strategies import SearchStrategy
-
-HypothesisStrategy: TypeAlias = (
-    "SearchStrategy | Callable[[type[T]], SearchStrategy[T]]"
-)
-register_type_strategy: Callable[[type, HypothesisStrategy], None] | None
-
-
-try:
-    from hypothesis.strategies import register_type_strategy
-except ImportError:
-    register_type_strategy = None
 
 
 @runtime_checkable
@@ -134,7 +118,7 @@ class Phantom(PhantomBase, Generic[T]):
     #
     # When subclassing, the bound of the new type must be a subtype of the bound
     # of the super class.
-    __bound__: ClassVar[NotKnownMutableType]
+    __bound__: ClassVar[type]
     __abstract__: ClassVar[bool]
 
     def __init_subclass__(
@@ -149,10 +133,10 @@ class Phantom(PhantomBase, Generic[T]):
         resolve_class_attr(cls, "__predicate__", predicate)
         cls._resolve_bound(bound)
 
-        if register_type_strategy is not None and not cls.__abstract__:
+        if _hypothesis.register_type_strategy is not None and not cls.__abstract__:
             strategy = cls.__register_strategy__()
             if strategy is not None:
-                register_type_strategy(cls, strategy)
+                _hypothesis.register_type_strategy(cls, strategy)
 
     @classmethod
     def _interpret_implicit_bound(cls) -> BoundType:
@@ -214,7 +198,5 @@ class Phantom(PhantomBase, Generic[T]):
         return cls.__predicate__(instance)
 
     @classmethod
-    def __register_strategy__(
-        cls,
-    ) -> SearchStrategy | Callable[[type[U]], SearchStrategy[U] | None] | None:
+    def __register_strategy__(cls) -> _hypothesis.HypothesisStrategy | None:
         return None

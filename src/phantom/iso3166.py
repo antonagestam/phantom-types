@@ -331,7 +331,7 @@ class ParsedAlpha2(str, Phantom, predicate=is_alpha2_country_code):
         }
 
     @classmethod
-    def __register_strategy__(cls) -> None | SearchStrategy:
+    def __register_strategy__(cls) -> SearchStrategy | None:
         from hypothesis.strategies import sampled_from
 
         return sampled_from(sorted(ALPHA2))
