@@ -224,8 +224,10 @@ class PhantomBound(
         from hypothesis.strategies import text
 
         def create_strategy(type_: type[T]) -> SearchStrategy[T] | None:
+            min_size = cls.__min__ or 0
+
             if cls.__bound__ == str:
-                return text(min_size=cls.__min__, max_size=cls.__max__)
+                return text(min_size=min_size, max_size=cls.__max__)
 
             try:
                 (inner_type,) = get_args(type_)
@@ -236,7 +238,7 @@ class PhantomBound(
             def tuples(draw: DrawFn) -> tuple:
                 strategy = lists(
                     from_type(inner_type),
-                    min_size=cls.__min__,
+                    min_size=min_size,
                     max_size=cls.__max__,
                 )
                 return tuple(draw(strategy))

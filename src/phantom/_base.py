@@ -11,6 +11,7 @@ from typing import Iterator
 from typing import TypeVar
 
 from typing_extensions import Protocol
+from typing_extensions import TypeAlias
 from typing_extensions import runtime_checkable
 
 from ._utils.misc import BoundType
@@ -29,9 +30,10 @@ from .schema import SchemaField
 if TYPE_CHECKING:
     from hypothesis.strategies import SearchStrategy
 
-register_type_strategy: Callable[
-    [type, SearchStrategy | Callable[[type[T]], SearchStrategy[T]]], None
-] | None
+HypothesisStrategy: TypeAlias = (
+    "SearchStrategy | Callable[[type[T]], SearchStrategy[T]]"
+)
+register_type_strategy: Callable[[type, HypothesisStrategy], None] | None
 
 
 try:

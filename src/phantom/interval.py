@@ -32,6 +32,7 @@ from typing_extensions import Protocol
 
 from . import Phantom
 from . import Predicate
+from ._utils.misc import is_optional_of
 from ._utils.misc import resolve_class_attr
 from ._utils.types import Comparable
 from ._utils.types import SupportsEq
@@ -121,15 +122,26 @@ class Exclusive(Interval, check=interval.exclusive, abstract=True):
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
-        if issubclass(cls.__bound__, int):
+        low = cls.__low__ if cls.__low__ != neg_inf else None
+        high = cls.__high__ if cls.__high__ != inf else None
+
+        if (
+            issubclass(cls.__bound__, int)
+            and is_optional_of(low, int)
+            and is_optional_of(high, int)
+        ):
             return integers(
-                min_value=cls.__low__ + 1 if cls.__low__ != neg_inf else None,
-                max_value=cls.__high__ - 1 if cls.__high__ != inf else None,
+                min_value=low + 1 if low is not None else None,
+                max_value=high - 1 if high is not None else None,
             )
-        if issubclass(cls.__bound__, float):
+        if (
+            issubclass(cls.__bound__, float)
+            and is_optional_of(low, float)
+            and is_optional_of(high, float)
+        ):
             return floats(
-                min_value=(cls.__low__ if cls.__low__ != neg_inf else None),
-                max_value=(cls.__high__ if cls.__high__ != inf else None),
+                min_value=low,
+                max_value=high,
                 exclude_min=True,
                 exclude_max=True,
             )
@@ -158,9 +170,17 @@ class Inclusive(Interval, check=interval.inclusive, abstract=True):
 
         low = cls.__low__ if cls.__low__ != neg_inf else None
         high = cls.__high__ if cls.__high__ != inf else None
-        if issubclass(cls.__bound__, int):
+        if (
+            issubclass(cls.__bound__, int)
+            and is_optional_of(low, int)
+            and is_optional_of(high, int)
+        ):
             return integers(min_value=low, max_value=high)
-        if issubclass(cls.__bound__, float):
+        if (
+            issubclass(cls.__bound__, float)
+            and is_optional_of(low, float)
+            and is_optional_of(high, int)
+        ):
             return floats(
                 min_value=low,
                 max_value=high,
@@ -188,15 +208,25 @@ class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
+        low = cls.__low__ if cls.__low__ != neg_inf else None
         high = cls.__high__ if cls.__high__ != inf else None
-        if issubclass(cls.__bound__, int):
+
+        if (
+            issubclass(cls.__bound__, int)
+            and is_optional_of(low, int)
+            and is_optional_of(high, int)
+        ):
             return integers(
-                min_value=cls.__low__ + 1 if cls.__low__ != neg_inf else None,
+                min_value=low + 1 if low is not None else None,
                 max_value=high,
             )
-        if issubclass(cls.__bound__, float):
+        if (
+            issubclass(cls.__bound__, float)
+            and is_optional_of(low, float)
+            and is_optional_of(high, float)
+        ):
             return floats(
-                min_value=cls.__low__ if cls.__low__ != neg_inf else None,
+                min_value=low,
                 max_value=high,
                 exclude_min=True,
             )
@@ -224,15 +254,25 @@ class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=
         from hypothesis.strategies import integers
 
         low = cls.__low__ if cls.__low__ != neg_inf else None
-        if issubclass(cls.__bound__, int):
+        high = cls.__high__ if cls.__high__ != inf else None
+
+        if (
+            issubclass(cls.__bound__, int)
+            and is_optional_of(low, int)
+            and is_optional_of(high, int)
+        ):
             return integers(
                 min_value=low,
-                max_value=cls.__high__ - 1 if cls.__high__ != inf else None,
+                max_value=high - 1 if high is not None else None,
             )
-        if issubclass(cls.__bound__, float):
+        if (
+            issubclass(cls.__bound__, float)
+            and is_optional_of(low, float)
+            and is_optional_of(high, float)
+        ):
             return floats(
                 min_value=low,
-                max_value=(cls.__high__ if cls.__high__ != inf else None),
+                max_value=high,
                 exclude_max=True,
             )
         return None
