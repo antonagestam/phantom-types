@@ -228,10 +228,7 @@ class PhantomBound(
                     max_size=cls.__max__,
                 )
 
-            try:
-                (inner_type,) = get_args(type_)
-            except ValueError:
-                return None
+            (inner_type,) = get_args(type_)
 
             @composite
             def tuples(draw: DrawFn) -> tuple:
