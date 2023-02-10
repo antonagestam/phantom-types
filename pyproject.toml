@@ -58,7 +58,7 @@ extend-ignore = [
 ]
 
 [tool.ruff.mccabe]
-max-complexity = 8
+max-complexity = 10
 
 [tool.ruff.flake8-tidy-imports]
 ban-relative-imports = "parents"

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from dataclasses import fields
 from typing import Generic
 from typing import TypeVar
+from typing import get_type_hints
 
 from hypothesis import given
 from hypothesis import settings
@@ -14,6 +15,9 @@ from phantom.boolean import Falsy
 from phantom.boolean import Truthy
 from phantom.datetime import TZAware
 from phantom.datetime import TZNaive
+from phantom.interval import Exclusive
+from phantom.interval import ExclusiveInclusive
+from phantom.interval import Inclusive
 from phantom.interval import InclusiveExclusive
 from phantom.interval import Natural
 from phantom.interval import NegativeInt
@@ -32,6 +36,22 @@ class TensFloat(float, InclusiveExclusive, low=10, high=20):
 
 
 class TensInt(int, InclusiveExclusive, low=10, high=20):
+    ...
+
+
+class Inc(float, Inclusive, low=0, high=100):
+    ...
+
+
+class Exc(int, Exclusive, low=0, high=100):
+    ...
+
+
+class IncExc(float, InclusiveExclusive, low=0, high=100):
+    ...
+
+
+class ExcInc(int, ExclusiveInclusive, low=0, high=100):
     ...
 
 
@@ -62,6 +82,10 @@ class Model:
     natural: Natural
     negative_int: NegativeInt
     portion: Portion
+    inc: Inc
+    exc: Exc
+    inc_exc: IncExc
+    exc_inc: ExcInc
 
     parsed_alpha_2: ParsedAlpha2
 
@@ -78,8 +102,10 @@ class Model:
 
 
 @given(builds(Model))
-@settings(max_examples=100)
+@settings(max_examples=500)
 def test_can_generate_hypothesis_values(model: Model) -> None:
+    hints = get_type_hints(Model)
     for field in fields(Model):
-        type_ = get_origin(field.type) or field.type
-        assert isinstance(getattr(model, field.name), type_)
+        type_ = hints[field.name]
+        inner_type = get_origin(type_) or type_
+        assert isinstance(getattr(model, field.name), inner_type)

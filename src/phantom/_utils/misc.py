@@ -10,7 +10,6 @@ from typing import MutableSequence
 from typing import MutableSet
 from typing import NewType
 from typing import Tuple
-from typing import TypeVar
 from typing import Union
 
 from typing_extensions import Final
@@ -155,10 +154,3 @@ def is_union_type(value: object) -> TypeGuard[type]:
 
 def is_union(value: object) -> TypeGuard[type]:
     return get_origin(value) == Union or is_union_type(value)
-
-
-T = TypeVar("T")
-
-
-def is_optional_of(value: object, type_: type[T]) -> TypeGuard[T | None]:
-    return value is None or isinstance(value, type_)
