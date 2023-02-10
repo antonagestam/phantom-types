@@ -10,17 +10,14 @@ You can install python-dateutil by using the ``[dateutil]`` or ``[all]`` extras.
 from __future__ import annotations
 
 import datetime
-from typing import TYPE_CHECKING
 
 from . import Phantom
+from . import _hypothesis
 from .bounds import parse_str
 from .errors import MissingDependency
 from .predicates.datetime import is_tz_aware
 from .predicates.datetime import is_tz_naive
 from .schema import Schema
-
-if TYPE_CHECKING:
-    from hypothesis.strategies import SearchStrategy
 
 try:
     import dateutil.parser
@@ -82,7 +79,7 @@ class TZAware(datetime.datetime, Phantom, predicate=is_tz_aware):
         }
 
     @classmethod
-    def __register_strategy__(cls) -> SearchStrategy:
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy:
         from hypothesis.strategies import datetimes
         from hypothesis.strategies import timezones
 
@@ -110,7 +107,7 @@ class TZNaive(datetime.datetime, Phantom, predicate=is_tz_naive):
         }
 
     @classmethod
-    def __register_strategy__(cls) -> SearchStrategy:
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy:
         from hypothesis.strategies import datetimes
         from hypothesis.strategies import none
 

@@ -24,7 +24,6 @@ minimums and maximums to their schema representations.
 from __future__ import annotations
 
 from contextlib import suppress
-from typing import TYPE_CHECKING
 from typing import Any
 from typing import TypeVar
 
@@ -33,14 +32,12 @@ from typing_extensions import Protocol
 
 from . import Phantom
 from . import Predicate
+from . import _hypothesis
 from ._utils.misc import resolve_class_attr
 from ._utils.types import Comparable
 from ._utils.types import SupportsEq
 from .predicates import interval
 from .schema import Schema
-
-if TYPE_CHECKING:
-    from hypothesis.strategies import SearchStrategy
 
 N = TypeVar("N", bound=Comparable)
 Derived = TypeVar("Derived", bound="Interval")
@@ -176,7 +173,7 @@ class Exclusive(Interval, check=interval.exclusive, abstract=True):
         }
 
     @classmethod
-    def __register_strategy__(cls) -> SearchStrategy | None:
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy | None:
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
@@ -208,7 +205,7 @@ class Inclusive(Interval, check=interval.inclusive, abstract=True):
         }
 
     @classmethod
-    def __register_strategy__(cls) -> SearchStrategy | None:
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy | None:
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
@@ -236,7 +233,7 @@ class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=
         }
 
     @classmethod
-    def __register_strategy__(cls) -> SearchStrategy | None:
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy | None:
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
@@ -264,7 +261,7 @@ class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=
         }
 
     @classmethod
-    def __register_strategy__(cls) -> SearchStrategy | None:
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy | None:
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
