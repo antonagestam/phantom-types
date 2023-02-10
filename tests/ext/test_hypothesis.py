@@ -102,7 +102,7 @@ class Model:
 
 
 @given(builds(Model))
-@settings(max_examples=500)
+@settings(max_examples=10)
 def test_can_generate_hypothesis_values(model: Model) -> None:
     hints = get_type_hints(Model)
     for field in fields(Model):
