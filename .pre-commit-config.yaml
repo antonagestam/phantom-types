@@ -66,6 +66,7 @@ repos:
           - types-setuptools==67.2.0.0
           - numerary==0.4.3
           - types-python-dateutil==2.8.19.6
+          - hypothesis==6.68.0
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v2.7.1"

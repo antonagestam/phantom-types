@@ -7,3 +7,4 @@ typeguard
 phonenumbers
 typing-extensions
 numerary
+hypothesis

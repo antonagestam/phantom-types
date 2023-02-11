@@ -26,16 +26,21 @@ $  python3 -m pip install phantom-types
 
 #### Extras
 
-- `phantom-types[dateutil]` installs [python-dateutil]. Required to use [`TZAware` and
-  `TZNaive`][phantom-datetime] for parsing strings.
-- `phantom-types[phonenumbers]` installs [phonenumbers]. Required to use
-  [`phantom.ext.phonenumbers`][phantom-phonenumbers].
-- `phantom-types[pydantic]` installs [pydantic].
-- `phantom-types[all]` installs all of the above.
+There are a few extras available that can be used to either enable a feature or install
+a compatible version of a third-party library.
+
+| Extra name       | Feature                                                                                                    |
+| ---------------- | ---------------------------------------------------------------------------------------------------------- |
+| `[dateutil]`     | Installs [python-dateutil]. Required for parsing strings with [`TZAware` and `TZNaive`][phantom-datetime]. |
+| `[phonenumbers]` | Installs [phonenumbers]. Required to use [`phantom.ext.phonenumbers`][phantom-phonenumbers].               |
+| `[pydantic]`     | Installs [pydantic].                                                                                       |
+| `[hypothesis]`   | Installs [hypothesis].                                                                                     |
+| `[all]`          | Installs all of the above.                                                                                 |
 
 [python-dateutil]: https://pypi.org/project/python-dateutil/
 [phonenumbers]: https://pypi.org/project/phonenumbers/
 [pydantic]: https://pypi.org/project/pydantic/
+[hypothesis]: https://pypi.org/project/hypothesis/
 [phantom-datetime]:
   https://phantom-types.readthedocs.io/en/main/pages/types.html#module-phantom.datetime
 [phantom-phonenumbers]:

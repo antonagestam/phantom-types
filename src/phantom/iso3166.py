@@ -18,6 +18,7 @@ from typing_extensions import Literal
 from typing_extensions import get_args
 
 from phantom import Phantom
+from phantom import _hypothesis
 from phantom.bounds import parse_str
 from phantom.predicates.collection import contained
 from phantom.schema import Schema
@@ -325,6 +326,12 @@ class ParsedAlpha2(str, Phantom, predicate=is_alpha2_country_code):
             "format": "iso3166-1 alpha-2",
             "title": "Alpha2",
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy | None:
+        from hypothesis.strategies import sampled_from
+
+        return sampled_from(sorted(ALPHA2))
 
 
 Alpha2 = Union[LiteralAlpha2, ParsedAlpha2]
