@@ -31,7 +31,7 @@ install a compatible version of a third-party library.
 
 |Extra name|Feature|
 |-|-|
-|`phantom-types[dateutil]`|Installs [python-dateutil]. Required to use [`TZAware` and `TZNaive`][phantom-datetime] for parsing strings.|
+|`phantom-types[dateutil]`|Installs [python-dateutil]. Required for parsing strings with  [`TZAware` and `TZNaive`][phantom-datetime].
 |`phantom-types[phonenumbers]`|Installs [phonenumbers]. Required to use [`phantom.ext.phonenumbers`][phantom-phonenumbers].|
 |`phantom-types[pydantic]`|Installs [pydantic].|
 |`phantom-types[hypothesis]`|Installs [hypothesis].|
