@@ -177,7 +177,7 @@ class Exclusive(Interval, check=interval.exclusive, abstract=True):
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
-        with suppress(_NonScalarBounds):
+        with suppress(_NonScalarBounds):  # pragma: no cover
             if issubclass(cls.__bound__, int):
                 return integers(
                     *_get_scalar_int_bounds(cls, exclude_min=True, exclude_max=True)
@@ -209,7 +209,7 @@ class Inclusive(Interval, check=interval.inclusive, abstract=True):
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
-        with suppress(_NonScalarBounds):
+        with suppress(_NonScalarBounds):  # pragma: no cover
             if issubclass(cls.__bound__, int):
                 return integers(*_get_scalar_int_bounds(cls))
             if issubclass(cls.__bound__, float):
@@ -237,7 +237,7 @@ class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
-        with suppress(_NonScalarBounds):
+        with suppress(_NonScalarBounds):  # pragma: no cover
             if issubclass(cls.__bound__, int):
                 return integers(*_get_scalar_int_bounds(cls, exclude_min=True))
             if issubclass(cls.__bound__, float):
@@ -265,7 +265,7 @@ class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=
         from hypothesis.strategies import floats
         from hypothesis.strategies import integers
 
-        with suppress(_NonScalarBounds):
+        with suppress(_NonScalarBounds):  # pragma: no cover
             if issubclass(cls.__bound__, int):
                 return integers(*_get_scalar_int_bounds(cls, exclude_max=True))
             if issubclass(cls.__bound__, float):

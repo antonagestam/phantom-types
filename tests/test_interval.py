@@ -15,10 +15,10 @@ from phantom.interval import _get_scalar_int_bounds
 from phantom.interval import _NonScalarBounds
 from phantom.predicates import interval
 
-from .types import Exc
-from .types import ExcInc
-from .types import Inc
-from .types import IncExc
+from .types import FloatInc
+from .types import FloatIncExc
+from .types import IntExc
+from .types import IntExcInc
 
 
 class TestInterval:
@@ -129,10 +129,10 @@ class TestGetScalarIntBounds:
     @pytest.mark.parametrize(
         ("type_", "exclude_min", "exclude_max", "expected_low", "expected_high"),
         (
-            (Inc, False, False, 0, 100),
-            (Exc, True, True, 1, 99),
-            (ExcInc, True, False, 1, 100),
-            (IncExc, False, True, 0, 99),
+            (FloatInc, False, False, 0, 100),
+            (IntExc, True, True, 1, 99),
+            (IntExcInc, True, False, 1, 100),
+            (FloatIncExc, False, True, 0, 99),
             (Natural, False, False, 0, None),
             (NegativeInt, False, False, None, 0),
         ),
@@ -184,7 +184,7 @@ class TestGetScalarFloatBounds:
     @pytest.mark.parametrize(
         ("type_", "expected_low", "expected_high"),
         (
-            (Inc, 0, 100),
+            (FloatInc, 0, 100),
             (Natural, 0, None),
             (NegativeInt, None, 0),
             (Portion, 0, 1),
