@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from decimal import Decimal
+from functools import total_ordering
 
 import pytest
 
@@ -7,7 +10,15 @@ from phantom.interval import Interval
 from phantom.interval import Natural
 from phantom.interval import NegativeInt
 from phantom.interval import Portion
+from phantom.interval import _get_scalar_float_bounds
+from phantom.interval import _get_scalar_int_bounds
+from phantom.interval import _NonScalarBounds
 from phantom.predicates import interval
+
+from .types import Exc
+from .types import ExcInc
+from .types import Inc
+from .types import IncExc
 
 
 class TestInterval:
@@ -112,3 +123,109 @@ class TestPortion:
             Portion.parse(i)
         with pytest.raises(TypeError):
             Portion(i)
+
+
+class TestGetScalarIntBounds:
+    @pytest.mark.parametrize(
+        ("type_", "exclude_min", "exclude_max", "expected_low", "expected_high"),
+        (
+            (Inc, False, False, 0, 100),
+            (Exc, True, True, 1, 99),
+            (ExcInc, True, False, 1, 100),
+            (IncExc, False, True, 0, 99),
+            (Natural, False, False, 0, None),
+            (NegativeInt, False, False, None, 0),
+        ),
+    )
+    def test_returns_correct_bounds(
+        self,
+        type_: type[Interval],
+        exclude_min: bool,
+        exclude_max: bool,
+        expected_low: int | None,
+        expected_high: int | None,
+    ):
+        (low, high) = _get_scalar_int_bounds(type_, exclude_min, exclude_max)
+        assert low == expected_low
+        assert high == expected_high
+
+    def test_raises_non_scalar_bounds_for_non_int_lower_bound(self):
+        @total_ordering
+        class Inf:
+            def __eq__(self, other):
+                return False
+
+            def __lt__(self, other):
+                return False
+
+        class Int(int, Inclusive, low=Inf(), high=100):
+            ...
+
+        with pytest.raises(_NonScalarBounds):
+            _get_scalar_int_bounds(Int)
+
+    def test_raises_non_scalar_bounds_for_non_int_upper_bound(self):
+        @total_ordering
+        class Inf:
+            def __eq__(self, other):
+                return False
+
+            def __lt__(self, other):
+                return False
+
+        class Int(int, Inclusive, low=0, high=Inf()):
+            ...
+
+        with pytest.raises(_NonScalarBounds):
+            _get_scalar_int_bounds(Int)
+
+
+class TestGetScalarFloatBounds:
+    @pytest.mark.parametrize(
+        ("type_", "expected_low", "expected_high"),
+        (
+            (Inc, 0, 100),
+            (Natural, 0, None),
+            (NegativeInt, None, 0),
+            (Portion, 0, 1),
+        ),
+    )
+    def test_returns_correct_bounds(
+        self,
+        type_: type[Interval],
+        expected_low: int,
+        expected_high: int,
+    ):
+        (low, high) = _get_scalar_float_bounds(type_)
+        assert low == expected_low
+        assert high == expected_high
+
+    def test_raises_non_scalar_bounds_for_non_int_lower_bound(self):
+        @total_ordering
+        class Inf:
+            def __eq__(self, other):
+                return False
+
+            def __lt__(self, other):
+                return False
+
+        class Int(float, Inclusive, low=Inf(), high=100):
+            ...
+
+        with pytest.raises(_NonScalarBounds):
+            _get_scalar_float_bounds(Int)
+
+    def test_raises_non_scalar_bounds_for_non_int_upper_bound(self):
+        @total_ordering
+        class Inf:
+            def __eq__(self, other):
+                return False
+
+            def __lt__(self, other):
+                return False
+
+        class Int(float, Inclusive, low=0, high=Inf()):
+            ...
+
+        with pytest.raises(_NonScalarBounds):
+            _get_scalar_float_bounds(Int)

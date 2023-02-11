@@ -15,9 +15,6 @@ from phantom.boolean import Falsy
 from phantom.boolean import Truthy
 from phantom.datetime import TZAware
 from phantom.datetime import TZNaive
-from phantom.interval import Exclusive
-from phantom.interval import ExclusiveInclusive
-from phantom.interval import Inclusive
 from phantom.interval import InclusiveExclusive
 from phantom.interval import Natural
 from phantom.interval import NegativeInt
@@ -29,6 +26,10 @@ from phantom.sized import Empty
 from phantom.sized import NonEmpty
 from phantom.sized import NonEmptyStr
 from phantom.sized import PhantomBound
+from tests.types import Exc
+from tests.types import ExcInc
+from tests.types import Inc
+from tests.types import IncExc
 
 
 class TensFloat(float, InclusiveExclusive, low=10, high=20):
@@ -36,22 +37,6 @@ class TensFloat(float, InclusiveExclusive, low=10, high=20):
 
 
 class TensInt(int, InclusiveExclusive, low=10, high=20):
-    ...
-
-
-class Inc(float, Inclusive, low=0, high=100):
-    ...
-
-
-class Exc(int, Exclusive, low=0, high=100):
-    ...
-
-
-class IncExc(float, InclusiveExclusive, low=0, high=100):
-    ...
-
-
-class ExcInc(int, ExclusiveInclusive, low=0, high=100):
     ...
 
 
