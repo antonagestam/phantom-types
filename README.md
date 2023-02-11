@@ -31,11 +31,11 @@ install a compatible version of a third-party library.
 
 |Extra name|Feature|
 |-|-|
-|`phantom-types[dateutil]`|Installs [python-dateutil]. Required for parsing strings with  [`TZAware` and `TZNaive`][phantom-datetime].
-|`phantom-types[phonenumbers]`|Installs [phonenumbers]. Required to use [`phantom.ext.phonenumbers`][phantom-phonenumbers].|
-|`phantom-types[pydantic]`|Installs [pydantic].|
-|`phantom-types[hypothesis]`|Installs [hypothesis].|
-|`phantom-types[all]`|Installs all of the above.|
+|`[dateutil]`|Installs [python-dateutil]. Required for parsing strings with  [`TZAware` and `TZNaive`][phantom-datetime].|
+|`[phonenumbers]`|Installs [phonenumbers]. Required to use [`phantom.ext.phonenumbers`][phantom-phonenumbers].|
+|`[pydantic]`|Installs [pydantic].|
+|`[hypothesis]`|Installs [hypothesis].|
+|`[all]`|Installs all of the above.|
 
 [python-dateutil]: https://pypi.org/project/python-dateutil/
 [phonenumbers]: https://pypi.org/project/phonenumbers/
