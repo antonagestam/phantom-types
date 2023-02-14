@@ -23,6 +23,7 @@ minimums and maximums to their schema representations.
 
 from __future__ import annotations
 
+from contextlib import suppress
 from typing import Any
 from typing import TypeVar
 
@@ -31,6 +32,7 @@ from typing_extensions import Protocol
 
 from . import Phantom
 from . import Predicate
+from . import _hypothesis
 from ._utils.misc import resolve_class_attr
 from ._utils.types import Comparable
 from ._utils.types import SupportsEq
@@ -48,6 +50,64 @@ class IntervalCheck(Protocol):
 
 inf: Final = float("inf")
 neg_inf: Final = float("-inf")
+
+
+class _NonScalarBounds(Exception):
+    ...
+
+
+def _get_scalar_int_bounds(
+    type_: type[Interval],
+    exclude_min: bool = False,
+    exclude_max: bool = False,
+) -> tuple[int | None, int | None]:
+    low = type_.__low__ if type_.__low__ != neg_inf else None
+    high = type_.__high__ if type_.__high__ != inf else None
+
+    if low is not None:
+        try:
+            scalar_low = int(low)  # type: ignore[call-overload]
+        except TypeError as exception:
+            raise _NonScalarBounds from exception
+
+        if exclude_min:
+            scalar_low += 1
+    else:
+        scalar_low = None
+
+    if high is not None:
+        try:
+            scalar_high = int(high)  # type: ignore[call-overload]
+        except TypeError as exception:
+            raise _NonScalarBounds from exception
+
+        if exclude_max:
+            scalar_high -= 1
+    else:
+        scalar_high = None
+
+    return scalar_low, scalar_high
+
+
+def _get_scalar_float_bounds(
+    type_: type[Interval],
+) -> tuple[float | None, float | None]:
+    low = type_.__low__ if type_.__low__ != neg_inf else None
+    high = type_.__high__ if type_.__high__ != inf else None
+
+    if low is not None:
+        try:
+            low = float(low)  # type: ignore[arg-type]
+        except TypeError as excpetion:
+            raise _NonScalarBounds from excpetion
+
+    if high is not None:
+        try:
+            high = float(high)  # type: ignore[arg-type]
+        except TypeError as exception:
+            raise _NonScalarBounds from exception
+
+    return low, high
 
 
 class Interval(Phantom[Comparable], bound=Comparable, abstract=True):
@@ -112,6 +172,22 @@ class Exclusive(Interval, check=interval.exclusive, abstract=True):
             "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
+    @classmethod
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy | None:
+        from hypothesis.strategies import floats
+        from hypothesis.strategies import integers
+
+        with suppress(_NonScalarBounds):  # pragma: no cover
+            if issubclass(cls.__bound__, int):
+                return integers(
+                    *_get_scalar_int_bounds(cls, exclude_min=True, exclude_max=True)
+                )
+            if issubclass(cls.__bound__, float):
+                return floats(
+                    *_get_scalar_float_bounds(cls), exclude_min=True, exclude_max=True
+                )
+        return None
+
 
 class Inclusive(Interval, check=interval.inclusive, abstract=True):
     """Uses :py:func:`phantom.predicates.interval.inclusive` as ``check``."""
@@ -127,6 +203,18 @@ class Inclusive(Interval, check=interval.inclusive, abstract=True):
             "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
             "maximum": cls.__high__ if cls.__high__ != inf else None,
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy | None:
+        from hypothesis.strategies import floats
+        from hypothesis.strategies import integers
+
+        with suppress(_NonScalarBounds):  # pragma: no cover
+            if issubclass(cls.__bound__, int):
+                return integers(*_get_scalar_int_bounds(cls))
+            if issubclass(cls.__bound__, float):
+                return floats(*_get_scalar_float_bounds(cls))
+        return None
 
 
 class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=True):
@@ -144,6 +232,18 @@ class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=
             "maximum": cls.__high__ if cls.__high__ != inf else None,
         }
 
+    @classmethod
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy | None:
+        from hypothesis.strategies import floats
+        from hypothesis.strategies import integers
+
+        with suppress(_NonScalarBounds):  # pragma: no cover
+            if issubclass(cls.__bound__, int):
+                return integers(*_get_scalar_int_bounds(cls, exclude_min=True))
+            if issubclass(cls.__bound__, float):
+                return floats(*_get_scalar_float_bounds(cls), exclude_min=True)
+        return None
+
 
 class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=True):
     """Uses :py:func:`phantom.predicates.interval.inclusive_exclusive` as ``check``."""
@@ -159,6 +259,18 @@ class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=
             "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
             "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy | None:
+        from hypothesis.strategies import floats
+        from hypothesis.strategies import integers
+
+        with suppress(_NonScalarBounds):  # pragma: no cover
+            if issubclass(cls.__bound__, int):
+                return integers(*_get_scalar_int_bounds(cls, exclude_max=True))
+            if issubclass(cls.__bound__, float):
+                return floats(*_get_scalar_float_bounds(cls), exclude_max=True)
+        return None
 
 
 class Natural(int, InclusiveExclusive, low=0):

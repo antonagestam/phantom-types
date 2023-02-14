@@ -16,9 +16,9 @@ current_dir = pathlib.Path(__file__).resolve().parent
 
 
 def get_copyright_from_license() -> str:
-    license = current_dir.parent / "LICENSE"
+    license_path = current_dir.parent / "LICENSE"
     prefix = "Copyright (c) "
-    for line in license.read_text().split("\n"):
+    for line in license_path.read_text().split("\n"):
         if line.startswith(prefix):
             return line[len(prefix) :]
     raise RuntimeError("Couldn't parse copyright from LICENSE")
@@ -26,7 +26,7 @@ def get_copyright_from_license() -> str:
 
 # Project information
 project = "phantom-types"
-copyright = get_copyright_from_license()
+copyright = get_copyright_from_license()  # noqa: A001
 author = "Anton Agestam"
 version = phantom.__version__
 release = version

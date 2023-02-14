@@ -12,6 +12,7 @@ from __future__ import annotations
 import datetime
 
 from . import Phantom
+from . import _hypothesis
 from .bounds import parse_str
 from .errors import MissingDependency
 from .predicates.datetime import is_tz_aware
@@ -77,6 +78,13 @@ class TZAware(datetime.datetime, Phantom, predicate=is_tz_aware):
             "description": "A date-time with timezone data.",
         }
 
+    @classmethod
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy:
+        from hypothesis.strategies import datetimes
+        from hypothesis.strategies import timezones
+
+        return datetimes(timezones=timezones())
+
 
 class TZNaive(datetime.datetime, Phantom, predicate=is_tz_naive):
     """
@@ -97,3 +105,10 @@ class TZNaive(datetime.datetime, Phantom, predicate=is_tz_naive):
             "description": "A date-time without timezone data.",
             "format": "date-time-naive",
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy:
+        from hypothesis.strategies import datetimes
+        from hypothesis.strategies import none
+
+        return datetimes(timezones=none())

@@ -16,6 +16,7 @@ from typing import Any
 from typing import Pattern
 
 from . import Phantom
+from . import _hypothesis
 from ._utils.misc import resolve_class_attr
 from .predicates.re import is_full_match
 from .predicates.re import is_match
@@ -74,3 +75,9 @@ class FullMatch(str, Phantom, abstract=True):
             "description": "A string that matches the format regular expression.",
             "format": str(cls.__pattern__.pattern),
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy | None:
+        from hypothesis.strategies import from_regex
+
+        return from_regex(cls.__pattern__, fullmatch=True)

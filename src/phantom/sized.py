@@ -33,11 +33,13 @@ from typing import Sized
 from typing import TypeVar
 
 from typing_extensions import Protocol
+from typing_extensions import get_args
 from typing_extensions import runtime_checkable
 
 from . import Phantom
 from . import PhantomMeta
 from . import Predicate
+from . import _hypothesis
 from ._utils.misc import is_not_known_mutable_instance
 from .predicates import boolean
 from .predicates import collection
@@ -91,7 +93,11 @@ class PhantomSized(
     schema generation.
     """
 
-    def __init_subclass__(cls, len: Predicate[int], **kwargs: Any) -> None:
+    def __init_subclass__(
+        cls,
+        len: Predicate[int],  # noqa: A002
+        **kwargs: Any,
+    ) -> None:
         super().__init_subclass__(
             predicate=boolean.both(
                 is_not_known_mutable_instance,
@@ -129,10 +135,10 @@ class PhantomBound(
     __min__: int | None
     __max__: int | None
 
-    def __init_subclass__(  # noqa
+    def __init_subclass__(
         cls,
-        min: int | None = None,
-        max: int | None = None,
+        min: int | None = None,  # noqa: A002
+        max: int | None = None,  # noqa: A002
         abstract: bool = False,
         **kwargs: Any,
     ) -> None:
@@ -205,6 +211,38 @@ class PhantomBound(
             }
         )
 
+    @classmethod
+    def __register_strategy__(cls) -> _hypothesis.HypothesisStrategy:
+        from hypothesis.strategies import DrawFn
+        from hypothesis.strategies import composite
+        from hypothesis.strategies import from_type
+        from hypothesis.strategies import lists
+        from hypothesis.strategies import text
+
+        def create_strategy(type_: type[T]) -> _hypothesis.SearchStrategy[T] | None:
+            min_size = cls.__min__ or 0
+
+            if cls.__bound__ is str:
+                return text(  # type: ignore[return-value]
+                    min_size=min_size,
+                    max_size=cls.__max__,
+                )
+
+            (inner_type,) = get_args(type_)
+
+            @composite
+            def tuples(draw: DrawFn) -> tuple:
+                strategy = lists(
+                    from_type(inner_type),
+                    min_size=min_size,
+                    max_size=cls.__max__,
+                )
+                return tuple(draw(strategy))
+
+            return tuples()  # type: ignore[return-value]
+
+        return create_strategy
+
 
 class NonEmpty(PhantomBound[T], Generic[T], min=1):
     """A sized collection with at least one item."""
@@ -237,3 +275,9 @@ class Empty(PhantomBound[T], Generic[T], max=0):
             **super().__schema__(),  # type: ignore[misc]
             "description": "An empty array.",
         }
+
+    @classmethod
+    def __register_strategy__(cls) -> _hypothesis.SearchStrategy:
+        from hypothesis.strategies import just
+
+        return just(())
