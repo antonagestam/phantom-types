@@ -1,9 +1,9 @@
 [build-system]
-requires = ["setuptools>=67.2.0", "wheel"]
+requires = ["setuptools>=67.4.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.black]
-target-version = ["py38"]
+target-version = ["py37"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "src", "docs"]
@@ -32,6 +32,8 @@ extend-select = [
   "A",
   # Enforce valid noqa comments.
   "RUF100",
+  # isort
+  "I",
   # pycodestyle
   "W",
   # pyupgrade
@@ -56,6 +58,10 @@ extend-ignore = [
   # https://stackoverflow.com/a/68429294/1220706
   "S101",
 ]
+
+[tool.ruff.isort]
+force-single-line = true
+known-first-party = ["phantom", "tests"]
 
 [tool.ruff.mccabe]
 max-complexity = 10
