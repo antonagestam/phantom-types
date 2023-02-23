@@ -1,8 +1,8 @@
 import sys
 
+import pydantic
 import pytest
 
-import pydantic
 from phantom.datetime import TZAware
 from phantom.datetime import TZNaive
 from phantom.ext.phonenumbers import FormattedPhoneNumber
