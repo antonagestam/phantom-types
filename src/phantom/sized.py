@@ -26,15 +26,18 @@ This example creates a type that accepts strings with 255 or less characters:
 """
 from __future__ import annotations
 
+# This is the closest I could find to documentation of _ProtocolMeta.
+# https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
 from typing import Any
 from typing import Generic
 from typing import Iterable
+from typing import Protocol
 from typing import Sized
 from typing import TypeVar
+from typing import _ProtocolMeta
+from typing import runtime_checkable
 
-from typing_extensions import Protocol
 from typing_extensions import get_args
-from typing_extensions import runtime_checkable
 
 from . import Phantom
 from . import PhantomMeta
@@ -46,15 +49,6 @@ from .predicates import collection
 from .predicates import interval
 from .predicates import numeric
 from .schema import Schema
-
-# We attempt to import _ProtocolMeta from typing_extensions to support Python 3.7 but
-# fall back the typing module to support Python 3.8+. This is the closest I could find
-# to documentation of _ProtocolMeta.
-# https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
-try:
-    from typing_extensions import _ProtocolMeta  # type: ignore[attr-defined]
-except ImportError:
-    from typing import _ProtocolMeta
 
 __all__ = (
     "SizedIterable",
@@ -74,7 +68,7 @@ class SizedIterable(Sized, Iterable[T], Protocol[T]):
     """Intersection of :py:class:`typing.Sized` and :py:class:`typing.Iterable`."""
 
 
-class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):  # type: ignore[misc]
+class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):
     ...
 
 

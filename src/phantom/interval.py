@@ -25,10 +25,9 @@ from __future__ import annotations
 
 from contextlib import suppress
 from typing import Any
+from typing import Final
+from typing import Protocol
 from typing import TypeVar
-
-from typing_extensions import Final
-from typing_extensions import Protocol
 
 from . import Phantom
 from . import Predicate

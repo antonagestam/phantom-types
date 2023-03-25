@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import Any
 from typing import Callable
+from typing import Final
 from typing import Iterable
 from typing import Sequence
 from typing import TypeVar
 from typing import cast
 
-from typing_extensions import Final
 from typing_extensions import TypeAlias
 from typing_extensions import get_args
 

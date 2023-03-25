@@ -7,10 +7,9 @@ from typing import ClassVar
 from typing import Generic
 from typing import Iterable
 from typing import Iterator
+from typing import Protocol
 from typing import TypeVar
-
-from typing_extensions import Protocol
-from typing_extensions import runtime_checkable
+from typing import runtime_checkable
 
 from . import _hypothesis
 from ._utils.misc import BoundType

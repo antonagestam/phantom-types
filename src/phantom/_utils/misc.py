@@ -5,6 +5,7 @@ from __future__ import annotations
 import types
 from dataclasses import is_dataclass
 from itertools import product
+from typing import Final
 from typing import MutableMapping
 from typing import MutableSequence
 from typing import MutableSet
@@ -12,7 +13,6 @@ from typing import NewType
 from typing import Tuple
 from typing import Union
 
-from typing_extensions import Final
 from typing_extensions import TypeGuard
 from typing_extensions import get_args
 from typing_extensions import get_origin
