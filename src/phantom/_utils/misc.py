@@ -136,7 +136,8 @@ def is_not_known_mutable_instance(value: object) -> bool:
         isinstance(value, mutable)
         or (
             is_dataclass(value)
-            and not value.__dataclass_params__.frozen  # type: ignore[attr-defined]
+            # https://github.com/python/typeshed/pull/9947#issue-1641078469
+            and not value.__dataclass_params__.frozen  # type: ignore[union-attr]
         )
     )
 
