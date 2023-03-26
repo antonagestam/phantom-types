@@ -1,9 +1,8 @@
+from typing import Protocol
 from typing import TypeVar
+from typing import runtime_checkable
 
-from typing_extensions import Protocol
-from typing_extensions import runtime_checkable
-
-from .compat import CachingProtocolMeta
+from numerary.protocol import CachingProtocolMeta
 
 T_contra = TypeVar("T_contra", contravariant=True)
 U_co = TypeVar("U_co", covariant=True)

@@ -10,11 +10,11 @@ so:
 """
 from __future__ import annotations
 
+from typing import Final
+from typing import Literal
 from typing import Union
 from typing import cast
 
-from typing_extensions import Final
-from typing_extensions import Literal
 from typing_extensions import get_args
 
 from phantom import Phantom

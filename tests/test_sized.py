@@ -1,9 +1,9 @@
 from dataclasses import dataclass
+from typing import Final
 from typing import Generic
 from typing import TypeVar
 
 import pytest
-from typing_extensions import Final
 from typing_extensions import get_args
 from typing_extensions import get_origin
 

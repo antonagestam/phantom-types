@@ -1,7 +1,6 @@
 from typing import Iterable
+from typing import Literal
 from typing import TypeVar
-
-from typing_extensions import Literal
 
 from . import Predicate
 from ._utils import bind_name
