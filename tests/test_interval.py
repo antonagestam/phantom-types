@@ -23,9 +23,9 @@ from .types import IntExcInc
 
 class TestInterval:
     def test_subclassing_without_check_raises(self):
-        with pytest.raises(TypeError, match="I must define an interval check$"):
+        with pytest.raises(TypeError, match="A must define an interval check$"):
 
-            class I(Interval, abstract=False):  # noqa: E742
+            class A(Interval, abstract=False):
                 ...
 
     def test_parse_coerces_str(self):
@@ -35,7 +35,7 @@ class TestInterval:
         assert Great.parse("10") == 10
 
     def test_allows_decimal_bound(self):
-        class I(  # noqa: E742
+        class A(
             Decimal,
             Interval,
             check=interval.exclusive,
@@ -44,9 +44,40 @@ class TestInterval:
         ):
             ...
 
-        assert not isinstance(2, I)
-        assert not isinstance(1.98, I)
-        assert isinstance(Decimal("1.98"), I)
+        assert not isinstance(2, A)
+        assert not isinstance(1.98, A)
+        assert isinstance(Decimal("1.98"), A)
+
+    def test_subclass_inherits_bounds(self):
+        class A(int, Inclusive, low=-10, high=10):
+            ...
+
+        class B(A):
+            ...
+
+        assert B.__check__ is A.__check__
+        assert isinstance(-10, B)
+        assert isinstance(10, B)
+        assert not isinstance(-11, B)
+        assert not isinstance(11, B)
+
+        class C(A, low=0):
+            ...
+
+        assert C.__check__ is A.__check__
+        assert isinstance(0, C)
+        assert isinstance(10, C)
+        assert not isinstance(-1, C)
+        assert not isinstance(11, C)
+
+        class D(A, high=0):
+            ...
+
+        assert D.__check__ is A.__check__
+        assert isinstance(-10, D)
+        assert isinstance(0, D)
+        assert not isinstance(-11, D)
+        assert not isinstance(1, D)
 
 
 parametrize_negative_ints = pytest.mark.parametrize("i", (-10, -1, -0, +0))

@@ -1,11 +1,11 @@
 import datetime
 
-import pytest
-
 import pydantic
+import pytest
+from pydantic import ValidationError
+
 from phantom.datetime import TZAware
 from phantom.datetime import TZNaive
-from pydantic import ValidationError
 from tests.test_datetime import parametrize_aware_str
 from tests.test_datetime import parametrize_naive_str
 

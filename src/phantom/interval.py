@@ -110,6 +110,24 @@ def _get_scalar_float_bounds(
     return low, high
 
 
+def _resolve_bound(
+    cls: type,
+    name: str,
+    argument: Comparable | None,
+    default: Comparable,
+) -> None:
+    inherited = getattr(cls, name, None)
+
+    if argument is not None:
+        resolved = argument
+    elif inherited is not None:
+        resolved = inherited
+    else:
+        resolved = default
+
+    setattr(cls, name, resolved)
+
+
 class Interval(Phantom[Comparable], bound=Comparable, abstract=True):
     """
     Base class for all interval types, providing the following class arguments:
@@ -128,12 +146,12 @@ class Interval(Phantom[Comparable], bound=Comparable, abstract=True):
     def __init_subclass__(
         cls,
         check: IntervalCheck | None = None,
-        low: Comparable = neg_inf,
-        high: Comparable = inf,
+        low: Comparable | None = None,
+        high: Comparable | None = None,
         **kwargs: Any,
     ) -> None:
-        resolve_class_attr(cls, "__low__", low)
-        resolve_class_attr(cls, "__high__", high)
+        _resolve_bound(cls, "__low__", low, neg_inf)
+        _resolve_bound(cls, "__high__", high, inf)
         resolve_class_attr(cls, "__check__", check)
         if getattr(cls, "__check__", None) is None:
             raise TypeError(f"{cls.__qualname__} must define an interval check")

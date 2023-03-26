@@ -11,6 +11,7 @@ providing a predicate function.
 
     from phantom import Phantom
 
+
     # A boolean predicate that checks if a given string is a greeting. This function is
     # of type ``Predicate[str]`` as it requires its argument to be a ``str``.
     def is_greeting(instance: str) -> bool:
