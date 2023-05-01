@@ -87,6 +87,19 @@ But this will yield a static type checking error.
 greet("bird")
 ```
 
+To be clear, the reason the first example passes is not because the type checker somehow
+magically knows about our predicate, but because we provided the type checker with proof
+through the `assert`. All the type checker cares about is that runtime cannot continue
+executing past the assertion, unless the variable is a `Name`. If we move the calls
+around like in the example below, the type checker would give an error for the `greet()`
+call.
+
+```python
+joe = "Joe"
+greet(joe)
+assert isinstance(joe, Name)
+```
+
 ### Runtime type checking
 
 By combining phantom types with a runtime type-checker like [beartype] or [typeguard],
