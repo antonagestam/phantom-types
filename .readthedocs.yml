@@ -3,7 +3,7 @@ version: 2
 sphinx:
   configuration: docs/conf.py
 python:
-  # Higher than 3.8 isn't supported yet.
-  version: "3.8"
+  # Keep in sync with docs build CI job.
+  version: "3.11"
   install:
     - requirements: docs/requirements.txt

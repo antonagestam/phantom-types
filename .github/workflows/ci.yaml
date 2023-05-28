@@ -30,6 +30,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
+          # Keep in sync with version in .readthedocs.yml.
           python-version: "3.11"
           cache: pip
           cache-dependency-path: docs/requirements.txt
