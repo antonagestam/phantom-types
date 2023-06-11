@@ -7,4 +7,4 @@ typeguard
 phonenumbers
 typing-extensions
 numerary
-hypothesis
+hypothesis[zoneinfo]

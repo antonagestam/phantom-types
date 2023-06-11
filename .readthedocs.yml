@@ -2,8 +2,11 @@
 version: 2
 sphinx:
   configuration: docs/conf.py
+build:
+  os: ubuntu-22.04
+  tools:
+    # Keep in sync with docs build CI job.
+    python: "3.11"
 python:
-  # Higher than 3.8 isn't supported yet.
-  version: "3.8"
   install:
     - requirements: docs/requirements.txt

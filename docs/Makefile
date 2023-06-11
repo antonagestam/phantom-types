@@ -22,4 +22,4 @@ help:
 
 requirements: export CUSTOM_COMPILE_COMMAND='make requirements'
 requirements:
-	@pip-compile --upgrade --generate-hashes --resolver=backtracking
+	@pip-compile --upgrade --generate-hashes --resolver=backtracking --strip-extras
