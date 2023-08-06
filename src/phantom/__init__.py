@@ -23,7 +23,7 @@ from .bounds import get_bound_parser
 from .errors import BoundError
 from .predicates import Predicate
 
-__version__ = "2.1.0"
+__version__ = "2.1.1"
 __all__ = (
     "BoundError",
     "Phantom",
