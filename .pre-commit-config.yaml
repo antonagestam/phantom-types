@@ -12,7 +12,7 @@ repos:
       - id: detect-private-key
 
   - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
-    rev: "2.7.1"
+    rev: "2.7.2"
     hooks:
       - id: editorconfig-checker
         alias: ec
@@ -20,28 +20,28 @@ repos:
           - -disable-indent-size
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.0.259"
+    rev: "v0.0.282"
     hooks:
       - id: ruff
 
   - repo: https://github.com/psf/black
-    rev: "23.1.0"
+    rev: "23.7.0"
     hooks:
       - id: black
 
   - repo: https://github.com/asottile/blacken-docs
-    rev: "1.13.0"
+    rev: "1.15.0"
     hooks:
       - id: blacken-docs
         additional_dependencies: ["black==23.1.0"]
 
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: "0.22.0"
+    rev: "0.23.3"
     hooks:
       - id: check-github-workflows
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v1.1.1"
+    rev: "v1.4.1"
     hooks:
       - id: mypy
         pass_filenames: false
@@ -57,11 +57,15 @@ repos:
           - hypothesis==6.68.0
 
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v2.7.1"
+    rev: "v3.0.1"
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@2.8.7
+          # This addresses slow installation progress, see:
+          # https://github.com/pre-commit/mirrors-eslint/issues/19#issuecomment-1026388904
+          # https://github.com/npm/cli/issues/4028#issuecomment-1611625358
+          - npm@8.11.0
+          - prettier@3.0.1
         alias: format-markdown
         types: [ markdown ]
         args:

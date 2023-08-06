@@ -9,8 +9,8 @@ from typing_extensions import final
 class Schema(TypedDict, total=False):
     title: str
     description: str
-    type: Literal["array", "string", "float", "number"]  # noqa: A003
-    format: str  # noqa: A003
+    type: Literal["array", "string", "float", "number"]
+    format: str
     examples: Sequence[object]
     minimum: Optional[float]
     maximum: Optional[float]
