@@ -1,0 +1,22 @@
+[project]
+name = "phantom-types-docs"
+version = "0"
+requires-python = ">3.11,<3.12"
+classifiers = ["Private :: Do Not Upload"]
+dependencies = [
+  "sphinx",
+  "sphinx-autodoc-typehints",
+  "furo",
+
+  # Package dependencies.
+  "typeguard",
+  "phonenumbers",
+  "typing-extensions",
+  "numerary",
+  "hypothesis[zoneinfo]"
+]
+
+[tool.pip-tools]
+generate-hashes = true
+strip-extras = true
+upgrade = true
