@@ -24,7 +24,7 @@
   out: |
     main:6: note: Revealed type is "def \(builtins\.str\*?\) -> builtins\.bool\*?"
     main:7: error: Argument 1 has incompatible type "int"; expected "str"  \[arg-type\]
-    main:8: error: Argument 1 has incompatible type "List\[<nothing>\]"; expected "str"  \[arg-type\]
+    main:8: error: Argument 1 has incompatible type "List\[Never\]"; expected "str"  \[arg-type\]
     main:9: note: Revealed type is "builtins.bool\*?"
     main:13: note: Revealed type is "builtins.int\*?"
     main:17: note: Revealed type is "builtins.str\*?"
