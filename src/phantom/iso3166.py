@@ -15,6 +15,7 @@ from typing import Literal
 from typing import Union
 from typing import cast
 
+from typing_extensions import TypeAlias
 from typing_extensions import get_args
 
 from phantom import Phantom
@@ -33,7 +34,7 @@ __all__ = (
     "InvalidCountryCode",
 )
 
-LiteralAlpha2 = Literal[
+LiteralAlpha2: TypeAlias = Literal[
     "AF",
     "AX",
     "AL",
@@ -334,5 +335,5 @@ class ParsedAlpha2(str, Phantom, predicate=is_alpha2_country_code):
         return sampled_from(sorted(ALPHA2))
 
 
-Alpha2 = Union[LiteralAlpha2, ParsedAlpha2]
-CountryCode = Alpha2
+Alpha2: TypeAlias = Union[LiteralAlpha2, ParsedAlpha2]
+CountryCode: TypeAlias = Alpha2

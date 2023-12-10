@@ -13,6 +13,7 @@ from typing import NewType
 from typing import Tuple
 from typing import Union
 
+from typing_extensions import TypeAlias
 from typing_extensions import TypeGuard
 from typing_extensions import get_args
 from typing_extensions import get_origin
@@ -38,7 +39,7 @@ def resolve_class_attr(
         )
 
 
-BoundType = Union[type, Tuple[type, ...]]
+BoundType: TypeAlias = Union[type, Tuple[type, ...]]
 
 
 def _is_union(type_: BoundType) -> bool:
