@@ -49,7 +49,8 @@ def _deconstruct_phone_number(
 
 
 def normalize_phone_number(
-    phone_number: str, country_code: str | None = None
+    phone_number: str,
+    country_code: str | None = None,
 ) -> FormattedPhoneNumber:
     """
     Normalize ``phone_number`` using :py:const:`phonenumbers.PhoneNumberFormat.E164`.
