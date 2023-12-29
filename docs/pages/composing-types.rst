@@ -115,7 +115,7 @@ type. For example:
     # At this point the object will no longer satisfy the HasMany predicate.
     instance.len = 2
 
-    # There is no way for a type checker to now that the predicate isn't fulfilled
+    # There is no way for a type checker to know that the predicate isn't fulfilled
     # anymore, so the revealed type here will still be HasMany.
     reveal_type(instance)  # Revealed type is HasMany
 
