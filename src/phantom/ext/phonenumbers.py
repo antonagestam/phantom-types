@@ -11,9 +11,9 @@ from __future__ import annotations
 
 from typing import Final
 from typing import cast
-from typing_extensions import TypeGuard
 
 import phonenumbers
+from typing_extensions import TypeGuard
 
 from phantom import Phantom
 from phantom.bounds import parse_str
