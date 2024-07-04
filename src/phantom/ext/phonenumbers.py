@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from typing import Final
 from typing import cast
+from typing_extensions import TypeGuard
 
 import phonenumbers
 
@@ -67,7 +68,7 @@ def normalize_phone_number(
 is_phone_number = excepts(InvalidPhoneNumber)(_deconstruct_phone_number)
 
 
-def is_formatted_phone_number(number: str) -> bool:
+def is_formatted_phone_number(number: str) -> TypeGuard[FormattedPhoneNumber]:
     try:
         return number == normalize_phone_number(number)
     except InvalidPhoneNumber:

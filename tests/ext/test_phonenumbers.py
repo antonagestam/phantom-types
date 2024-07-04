@@ -1,4 +1,5 @@
 import pytest
+from typing_extensions import assert_type
 
 from phantom.errors import BoundError
 from phantom.ext.phonenumbers import FormattedPhoneNumber
@@ -103,8 +104,10 @@ class TestIsPhoneNumber:
 
 
 class TestIsFormattedPhoneNumber:
-    def test_returns_true_for_formatted_number(self):
-        assert is_formatted_phone_number("+46123456789") is True
+    def test_returns_true_for_formatted_number(self) -> None:
+        value = "+46123456789"
+        assert is_formatted_phone_number(value)
+        assert_type(value, FormattedPhoneNumber)
 
     def test_returns_false_for_unformatted_number(self):
         assert is_formatted_phone_number("+46 (123) 456 789") is False
