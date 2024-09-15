@@ -9,4 +9,4 @@ build:
     python: "3.11"
 python:
   install:
-    - requirements: docs/requirements.txt
+    - requirements: docs-requirements.txt

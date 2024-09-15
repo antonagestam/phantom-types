@@ -83,6 +83,14 @@ docs = [
 ignore = ["src/phantom/_version.py"]
 
 
+[tool.pip-tools]
+generate-hashes = true
+strip-extras = true
+upgrade = true
+all-extras = true
+output-file = "docs-requirements.txt"
+
+
 [tool.black]
 target-version = ["py39"]
 
