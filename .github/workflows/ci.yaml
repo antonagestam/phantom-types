@@ -54,7 +54,7 @@ jobs:
           cache: pip
           cache-dependency-path: setup.cfg
       - name: Install minimum requirements
-        run: pip install --upgrade -e '.[test]'
+        run: pip install --upgrade '.[test]'
       - name: Run all tests that don't require extra dependencies
         run: >-
           coverage run --append -m pytest
@@ -63,7 +63,7 @@ jobs:
           --ignore=tests/pydantic
           --ignore=tests/ext
       - name: Install extra requirements
-        run: pip install --upgrade -e '.[all,test]'
+        run: pip install --upgrade '.[all,test]'
       - name: Run all tests that require extra dependencies
         run: >-
           coverage run --append -m pytest
