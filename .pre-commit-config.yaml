@@ -77,4 +77,6 @@ repos:
       - id: check-manifest
         args: ["--no-build-isolation"]
         additional_dependencies:
-          - setuptools==67.4.0
+          - setuptools==74.1.2
+          - setuptools-scm==8.1.0
+          - wheel==0.44.0

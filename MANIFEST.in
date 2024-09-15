@@ -8,3 +8,5 @@ exclude *.yaml
 exclude *.yml
 include README.md
 include LICENSE
+exclude .gitignore
+exclude setup.cfg

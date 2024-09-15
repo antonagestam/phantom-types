@@ -1,6 +1,87 @@
 [build-system]
-requires = ["setuptools>=67.4.0", "wheel"]
+requires = [
+  "setuptools==74.1.2",
+  "setuptools-scm==8.1.0",
+  "wheel==0.44.0",
+]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_file = "src/phantom/_version.py"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+readme = {file = "README.md", content-type = "text/markdown; charset=UTF-8"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
+
+
+[project]
+name = "phantom-type"
+description = "Phantom types for Python"
+requires-python = ">=3.9"
+authors = [
+  { name="Anton Agestam", email="git@antonagestam.se" },
+]
+license = {text = "BSD-3-Clause"}
+classifiers = [
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Development Status :: 5 - Production/Stable",
+]
+dynamic = ["version", "readme"]
+dependencies = [
+  # typeguard 4.3.0 breaks "intersection" protocols, see linked issue. I didn't figure
+  # out a way to work around this at the moment, so it needs to be pinned.
+  # https://github.com/antonagestam/phantom-types/issues/299
+  "typeguard>=4,<4.3.0",
+  "typing_extensions>=4.3.0",
+  "numerary>=0.4.3",
+]
+
+[project.optional-dependencies]
+phonenumbers = ["phonenumbers>=8.12.41"]
+pydantic = ["pydantic>=1.9.0,<2"]
+dateutil = ["python-dateutil>=2.8.2"]
+hypothesis = ["hypothesis[zoneinfo]>=6.68.0"]
+all = [
+  "phantom-types[phonenumbers]",
+  "phantom-types[pydantic]",
+  "phantom-types[dateutil]",
+  "phantom-types[hypothesis]",
+]
+test = [
+  "mypy>=0.991",
+  "pytest",
+  "pytest-mypy-plugins>=1.9.3",
+  "coverage",
+]
+docs = [
+  "sphinx",
+  "sphinx-autodoc-typehints",
+  "furo",
+]
+
+[project.urls]
+"Source Repository" = "https://github.com/antonagestam/phantom-types/"
+"Documentation" = "https://phantom-types.readthedocs.io/en/stable/"
+
+
+[tool.check-manifest]
+ignore = ["src/phantom/_version.py"]
+
 
 [tool.black]
 target-version = ["py39"]

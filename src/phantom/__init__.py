@@ -19,12 +19,15 @@ Use ``Phantom`` to create arbitrary phantom types using boolean predicates.
 from ._base import Phantom
 from ._base import PhantomBase
 from ._base import PhantomMeta
+from ._version import __version__
+from ._version import __version_tuple__
 from .bounds import get_bound_parser
 from .errors import BoundError
 from .predicates import Predicate
 
-__version__ = "2.1.1"
 __all__ = (
+    "__version__",
+    "__version_tuple__",
     "BoundError",
     "Phantom",
     "PhantomBase",
