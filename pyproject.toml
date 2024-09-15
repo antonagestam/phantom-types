@@ -21,7 +21,7 @@ namespaces = false
 
 
 [project]
-name = "phantom-type"
+name = "phantom-types"
 description = "Phantom types for Python"
 requires-python = ">=3.9"
 authors = [
@@ -96,7 +96,7 @@ target-version = ["py39"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "src", "docs"]
-addopts = "--mypy-ini-file=setup.cfg --mypy-only-local-stub --doctest-modules"
+addopts = "--mypy-ini-file=setup.cfg --mypy-only-local-stub --doctest-modules --import-mode=importlib"
 markers = [
   "external: mark tests that require extra dependencies",
   "no_external: mark tests that will fail if run with extra dependencies",
