@@ -33,9 +33,11 @@ jobs:
           # Keep in sync with version in .readthedocs.yml.
           python-version: "3.11"
           cache: pip
-          cache-dependency-path: docs/requirements.txt
+          cache-dependency-path: docs-requirements.txt
       - name: Install dependencies
-        run: pip install --require-hashes -r docs/requirements.txt
+        run: pip install --require-hashes --no-dependencies -r docs-requirements.txt
+      - name: Install package
+        run: pip install --no-dependencies .
       - name: Build docs
         run: sphinx-build -W -b html docs docs/_build
 
@@ -52,9 +54,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
-          cache-dependency-path: setup.cfg
+          cache-dependency-path: pyproject.toml
       - name: Install minimum requirements
-        run: pip install --upgrade -e '.[test]'
+        run: pip install --upgrade '.[test]'
       - name: Run all tests that don't require extra dependencies
         run: >-
           coverage run --append -m pytest
@@ -63,7 +65,7 @@ jobs:
           --ignore=tests/pydantic
           --ignore=tests/ext
       - name: Install extra requirements
-        run: pip install --upgrade -e '.[all,test]'
+        run: pip install --upgrade '.[all,test]'
       - name: Run all tests that require extra dependencies
         run: >-
           coverage run --append -m pytest

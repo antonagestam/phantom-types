@@ -6,6 +6,43 @@ on:
 
 jobs:
   build-and-publish:
-    uses: less-action/reusables/.github/workflows/python-publish.yaml@main
-    secrets:
-      pypi_api_token: ${{ secrets.PYPI_API_TOKEN }}
+    name: Build and publish
+    runs-on: ubuntu-latest
+    permissions:
+      # permission required for trusted publishing
+      id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/immoney
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: pip
+          cache-dependency-path: pyproject.toml
+          check-latest: true
+      - name: Install dependencies
+        run: python3 -m pip install --upgrade build pkginfo
+      - name: Build
+        run: python3 -m build --sdist --wheel .
+      - name: Inspect built wheel version
+        id: inspect-wheel-version
+        run: |
+          python3 << 'EOF' >> $GITHUB_OUTPUT
+          from pathlib import Path
+          from pkginfo import Wheel
+          [wheel_path] = Path("dist").glob("*.whl")
+          wheel = Wheel(wheel_path)
+          print(f"version={wheel.version}")
+          EOF
+      - name: Fail on version mismatch
+        if: ${{ steps.inspect-wheel-version.outputs.version != github.event.release.tag_name }}
+        run: |
+          echo "💥 The version of the built wheel does not match the release tag."
+          echo
+          echo "Release tag: '${{ github.event.release.tag_name }}'"
+          echo "Packaged version: '${{ steps.inspect-wheel-version.outputs.version }}'"
+          exit 1
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1
