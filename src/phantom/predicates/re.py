@@ -1,4 +1,4 @@
-from typing import Pattern
+from re import Pattern
 
 from . import Predicate
 from ._utils import bind_name

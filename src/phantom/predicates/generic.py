@@ -1,4 +1,3 @@
-from typing import Tuple
 from typing import Union
 
 import typeguard
@@ -29,7 +28,7 @@ def identical(a: object) -> Predicate[object]:
     return check
 
 
-def of_type(t: Union[type, Tuple[type, ...]]) -> Predicate[object]:
+def of_type(t: Union[type, tuple[type, ...]]) -> Predicate[object]:
     """
     Create a new predicate that succeeds when its argument is an instance of ``t``.
     """

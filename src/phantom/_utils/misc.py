@@ -3,14 +3,13 @@
 from __future__ import annotations
 
 import types
+from collections.abc import MutableMapping
+from collections.abc import MutableSequence
+from collections.abc import MutableSet
 from dataclasses import is_dataclass
 from itertools import product
 from typing import Final
-from typing import MutableMapping
-from typing import MutableSequence
-from typing import MutableSet
 from typing import NewType
-from typing import Tuple
 from typing import Union
 
 from typing_extensions import TypeAlias
@@ -39,7 +38,7 @@ def resolve_class_attr(
         )
 
 
-BoundType: TypeAlias = Union[type, Tuple[type, ...]]
+BoundType: TypeAlias = Union[type, tuple[type, ...]]
 
 
 def _is_union(type_: BoundType) -> bool:

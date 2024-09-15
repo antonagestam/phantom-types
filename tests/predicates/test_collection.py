@@ -1,6 +1,6 @@
-from typing import Container
-from typing import Iterable
-from typing import Sized
+from collections.abc import Container
+from collections.abc import Iterable
+from collections.abc import Sized
 
 import pytest
 

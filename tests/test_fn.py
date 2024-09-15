@@ -1,12 +1,12 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from functools import partial
 from operator import add
 from operator import attrgetter
 from operator import itemgetter
 from operator import mul
 from typing import Callable
-from typing import Sequence
 from typing import TypeVar
 
 import pytest

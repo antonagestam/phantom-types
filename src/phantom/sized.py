@@ -26,13 +26,14 @@ This example creates a type that accepts strings with 255 or less characters:
 """
 from __future__ import annotations
 
+from collections.abc import Iterable
+from collections.abc import Sized
+
 # This is the closest I could find to documentation of _ProtocolMeta.
 # https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
 from typing import Any
 from typing import Generic
-from typing import Iterable
 from typing import Protocol
-from typing import Sized
 from typing import TypeVar
 from typing import _ProtocolMeta
 from typing import runtime_checkable
