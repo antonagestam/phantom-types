@@ -1,12 +1,11 @@
-from typing import Tuple
-
 import pytest
+from typing_extensions import TypeAlias
 
 from phantom.predicates import interval
 
 from .utils import assert_predicate_name_equals
 
-Boundaries = Tuple[float, float]
+Boundaries: TypeAlias = tuple[float, float]
 parametrize_inside = pytest.mark.parametrize(
     "value, boundaries",
     [

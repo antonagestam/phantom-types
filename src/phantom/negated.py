@@ -7,8 +7,8 @@ sequence.
 """
 from __future__ import annotations
 
+from collections.abc import Sequence
 from typing import Generic
-from typing import Sequence
 from typing import TypeVar
 
 from typing_extensions import get_args

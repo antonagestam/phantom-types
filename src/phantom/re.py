@@ -12,8 +12,8 @@ Types for representing strings that match a pattern.
 from __future__ import annotations
 
 import re
+from re import Pattern
 from typing import Any
-from typing import Pattern
 
 from . import Phantom
 from . import _hypothesis
