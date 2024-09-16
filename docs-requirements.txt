@@ -215,9 +215,9 @@ hypothesis==6.112.1 \
     # via
     #   phantom-type (pyproject.toml)
     #   phantom-types
-idna==3.9 \
-    --hash=sha256:69297d5da0cc9281c77efffb4e730254dd45943f45bbfb461de5991713989b1e \
-    --hash=sha256:e5c5dafde284f26e9e0f28f6ea2d6400abd5ca099864a67f576f3981c6476124
+idna==3.10 \
+    --hash=sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9 \
+    --hash=sha256:946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3
     # via requests
 imagesize==1.4.1 \
     --hash=sha256:0d8d18d08f840c19d0ee7ca1fd82490fdc3729b7ac93f49870406ddde8ef8d8b \
