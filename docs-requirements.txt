@@ -350,9 +350,9 @@ packaging==24.1 \
     #   pytest
     #   pytest-mypy-plugins
     #   sphinx
-phantom-types==2.1.1 \
-    --hash=sha256:13f2e7a5479d929aef091a20176011aee00b2de5d3fc6f9742c32b79d597ed9d \
-    --hash=sha256:5bb875d8a387d5d73ca3921f7844ea1d83d3a5edf3b5e03603bc4cb0563d7ee7
+phantom-types==3.0.0 \
+    --hash=sha256:8513766eb132dddc720cbf8d17068557c867d3df03f77c076a7e93ad53c6c1b6 \
+    --hash=sha256:b6d5cfebc93cd0205b2cc07f9d7faed8c6a487b6ef842c88fbdf045d8c3f3fbf
     # via phantom-type (pyproject.toml)
 phonenumbers==8.13.45 \
     --hash=sha256:53679a95b6060fd5e15467759252c87933d8566d6a5be00995a579eb0e02435b \
