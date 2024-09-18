@@ -196,7 +196,7 @@ coverage==7.6.1 \
     --hash=sha256:f5796e664fe802da4f57a168c85359a8fbf3eab5e55cd4e4569fbacecc903959 \
     --hash=sha256:fc5a77d0c516700ebad189b587de289a20a78324bc54baee03dd486f0855d234 \
     --hash=sha256:fd21f6ae3f08b41004dfb433fa895d858f3f5979e7762d052b12aef444e29afc
-    # via phantom-type (pyproject.toml)
+    # via phantom-types (pyproject.toml)
 decorator==5.1.1 \
     --hash=sha256:637996211036b6385ef91435e4fae22989472f9d571faba8927ba8253acbc330 \
     --hash=sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186
@@ -208,13 +208,13 @@ docutils==0.21.2 \
 furo==2024.8.6 \
     --hash=sha256:6cd97c58b47813d3619e63e9081169880fbe331f0ca883c871ff1f3f11814f5c \
     --hash=sha256:b63e4cee8abfc3136d3bc03a3d45a76a850bada4d6374d24c1716b0e01394a01
-    # via phantom-type (pyproject.toml)
+    # via phantom-types (pyproject.toml)
 hypothesis==6.112.1 \
     --hash=sha256:93631b1498b20d2c205ed304cbd41d50e9c069d78a9c773c1324ca094c5e30ce \
     --hash=sha256:b070d7a1bb9bd84706c31885c9aeddc138e2b36a9c112a91984f49501c567856
     # via
-    #   phantom-type (pyproject.toml)
     #   phantom-types
+    #   phantom-types (pyproject.toml)
 idna==3.10 \
     --hash=sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9 \
     --hash=sha256:946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3
@@ -332,7 +332,7 @@ mypy==1.11.2 \
     --hash=sha256:ee23de8530d99b6db0573c4ef4bd8f39a2a6f9b60655bf7a1357e585a3486f2b \
     --hash=sha256:f7821776e5c4286b6a13138cc935e2e9b6fde05e081bdebf5cdb2bb97c9df81d
     # via
-    #   phantom-type (pyproject.toml)
+    #   phantom-types (pyproject.toml)
     #   pytest-mypy-plugins
 mypy-extensions==1.0.0 \
     --hash=sha256:4392f6c0eb8a5668a69e23d168ffa70f0be9ccfd32b5cc2d26a34ae5b844552d \
@@ -341,8 +341,8 @@ mypy-extensions==1.0.0 \
 numerary==0.4.4 \
     --hash=sha256:ad955ddf7f5275f8e52f5520b2d6c654cc3bf1e3ae4bfb45664c9d51b208d0c6
     # via
-    #   phantom-type (pyproject.toml)
     #   phantom-types
+    #   phantom-types (pyproject.toml)
 packaging==24.1 \
     --hash=sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002 \
     --hash=sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124
@@ -350,16 +350,12 @@ packaging==24.1 \
     #   pytest
     #   pytest-mypy-plugins
     #   sphinx
-phantom-types==2.1.1 \
-    --hash=sha256:13f2e7a5479d929aef091a20176011aee00b2de5d3fc6f9742c32b79d597ed9d \
-    --hash=sha256:5bb875d8a387d5d73ca3921f7844ea1d83d3a5edf3b5e03603bc4cb0563d7ee7
-    # via phantom-type (pyproject.toml)
 phonenumbers==8.13.45 \
     --hash=sha256:53679a95b6060fd5e15467759252c87933d8566d6a5be00995a579eb0e02435b \
     --hash=sha256:bf05ec20fcd13f0d53e43a34ed7bd1c8be26a72b88fce4b8c64fca5b4641987a
     # via
-    #   phantom-type (pyproject.toml)
     #   phantom-types
+    #   phantom-types (pyproject.toml)
 pluggy==1.5.0 \
     --hash=sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1 \
     --hash=sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669
@@ -409,8 +405,8 @@ pydantic==1.10.18 \
     --hash=sha256:fcb20d4cb355195c75000a49bb4a31d75e4295200df620f454bbc6bdf60ca890 \
     --hash=sha256:fe734914977eed33033b70bfc097e1baaffb589517863955430bf2e0846ac30f
     # via
-    #   phantom-type (pyproject.toml)
     #   phantom-types
+    #   phantom-types (pyproject.toml)
 pygments==2.18.0 \
     --hash=sha256:786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199 \
     --hash=sha256:b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a
@@ -421,18 +417,18 @@ pytest==8.3.3 \
     --hash=sha256:70b98107bd648308a7952b06e6ca9a50bc660be218d53c257cc1fc94fda10181 \
     --hash=sha256:a6853c7375b2663155079443d2e45de913a911a11d669df02a50814944db57b2
     # via
-    #   phantom-type (pyproject.toml)
+    #   phantom-types (pyproject.toml)
     #   pytest-mypy-plugins
 pytest-mypy-plugins==3.1.2 \
     --hash=sha256:14fa9b00e59713a6fdb88fcf04e8139b9467e117b98d61fc12038c60afb7febe \
     --hash=sha256:3478ccb68e26a159e1287c4614c60f84cd0720e3895f174365c7440498234b9f
-    # via phantom-type (pyproject.toml)
+    # via phantom-types (pyproject.toml)
 python-dateutil==2.9.0.post0 \
     --hash=sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3 \
     --hash=sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427
     # via
-    #   phantom-type (pyproject.toml)
     #   phantom-types
+    #   phantom-types (pyproject.toml)
 pyyaml==6.0.2 \
     --hash=sha256:01179a4a8559ab5de078078f37e5c1a30d76bb88519906844fd7bdea1b7729ff \
     --hash=sha256:0833f8694549e586547b576dcfaba4a6b55b9e96098b36cdc7ebefe667dfed48 \
@@ -722,13 +718,13 @@ sphinx==8.0.2 \
     --hash=sha256:56173572ae6c1b9a38911786e206a110c9749116745873feae4f9ce88e59391d
     # via
     #   furo
-    #   phantom-type (pyproject.toml)
+    #   phantom-types (pyproject.toml)
     #   sphinx-autodoc-typehints
     #   sphinx-basic-ng
-sphinx-autodoc-typehints==2.4.1 \
-    --hash=sha256:af37abb816ebd2cf56c7a8174fd2f34d0f2f84fbf58265f89429ae107212fe6f \
-    --hash=sha256:cfe410920cecf08ade046bb387b0007edb83e992de59686c62d194c762f1e45c
-    # via phantom-type (pyproject.toml)
+sphinx-autodoc-typehints==2.4.4 \
+    --hash=sha256:940de2951fd584d147e46772579fdc904f945c5f1ee1a78c614646abfbbef18b \
+    --hash=sha256:e743512da58b67a06579a1462798a6907664ab77460758a43234adeac350afbf
+    # via phantom-types (pyproject.toml)
 sphinx-basic-ng==1.0.0b2 \
     --hash=sha256:9ec55a47c90c8c002b5960c57492ec3021f5193cb26cebc2dc4ea226848651c9 \
     --hash=sha256:eb09aedbabfb650607e9b4b68c9d240b90b1e1be221d6ad71d61c52e29f7932b
@@ -765,18 +761,23 @@ typeguard==4.2.1 \
     --hash=sha256:7da3bd46e61f03e0852f8d251dcbdc2a336aa495d7daff01e092b55327796eb8 \
     --hash=sha256:c556a1b95948230510070ca53fa0341fb0964611bd05d598d87fb52115d65fee
     # via
-    #   phantom-type (pyproject.toml)
     #   phantom-types
+    #   phantom-types (pyproject.toml)
 typing-extensions==4.12.2 \
     --hash=sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d \
     --hash=sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8
     # via
     #   mypy
-    #   phantom-type (pyproject.toml)
     #   phantom-types
+    #   phantom-types (pyproject.toml)
     #   pydantic
     #   typeguard
 urllib3==2.2.3 \
     --hash=sha256:ca899ca043dcb1bafa3e262d73aa25c465bfb49e0bd9dd5d59f1d0acba2f8fac \
     --hash=sha256:e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9
     # via requests
+
+# WARNING: The following packages were not pinned, but pip requires them to be
+# pinned when the requirements file includes hashes and the requirement is not
+# satisfied by a package already installed. Consider using the --allow-unsafe flag.
+# phantom-types

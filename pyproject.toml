@@ -89,6 +89,7 @@ strip-extras = true
 upgrade = true
 all-extras = true
 output-file = "docs-requirements.txt"
+unsafe-package = ["phantom-types"]
 
 
 [tool.black]

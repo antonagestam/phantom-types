@@ -47,6 +47,7 @@ test-typing:
 clean:
 	rm -rf {**/,}*.egg-info **{/**,}/__pycache__ build dist .coverage coverage.xml
 
+.PHONY: docs-requirements
 docs-requirements: export CUSTOM_COMPILE_COMMAND='make docs-requirements'
 docs-requirements:
 	@pip install --upgrade pip-tools
