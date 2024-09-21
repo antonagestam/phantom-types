@@ -25,12 +25,10 @@ class TestInterval:
     def test_subclassing_without_check_raises(self):
         with pytest.raises(TypeError, match="A must define an interval check$"):
 
-            class A(Interval, abstract=False):
-                ...
+            class A(Interval, abstract=False): ...
 
     def test_parse_coerces_str(self):
-        class Great(int, Inclusive, low=10):
-            ...
+        class Great(int, Inclusive, low=10): ...
 
         assert Great.parse("10") == 10
 
@@ -41,19 +39,16 @@ class TestInterval:
             check=interval.exclusive,
             low=Decimal("1.15"),
             high=Decimal("2.36"),
-        ):
-            ...
+        ): ...
 
         assert not isinstance(2, A)
         assert not isinstance(1.98, A)
         assert isinstance(Decimal("1.98"), A)
 
     def test_subclass_inherits_bounds(self):
-        class A(int, Inclusive, low=-10, high=10):
-            ...
+        class A(int, Inclusive, low=-10, high=10): ...
 
-        class B(A):
-            ...
+        class B(A): ...
 
         assert B.__check__ is A.__check__
         assert isinstance(-10, B)
@@ -61,8 +56,7 @@ class TestInterval:
         assert not isinstance(-11, B)
         assert not isinstance(11, B)
 
-        class C(A, low=0):
-            ...
+        class C(A, low=0): ...
 
         assert C.__check__ is A.__check__
         assert isinstance(0, C)
@@ -70,8 +64,7 @@ class TestInterval:
         assert not isinstance(-1, C)
         assert not isinstance(11, C)
 
-        class D(A, high=0):
-            ...
+        class D(A, high=0): ...
 
         assert D.__check__ is A.__check__
         assert isinstance(-10, D)
@@ -189,8 +182,7 @@ class TestGetScalarIntBounds:
             def __lt__(self, other):
                 return False
 
-        class Int(int, Inclusive, low=Inf(), high=100):
-            ...
+        class Int(int, Inclusive, low=Inf(), high=100): ...
 
         with pytest.raises(_NonScalarBounds):
             _get_scalar_int_bounds(Int)
@@ -204,8 +196,7 @@ class TestGetScalarIntBounds:
             def __lt__(self, other):
                 return False
 
-        class Int(int, Inclusive, low=0, high=Inf()):
-            ...
+        class Int(int, Inclusive, low=0, high=Inf()): ...
 
         with pytest.raises(_NonScalarBounds):
             _get_scalar_int_bounds(Int)
@@ -240,8 +231,7 @@ class TestGetScalarFloatBounds:
             def __lt__(self, other):
                 return False
 
-        class Int(float, Inclusive, low=Inf(), high=100):
-            ...
+        class Int(float, Inclusive, low=Inf(), high=100): ...
 
         with pytest.raises(_NonScalarBounds):
             _get_scalar_float_bounds(Int)
@@ -255,8 +245,7 @@ class TestGetScalarFloatBounds:
             def __lt__(self, other):
                 return False
 
-        class Int(float, Inclusive, low=0, high=Inf()):
-            ...
+        class Int(float, Inclusive, low=0, high=Inf()): ...
 
         with pytest.raises(_NonScalarBounds):
             _get_scalar_float_bounds(Int)

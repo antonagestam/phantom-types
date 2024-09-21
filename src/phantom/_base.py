@@ -27,8 +27,7 @@ from .schema import SchemaField
 
 @runtime_checkable
 class InstanceCheckable(Protocol):
-    def __instancecheck__(self, instance: object) -> bool:
-        ...
+    def __instancecheck__(self, instance: object) -> bool: ...
 
 
 class PhantomMeta(abc.ABCMeta):
@@ -73,8 +72,7 @@ class PhantomBase(SchemaField, metaclass=PhantomMeta):
 
     @classmethod
     @abc.abstractmethod
-    def __instancecheck__(cls, instance: object) -> bool:
-        ...
+    def __instancecheck__(cls, instance: object) -> bool: ...
 
     @classmethod
     def __get_validators__(cls: type[Derived]) -> Iterator[Callable[[object], Derived]]:
@@ -82,12 +80,10 @@ class PhantomBase(SchemaField, metaclass=PhantomMeta):
         yield cls.parse
 
 
-class AbstractInstanceCheck(TypeError):
-    ...
+class AbstractInstanceCheck(TypeError): ...
 
 
-class MutableType(TypeError):
-    ...
+class MutableType(TypeError): ...
 
 
 class Phantom(PhantomBase, Generic[T]):

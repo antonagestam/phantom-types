@@ -7,6 +7,7 @@ Requires the phonenumbers_ package which can be installed with:
 
     $ python3 -m pip install phantom-types[phonenumbers]
 """
+
 from __future__ import annotations
 
 from typing import Final

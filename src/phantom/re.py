@@ -3,12 +3,12 @@ Types for representing strings that match a pattern.
 
 .. code-block:: python
 
-    class Greeting(Match, pattern=r"^(Hi|Hello)"):
-        ...
+    class Greeting(Match, pattern=r"^(Hi|Hello)"): ...
 
 
     assert isinstance("Hello Jane!", Greeting)
 """
+
 from __future__ import annotations
 
 import re

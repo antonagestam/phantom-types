@@ -59,8 +59,7 @@ from phantom import Phantom
 from phantom.predicates.collection import contained
 
 
-class Name(str, Phantom, predicate=contained({"Jane", "Joe"})):
-    ...
+class Name(str, Phantom, predicate=contained({"Jane", "Joe"})): ...
 
 
 def greet(name: Name):

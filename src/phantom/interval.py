@@ -6,8 +6,7 @@ a type like this:
 
 .. code-block:: python
 
-    class VolumeLevel(int, Inclusive, low=0, high=100):
-        ...
+    class VolumeLevel(int, Inclusive, low=0, high=100): ...
 
 There is also a set of concrete ready-to-use interval types provided, that use predicate
 functions from :py:mod:`phantom.predicates.interval`.
@@ -43,16 +42,14 @@ Derived = TypeVar("Derived", bound="Interval")
 
 
 class IntervalCheck(Protocol):
-    def __call__(self, a: N, b: N) -> Predicate[N]:
-        ...
+    def __call__(self, a: N, b: N) -> Predicate[N]: ...
 
 
 inf: Final = float("inf")
 neg_inf: Final = float("-inf")
 
 
-class _NonScalarBounds(Exception):
-    ...
+class _NonScalarBounds(Exception): ...
 
 
 def _get_scalar_int_bounds(

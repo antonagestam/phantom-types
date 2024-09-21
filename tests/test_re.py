@@ -8,12 +8,10 @@ from phantom.re import FullMatch
 from phantom.re import Match
 
 
-class MatchPatternInstance(Match, pattern=re.compile(r"abc")):
-    ...
+class MatchPatternInstance(Match, pattern=re.compile(r"abc")): ...
 
 
-class MatchPatternStr(Match, pattern=r"abc"):
-    ...
+class MatchPatternStr(Match, pattern=r"abc"): ...
 
 
 parametrize_match = pytest.mark.parametrize(
@@ -43,12 +41,10 @@ class TestMatch:
         assert s is match_type.parse(s)
 
 
-class FullMatchPatternInstance(FullMatch, pattern=re.compile(r"abc")):
-    ...
+class FullMatchPatternInstance(FullMatch, pattern=re.compile(r"abc")): ...
 
 
-class FullMatchStr(FullMatch, pattern=r"abc"):
-    ...
+class FullMatchStr(FullMatch, pattern=r"abc"): ...
 
 
 parametrize_full_match = pytest.mark.parametrize(

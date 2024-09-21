@@ -12,18 +12,17 @@ This made-up type would describe sized collections with between 5 and 10 ints:
 
 .. code-block:: python
 
-    class SpecificSize(PhantomBound[int], min=5, max=10):
-        ...
+    class SpecificSize(PhantomBound[int], min=5, max=10): ...
 
 
 This example creates a type that accepts strings with 255 or less characters:
 
 .. code-block:: python
 
-    class SizedStr(str, PhantomBound[str], max=255):
-        ...
+    class SizedStr(str, PhantomBound[str], max=255): ...
 
 """
+
 from __future__ import annotations
 
 from collections.abc import Iterable
@@ -69,8 +68,7 @@ class SizedIterable(Sized, Iterable[T], Protocol[T]):
     """Intersection of :py:class:`typing.Sized` and :py:class:`typing.Iterable`."""
 
 
-class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta):
-    ...
+class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta): ...
 
 
 class PhantomSized(
@@ -109,12 +107,10 @@ class PhantomSized(
         }
 
 
-class UnresolvedBounds(Exception):
-    ...
+class UnresolvedBounds(Exception): ...
 
 
-class LSPViolation(Exception):
-    ...
+class LSPViolation(Exception): ...
 
 
 class PhantomBound(
