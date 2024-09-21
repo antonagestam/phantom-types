@@ -1,0 +1,117 @@
+environments:
+  - id: python
+    ecosystem:
+      language: python
+      version: "3.12"
+    dependencies:
+      - ruff
+      - pre-commit-hooks
+      - editorconfig-checker
+      - blacken-docs
+      - check-jsonschema
+
+  - id: check-manifest
+    ecosystem:
+      language: python
+      version: "3.12"
+    dependencies:
+      - check-manifest
+      - setuptools==74.1.2
+      - setuptools-scm==8.1.0
+      - wheel==0.44.0
+
+  - id: node
+    ecosystem:
+      language: node
+      version: "21.7.1"
+    dependencies:
+      - prettier
+
+hooks:
+  - id: check-manifest
+    environment: check-manifest
+    command: check-manifest
+    parameterize: false
+    read_only: true
+    args: [--no-build-isolation]
+
+  - id: prettier
+    environment: node
+    command: prettier
+    types: [markdown]
+    args:
+      - --write
+      - --ignore-unknown
+      - --parser=markdown
+      - --print-width=88
+      - --prose-wrap=always
+
+  - id: check-case-conflict
+    environment: python
+    command: check-case-conflict
+    read_only: true
+
+  - id: check-merge-conflict
+    environment: python
+    command: check-merge-conflict
+    read_only: true
+    types: [text]
+
+  - id: python-debug-statements
+    environment: python
+    command: debug-statement-hook
+    read_only: true
+    types: [ python ]
+
+  - id: detect-private-key
+    environment: python
+    command: detect-private-key
+    read_only: true
+    types: [ text ]
+
+  - id: end-of-file-fixer
+    environment: python
+    command: end-of-file-fixer
+    types: [text]
+
+  - id: trailing-whitespace-fixer
+    environment: python
+    command: trailing-whitespace-fixer
+    types: [text]
+
+  - id: editorconfig-checker
+    environment: python
+    command: ec
+    args: [-disable-indent-size]
+    types: [text]
+    read_only: true
+
+  - id: ruff-check
+    environment: python
+    command: ruff
+    args: [check, --force-exclude, --fix]
+    types: [python]
+
+  - id: ruff-format
+    environment: python
+    command: ruff
+    args: [format, --force-exclude]
+    types: [python]
+
+  - id: blacken-docs
+    environment: python
+    command: blacken-docs
+    types: [markdown, python]
+
+  - id: check-github-workflows
+    environment: python
+    command: check-jsonschema
+    read_only: true
+    args: ["--builtin-schema", "vendor.github-workflows"]
+    types: [yaml]
+    exclude:
+      - codecov\.yml
+      - goose\.yaml
+      - dependabot\.yaml
+      - \.readthedocs\.yml
+      - ^tests/.*

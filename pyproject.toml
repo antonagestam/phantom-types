@@ -68,7 +68,14 @@ test = [
   "pytest-mypy-plugins>=1.9.3",
   "coverage",
 ]
+type-check = [
+  "phantom-types[all]",
+  "mypy==1.4.1",
+  "pytest",
+  "types-python-dateutil",
+]
 docs = [
+  "phantom-types[all]",
   "sphinx",
   "sphinx-autodoc-typehints",
   "furo",
@@ -87,8 +94,6 @@ ignore = ["src/phantom/_version.py"]
 generate-hashes = true
 strip-extras = true
 upgrade = true
-all-extras = true
-output-file = "docs-requirements.txt"
 unsafe-package = ["phantom-types"]
 
 
