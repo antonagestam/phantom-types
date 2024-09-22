@@ -40,26 +40,22 @@ from tests.types import IntInc
 from tests.types import IntIncExc
 
 
-class TensFloat(float, InclusiveExclusive, low=10, high=20):
-    ...
+class TensFloat(float, InclusiveExclusive, low=10, high=20): ...
 
 
-class TensInt(int, InclusiveExclusive, low=10, high=20):
-    ...
+class TensInt(int, InclusiveExclusive, low=10, high=20): ...
 
 
 class Url(
     FullMatch,
     pattern=r"https?://www\.[A-z]+\.(com|se|org)",
-):
-    ...
+): ...
 
 
 T = TypeVar("T", bound=object, covariant=True)
 
 
-class Few(PhantomBound[T], Generic[T], min=5, max=15):
-    ...
+class Few(PhantomBound[T], Generic[T], min=5, max=15): ...
 
 
 @total_ordering
@@ -72,20 +68,16 @@ class Inf:
 
 
 # Test can create types that don't map to a Hypothesis strategy.
-class InmappableInc(int, Inclusive, low=Inf(), high=100):
-    ...
+class InmappableInc(int, Inclusive, low=Inf(), high=100): ...
 
 
-class InmappableExc(float, Exclusive, low=Inf(), high=100):
-    ...
+class InmappableExc(float, Exclusive, low=Inf(), high=100): ...
 
 
-class InmappableIncExc(int, InclusiveExclusive, low=Inf(), high=100):
-    ...
+class InmappableIncExc(int, InclusiveExclusive, low=Inf(), high=100): ...
 
 
-class InmappableExcInc(float, ExclusiveInclusive, low=Inf(), high=100):
-    ...
+class InmappableExcInc(float, ExclusiveInclusive, low=Inf(), high=100): ...
 
 
 @dataclass

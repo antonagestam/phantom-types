@@ -7,6 +7,7 @@ strings, python-dateutil must be installed or a
 
 You can install python-dateutil by using the ``[dateutil]`` or ``[all]`` extras.
 """
+
 from __future__ import annotations
 
 import datetime

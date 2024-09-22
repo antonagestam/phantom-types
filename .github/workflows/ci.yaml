@@ -14,9 +14,47 @@ concurrency:
 jobs:
   lint:
     name: Static analysis
-    uses: less-action/reusables/.github/workflows/pre-commit.yaml@main
-    with:
-      python-version: "3.11"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: pip
+          check-latest: true
+      - name: goose cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/goose
+          key: "${{ runner.os }}-goose-3.12-${{ hashFiles('.goose/**/manifest.json') }}"
+          restore-keys: |
+            ${{ runner.os }}-goose-3.12
+            ${{ runner.os }}-goose
+      - run: pip install git-goose
+      - run: python3 -m goose run --select=all --delete-orphan-environments
+
+  type-check:
+    name: Type check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: pip
+          cache-dependency-path: typing-requirements.txt
+          check-latest: true
+      - name: mypy cache
+        uses: actions/cache@v4
+        with:
+          path: .mypy_cache
+          key: "${{ runner.os }}-mypy-3.12-${{ hashFiles('typing-requirements.txt') }}"
+          restore-keys: |
+            ${{ runner.os }}-mypy-3.12
+            ${{ runner.os }}-mypy
+      - run: pip install --require-hashes --no-dependencies -r typing-requirements.txt
+      - run: pip install --no-dependencies .
+      - run: mypy
 
   check-build:
     name: Check packaging metadata

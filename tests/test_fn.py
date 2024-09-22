@@ -23,8 +23,7 @@ from phantom.predicates.generic import equal
 
 class Test_name:
     class Nested:
-        def method(self):
-            ...
+        def method(self): ...
 
     @pytest.mark.parametrize(
         "function, expected",
@@ -84,20 +83,16 @@ class TestCompose2:
         assert is_valid_name("") is False
 
 
-class BaseError(Exception):
-    ...
+class BaseError(Exception): ...
 
 
-class Error(BaseError):
-    ...
+class Error(BaseError): ...
 
 
-class ErrorA(Error):
-    ...
+class ErrorA(Error): ...
 
 
-class ErrorB(Error):
-    ...
+class ErrorB(Error): ...
 
 
 def dummy_function(val: type[Exception]) -> None:

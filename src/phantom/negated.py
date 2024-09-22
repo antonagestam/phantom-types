@@ -5,6 +5,7 @@ to :py:class:`typing.Sequence` except it excludes values of type :py:class:`str`
 eliminate the easy mistake of forgetting to wrap a string value in a containing
 sequence.
 """
+
 from __future__ import annotations
 
 from collections.abc import Sequence

@@ -8,6 +8,7 @@ so:
 
     countries: tuple[CountryCode] = ("SE", "DK", ParsedAlpha2.parse("FR"))
 """
+
 from __future__ import annotations
 
 from typing import Final
@@ -292,8 +293,7 @@ ALPHA2: Final = frozenset(get_args(LiteralAlpha2))
 is_alpha2_country_code = contained(ALPHA2)
 
 
-class InvalidCountryCode(TypeError):
-    ...
+class InvalidCountryCode(TypeError): ...
 
 
 def normalize_alpha2_country_code(country_code: str) -> ParsedAlpha2:

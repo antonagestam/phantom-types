@@ -10,12 +10,12 @@ Use ``Phantom`` to create arbitrary phantom types using boolean predicates.
         return value > 5
 
 
-    class Big(int, Phantom, predicate=is_big):
-        ...
+    class Big(int, Phantom, predicate=is_big): ...
 
 
     assert isinstance(10, Big)  # this passes
 """
+
 from ._base import Phantom
 from ._base import PhantomBase
 from ._base import PhantomMeta

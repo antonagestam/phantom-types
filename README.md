@@ -59,8 +59,7 @@ from phantom import Phantom
 from phantom.predicates.collection import contained
 
 
-class Name(str, Phantom, predicate=contained({"Jane", "Joe"})):
-    ...
+class Name(str, Phantom, predicate=contained({"Jane", "Joe"})): ...
 
 
 def greet(name: Name):
@@ -172,7 +171,7 @@ The code above outputs the following JSONSchema.
 Install development requirements, preferably in a virtualenv:
 
 ```bash
-$ python3 -m pip install .[all,test]
+$ python3 -m pip install .[all,test,type-check]
 ```
 
 Run tests:
@@ -183,21 +182,22 @@ $ pytest
 $ make test
 ```
 
-Linting and static type checking is setup with [pre-commit], after installing it you can
-setup hooks with the following command, so that checks run before you push changes.
+Run type checker:
 
 ```bash
-# configure hooks to run when pushing
-$ pre-commit install -t pre-push
-# or when committing
-$ pre-commit install -t pre-commit
-# run all checks
-$ pre-commit run --all-files
-# or just a single hook
-$ pre-commit run mypy --all-files
+$ mypy
 ```
 
-In addition to static type checking, the project is setup with [pytest-mypy-plugins] to
+Linters and formatters are set up with [goose], after installing it you can run it as:
+
+```bash
+# run all checks
+$ goose run --select=all
+# or just a single hook
+$ goose run mypy --select=all
+```
+
+In addition to static type checking, the project is set up with [pytest-mypy-plugins] to
 test that exposed mypy types work as expected, these checks will run together with the
 rest of the test suite, but you can single them out with the following command.
 
@@ -216,5 +216,5 @@ $ make test-typing
 [pydantic]: https://pydantic-docs.helpmanual.io/
 [pydantic-support]:
   https://phantom-types.readthedocs.io/en/stable/pages/pydantic-support.html
-[pre-commit]: https://pre-commit.com/
+[goose]: https://github.com/antonagestam/goose
 [pytest-mypy-plugins]: https://github.com/TypedDjango/pytest-mypy-plugins

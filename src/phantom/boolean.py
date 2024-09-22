@@ -2,6 +2,7 @@
 Types describing objects that coerce to either ``True`` or ``False`` respectively when
 calling ``bool()`` on them.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

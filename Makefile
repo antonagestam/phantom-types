@@ -51,4 +51,11 @@ clean:
 docs-requirements: export CUSTOM_COMPILE_COMMAND='make docs-requirements'
 docs-requirements:
 	@pip install --upgrade pip-tools
-	@pip-compile
+	@pip-compile --output-file=docs-requirements.txt --extra=docs
+
+
+.PHONY: docs-requirements
+typing-requirements: export CUSTOM_COMPILE_COMMAND='make typing-requirements'
+typing-requirements:
+	@pip install --upgrade pip-tools
+	@pip-compile --output-file=typing-requirements.txt --extra=type-check

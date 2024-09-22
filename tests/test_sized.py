@@ -39,8 +39,7 @@ parametrize_mutable: Final = pytest.mark.parametrize(
 T = TypeVar("T")
 
 
-class OddSize(PhantomSized[T], Generic[T], len=odd):
-    ...
+class OddSize(PhantomSized[T], Generic[T], len=odd): ...
 
 
 class TestPhantomSized:
@@ -94,8 +93,7 @@ class TestPhantomSized:
         assert arg is tuple
 
 
-class Tens(PhantomBound[T], Generic[T], min=10, max=19):
-    ...
+class Tens(PhantomBound[T], Generic[T], min=10, max=19): ...
 
 
 class TestPhantomBound:
@@ -139,18 +137,15 @@ class TestPhantomBound:
     def test_raises_lsp_violation_when_attempting_to_decrease_min(self):
         with pytest.raises(LSPViolation):
 
-            class Lower(Tens, min=9):
-                ...
+            class Lower(Tens, min=9): ...
 
     def test_raises_lsp_violation_when_attempting_to_increase_max(self):
         with pytest.raises(LSPViolation):
 
-            class Higher(Tens, max=20):
-                ...
+            class Higher(Tens, max=20): ...
 
     def test_can_narrow_range_in_subclass(self):
-        class Fewer(Tens, min=11, max=18):
-            ...
+        class Fewer(Tens, min=11, max=18): ...
 
         assert isinstance(11 * (0,), Fewer)
         assert isinstance(18 * (0,), Fewer)
@@ -158,11 +153,9 @@ class TestPhantomBound:
         assert not isinstance(19 * (0,), Fewer)
 
     def test_abstract_subclass_can_omit_bounds(self):
-        class A(PhantomBound, abstract=True):
-            ...
+        class A(PhantomBound, abstract=True): ...
 
-        class B(A, min=10, max=20):
-            ...
+        class B(A, min=10, max=20): ...
 
         assert B.__min__ == 10
         assert B.__max__ == 20
@@ -170,8 +163,7 @@ class TestPhantomBound:
     def test_raises_unresolved_bounds_when_concrete_subclass_omits_bounds(self):
         with pytest.raises(UnresolvedBounds):
 
-            class A(PhantomBound):
-                ...
+            class A(PhantomBound): ...
 
 
 class TestNonEmpty:
