@@ -70,7 +70,7 @@ test = [
 ]
 type-check = [
   "phantom-types[all]",
-  "mypy==1.4.1",
+  "mypy==1.11.2",
   "pytest",
   "types-python-dateutil",
 ]
