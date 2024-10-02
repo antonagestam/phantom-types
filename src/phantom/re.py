@@ -47,7 +47,7 @@ class Match(str, Phantom, abstract=True):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": (
                 "A string starting with a match of the format regular expression."
             ),
@@ -71,7 +71,7 @@ class FullMatch(str, Phantom, abstract=True):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": "A string that matches the format regular expression.",
             "format": str(cls.__pattern__.pattern),
         }

@@ -13,7 +13,5 @@ class TestFunctionRepr:
     def test_explodes_partial_arguments(self):
         predicate = partial(foo, 10, b=5)
         assert_predicate_name_equals(boolean.negate(predicate), "negate(foo(10, b=5))")
-        predicate = partial(foo, "hello", c="goddag")
-        assert_predicate_name_equals(
-            boolean.negate(predicate), "negate(foo('hello', c='goddag'))"
-        )
+        predicate = partial(foo, 23, c=31)
+        assert_predicate_name_equals(boolean.negate(predicate), "negate(foo(23, c=31))")

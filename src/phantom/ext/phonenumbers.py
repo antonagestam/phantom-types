@@ -80,7 +80,7 @@ class PhoneNumber(str, Phantom, predicate=is_phone_number):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": "A valid E.164 phone number.",
             "type": "string",
             "format": "E.164",
@@ -100,6 +100,6 @@ class FormattedPhoneNumber(PhoneNumber, predicate=is_formatted_phone_number):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "title": "PhoneNumber",
         }

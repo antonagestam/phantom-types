@@ -38,7 +38,9 @@ class SequenceNotStr(
         from hypothesis.strategies import from_type
         from hypothesis.strategies import tuples
 
-        def create_strategy(type_: type[T]) -> _hypothesis.SearchStrategy[T] | None:
+        def create_strategy(
+            type_: type[T],
+        ) -> _hypothesis.SearchStrategy[tuple[T, ...]] | None:
             (inner_type,) = get_args(type_)
             return tuples(from_type(inner_type))
 

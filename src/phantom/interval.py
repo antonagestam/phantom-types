@@ -33,6 +33,7 @@ from . import Predicate
 from . import _hypothesis
 from ._utils.misc import resolve_class_attr
 from ._utils.types import Comparable
+from ._utils.types import FloatComparable
 from ._utils.types import SupportsEq
 from .predicates import interval
 from .schema import Schema
@@ -93,13 +94,13 @@ def _get_scalar_float_bounds(
 
     if low is not None:
         try:
-            low = float(low)  # type: ignore[arg-type]
+            low = float(low)
         except TypeError as excpetion:
             raise _NonScalarBounds from excpetion
 
     if high is not None:
         try:
-            high = float(high)  # type: ignore[arg-type]
+            high = float(high)
         except TypeError as exception:
             raise _NonScalarBounds from exception
 
@@ -136,14 +137,14 @@ class Interval(Phantom[Comparable], bound=Comparable, abstract=True):
     """
 
     __check__: IntervalCheck
-    __low__: Comparable
-    __high__: Comparable
+    __low__: FloatComparable
+    __high__: FloatComparable
 
     def __init_subclass__(
         cls,
         check: IntervalCheck | None = None,
-        low: Comparable | None = None,
-        high: Comparable | None = None,
+        low: FloatComparable | None = None,
+        high: FloatComparable | None = None,
         **kwargs: Any,
     ) -> None:
         _resolve_bound(cls, "__low__", low, neg_inf)
@@ -177,13 +178,13 @@ class Exclusive(Interval, check=interval.exclusive, abstract=True):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": (
                 f"A value in the exclusive range ({_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)})."
             ),
-            "exclusiveMinimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
+            "exclusiveMinimum": float(cls.__low__) if cls.__low__ != neg_inf else None,
+            "exclusiveMaximum": float(cls.__high__) if cls.__high__ != inf else None,
         }
 
     @classmethod
@@ -209,13 +210,13 @@ class Inclusive(Interval, check=interval.inclusive, abstract=True):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": (
                 f"A value in the inclusive range [{_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)}]."
             ),
-            "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "maximum": cls.__high__ if cls.__high__ != inf else None,
+            "minimum": float(cls.__low__) if cls.__low__ != neg_inf else None,
+            "maximum": float(cls.__high__) if cls.__high__ != inf else None,
         }
 
     @classmethod
@@ -237,13 +238,13 @@ class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": (
                 f"A value in the half-open range ({_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)}]."
             ),
-            "exclusiveMinimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "maximum": cls.__high__ if cls.__high__ != inf else None,
+            "exclusiveMinimum": float(cls.__low__) if cls.__low__ != neg_inf else None,
+            "maximum": float(cls.__high__) if cls.__high__ != inf else None,
         }
 
     @classmethod
@@ -265,13 +266,13 @@ class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": (
                 f"A value in the half-open range [{_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)})."
             ),
-            "minimum": cls.__low__ if cls.__low__ != neg_inf else None,
-            "exclusiveMaximum": cls.__high__ if cls.__high__ != inf else None,
+            "minimum": float(cls.__low__) if cls.__low__ != neg_inf else None,
+            "exclusiveMaximum": float(cls.__high__) if cls.__high__ != inf else None,
         }
 
     @classmethod
@@ -293,7 +294,7 @@ class Natural(int, InclusiveExclusive, low=0):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": "An integer value in the inclusive range [0, ∞).",
         }
 
@@ -304,7 +305,7 @@ class NegativeInt(int, ExclusiveInclusive, high=0):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": "An integer value in the inclusive range (-∞, 0].",
         }
 
@@ -315,6 +316,6 @@ class Portion(float, Inclusive, low=0, high=1):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": "A float value in the inclusive range [0, 1].",
         }

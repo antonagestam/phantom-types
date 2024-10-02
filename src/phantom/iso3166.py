@@ -321,7 +321,7 @@ class ParsedAlpha2(str, Phantom, predicate=is_alpha2_country_code):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": "ISO3166-1 alpha-2 country code",
             "examples": ["NR", "KZ", "ET", "VC", "AE", "NZ", "SX", "XK", "AX"],
             "format": "iso3166-1 alpha-2",

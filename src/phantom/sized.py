@@ -102,7 +102,7 @@ class PhantomSized(
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "type": "array",
         }
 
@@ -188,14 +188,14 @@ class PhantomBound(
     def __schema__(cls) -> Schema:
         return (
             {
-                **super().__schema__(),  # type: ignore[misc]
+                **super().__schema__(),
                 "type": "string",
                 "minLength": cls.__min__,
                 "maxLength": cls.__max__,
             }
             if str in cls.__mro__
             else {
-                **super().__schema__(),  # type: ignore[misc]
+                **super().__schema__(),
                 "type": "array",
                 "minItems": cls.__min__,
                 "maxItems": cls.__max__,
@@ -241,7 +241,7 @@ class NonEmpty(PhantomBound[T], Generic[T], min=1):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": "A non-empty array.",
         }
 
@@ -252,7 +252,7 @@ class NonEmptyStr(str, NonEmpty[str]):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": "A non-empty string.",
         }
 
@@ -263,7 +263,7 @@ class Empty(PhantomBound[T], Generic[T], max=0):
     @classmethod
     def __schema__(cls) -> Schema:
         return {
-            **super().__schema__(),  # type: ignore[misc]
+            **super().__schema__(),
             "description": "An empty array.",
         }
 

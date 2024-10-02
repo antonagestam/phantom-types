@@ -59,9 +59,14 @@ class SupportsGe(
 @runtime_checkable
 class _SupportsEq(Protocol):
     def __eq__(self, other: object) -> bool: ...
+    def __hash__(self) -> int: ...
 
 
-class SupportsEq(Protocol, metaclass=CachingProtocolMeta): ...
+class SupportsEq(
+    _SupportsEq,
+    Protocol,
+    metaclass=CachingProtocolMeta,
+): ...
 
 
 @runtime_checkable
@@ -77,6 +82,29 @@ class _Comparable(
 
 class Comparable(
     _Comparable[T_contra],
+    Protocol[T_contra],
+    metaclass=CachingProtocolMeta,
+): ...
+
+
+@runtime_checkable
+class _SupportsFloat(Protocol):
+    def __float__(self) -> float: ...
+
+
+class SupportsFloat(_SupportsFloat, Protocol, metaclass=CachingProtocolMeta): ...
+
+
+@runtime_checkable
+class _FloatComparable(
+    SupportsFloat,
+    Comparable[T_contra],
+    Protocol[T_contra],
+): ...
+
+
+class FloatComparable(
+    _FloatComparable[T_contra],
     Protocol[T_contra],
     metaclass=CachingProtocolMeta,
 ): ...

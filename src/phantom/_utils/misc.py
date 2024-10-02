@@ -124,7 +124,7 @@ def is_not_known_mutable_type(type_: BoundType) -> TypeGuard[NotKnownMutableType
     return not (
         any(is_subtype(type_, mutable_type) for mutable_type in mutable)
         or (
-            is_dataclass(type_) and not type_.__dataclass_params__.frozen  # type: ignore[union-attr]
+            is_dataclass(type_) and not type_.__dataclass_params__.frozen  # type: ignore[attr-defined]
         )
     )
 
