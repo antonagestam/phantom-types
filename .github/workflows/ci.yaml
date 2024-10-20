@@ -19,18 +19,18 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.12
+          python-version: 3.13
           cache: pip
           check-latest: true
       - name: goose cache
         uses: actions/cache@v4
         with:
           path: ~/.cache/goose
-          key: "${{ runner.os }}-goose-3.12-${{ hashFiles('.goose/**/manifest.json') }}"
+          key: "${{ runner.os }}-goose-3.13-${{ hashFiles('.goose/**/manifest.json') }}"
           restore-keys: |
-            ${{ runner.os }}-goose-3.12
+            ${{ runner.os }}-goose-3.13
             ${{ runner.os }}-goose
-      - run: pip install git-goose
+      - run: pip install --upgrade git-goose
       - run: python3 -m goose run --select=all --delete-orphan-environments
 
   type-check:

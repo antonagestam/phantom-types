@@ -2,7 +2,7 @@ environments:
   - id: python
     ecosystem:
       language: python
-      version: "3.12"
+      version: "3.13"
     dependencies:
       - ruff
       - pre-commit-hooks
@@ -13,17 +13,17 @@ environments:
   - id: check-manifest
     ecosystem:
       language: python
-      version: "3.12"
+      version: "3.13"
     dependencies:
       - check-manifest
-      - setuptools==74.1.2
+      - setuptools==75.2.0
       - setuptools-scm==8.1.0
       - wheel==0.44.0
 
   - id: node
     ecosystem:
       language: node
-      version: "21.7.1"
+      version: "23.0.0"
     dependencies:
       - prettier
 
