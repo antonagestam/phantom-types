@@ -7,8 +7,10 @@ recursive-exclude tests *
 recursive-include src py.typed
 exclude *.yaml
 exclude *.yml
+exclude *.toml
 include README.md
 include LICENSE
+include pyproject.toml
 exclude .gitignore
 exclude setup.cfg
 exclude *requirements.txt

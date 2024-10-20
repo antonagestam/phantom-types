@@ -1,0 +1,49 @@
+fix = true
+target-version = "py39"
+
+[lint]
+extend-select = [
+  # bugbear
+  "B",
+  # comprehensions
+  "C4",
+  # mccabe
+  "C90",
+  # bandit
+  "S",
+  # blind exception
+  # Bare excepts are caught without this, but this also catches `except Exception: ...`.
+  "BLE",
+  # builtins
+  "A",
+  # Enforce valid noqa comments.
+  "RUF100",
+  # isort
+  "I",
+  # pycodestyle
+  "W",
+  # pyupgrade
+  "UP",
+  # debugger
+  "T10",
+  # print
+  "T20",
+  # quotes
+  "Q",
+  # return
+  # This gives 3 false positives, would be nice otherwise probably.
+  # "RET",
+  # simplify
+  "SIM",
+  # tidy imports
+  # We use this to only outlaw relative parent imports.
+  "TID",
+]
+extend-ignore = [
+  # There's no reason to outlaw asserts.
+  "S101",
+]
+isort.force-single-line = true
+isort.known-first-party = ["phantom", "tests"]
+flake8-tidy-imports.ban-relative-imports = "parents"
+mccabe.max-complexity = 10
