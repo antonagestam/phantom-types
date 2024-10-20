@@ -14,24 +14,7 @@ concurrency:
 jobs:
   lint:
     name: Static analysis
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.13
-          cache: pip
-          check-latest: true
-      - name: goose cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/goose
-          key: "${{ runner.os }}-goose-3.13-${{ hashFiles('.goose/**/manifest.json') }}"
-          restore-keys: |
-            ${{ runner.os }}-goose-3.13
-            ${{ runner.os }}-goose
-      - run: pip install --upgrade git-goose
-      - run: python3 -m goose run --select=all --delete-orphan-environments
+    uses: antonagestam/goose/.github/workflows/run.yaml@56c2ee86f1e4a7eef821bdfd44328e47ba11240d
 
   type-check:
     name: Type check
