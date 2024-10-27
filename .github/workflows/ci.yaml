@@ -103,3 +103,19 @@ jobs:
           name: codecov-py${{ matrix.python-version }}
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
+
+  test-runtime-typing:
+    name: Test runtime typing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install requirements
+        run: pip install --upgrade '.[all,test]'
+      - name: Run tests with runtime typing enabled
+        run: make test-typeguard
