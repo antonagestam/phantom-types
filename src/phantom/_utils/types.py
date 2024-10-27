@@ -10,7 +10,7 @@ U_co = TypeVar("U_co", covariant=True)
 
 @runtime_checkable
 class _SupportsLt(Protocol[T_contra]):
-    def __lt__(self, other: T_contra) -> bool: ...
+    def __lt__(self, other: T_contra, /) -> bool: ...
 
 
 class SupportsLt(
@@ -22,7 +22,7 @@ class SupportsLt(
 
 @runtime_checkable
 class _SupportsLe(Protocol[T_contra]):
-    def __le__(self, other: T_contra) -> bool: ...
+    def __le__(self, other: T_contra, /) -> bool: ...
 
 
 class SupportsLe(
@@ -34,7 +34,7 @@ class SupportsLe(
 
 @runtime_checkable
 class _SupportsGt(Protocol[T_contra]):
-    def __gt__(self, other: T_contra) -> bool: ...
+    def __gt__(self, other: T_contra, /) -> bool: ...
 
 
 class SupportsGt(
@@ -46,7 +46,7 @@ class SupportsGt(
 
 @runtime_checkable
 class _SupportsGe(Protocol[T_contra]):
-    def __ge__(self, other: T_contra) -> bool: ...
+    def __ge__(self, other: T_contra, /) -> bool: ...
 
 
 class SupportsGe(
@@ -58,7 +58,7 @@ class SupportsGe(
 
 @runtime_checkable
 class _SupportsEq(Protocol):
-    def __eq__(self, other: object) -> bool: ...
+    def __eq__(self, other: object, /) -> bool: ...
     def __hash__(self) -> int: ...
 
 
@@ -155,7 +155,7 @@ class SupportsLtGt(
 
 @runtime_checkable
 class _SupportsMod(Protocol[T_contra, U_co]):
-    def __mod__(self, other: T_contra) -> U_co: ...
+    def __mod__(self, other: T_contra, /) -> U_co: ...
 
 
 class SupportsMod(
