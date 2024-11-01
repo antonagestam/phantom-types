@@ -128,9 +128,9 @@ furo==2024.8.6 \
     --hash=sha256:6cd97c58b47813d3619e63e9081169880fbe331f0ca883c871ff1f3f11814f5c \
     --hash=sha256:b63e4cee8abfc3136d3bc03a3d45a76a850bada4d6374d24c1716b0e01394a01
     # via phantom-types (pyproject.toml)
-hypothesis==6.112.2 \
-    --hash=sha256:90cd62d9487eaf294bf0dceb47dbaca6432408b2e9417cfa6e3409313dbde95b \
-    --hash=sha256:914b55f75b7c6f653cd36fef66b61a773a51c1e363939fcbc0216773ff4ee0d9
+hypothesis==6.116.0 \
+    --hash=sha256:9c1ac9a2edb77aacae1950d8ded6b3f40dbf8483097c88336265c348d2132c71 \
+    --hash=sha256:d30271214eae0d4758b72b408e9777405c7c7f687e14e8a42853adea887b2891
     # via phantom-types
 idna==3.10 \
     --hash=sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9 \
