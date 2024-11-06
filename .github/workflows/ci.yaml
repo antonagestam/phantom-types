@@ -14,7 +14,7 @@ concurrency:
 jobs:
   lint:
     name: Static analysis
-    uses: antonagestam/goose/.github/workflows/run.yaml@2f7373fbc9e040c7b418b13eab84540f4a1a8b03
+    uses: antonagestam/goose/.github/workflows/run.yaml@0.6.0
 
   type-check:
     name: Type check
