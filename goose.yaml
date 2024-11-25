@@ -61,13 +61,13 @@ hooks:
     environment: python
     command: debug-statement-hook
     read_only: true
-    types: [ python ]
+    types: [python]
 
   - id: detect-private-key
     environment: python
     command: detect-private-key
     read_only: true
-    types: [ text ]
+    types: [text]
 
   - id: end-of-file-fixer
     environment: python
@@ -109,9 +109,5 @@ hooks:
     read_only: true
     args: ["--builtin-schema", "vendor.github-workflows"]
     types: [yaml]
-    exclude:
-      - codecov\.yml
-      - goose\.yaml
-      - dependabot\.yaml
-      - \.readthedocs\.yml
-      - ^tests/.*
+    limit:
+      - "^.github/workflows/"
