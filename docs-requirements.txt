@@ -230,9 +230,9 @@ packaging==24.1 \
     --hash=sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002 \
     --hash=sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124
     # via sphinx
-phonenumbers==8.13.48 \
-    --hash=sha256:5c51939acefa390eb74119750afb10a85d3c628dc83fd62c52d6f532fcf5d205 \
-    --hash=sha256:62d8df9b0f3c3c41571c6b396f044ddd999d61631534001b8be7fdf7ba1b18f3
+phonenumbers==8.13.51 \
+    --hash=sha256:3bdacc0a155c8761c2a0ba7fc5632fe1541e5291ab70a4f345ab80a5742874b6 \
+    --hash=sha256:e8f4969841a163a3df3cb3ed8c499f0e00d58b2a1ecaa661e84e1d5fee67335f
     # via phantom-types
 pydantic==1.10.18 \
     --hash=sha256:069b9c9fc645474d5ea3653788b544a9e0ccd3dca3ad8c900c4c6eac844b4620 \
