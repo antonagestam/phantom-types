@@ -42,6 +42,8 @@ extend-select = [
 extend-ignore = [
   # There's no reason to outlaw asserts.
   "S101",
+  # False positives.
+  "A005",
 ]
 isort.force-single-line = true
 isort.known-first-party = ["phantom", "tests"]
