@@ -3,7 +3,7 @@
 <h1 align=center>phantom-types</h1>
 
 <p align=center>
-    <a href=https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI+branch%3Amain><img src=https://github.com/antonagestam/phantom-types/workflows/CI/badge.svg alt="CI Build Status"></a>
+    <a href=https://github.com/antonagestam/phantom-types/actions?query=workflow%3ACI+branch%3Amain><img src=https://github.com/antonagestam/phantom-types/actions/workflows/ci.yaml/badge.svg?branch=main alt="CI Build Status"></a>
     <a href=https://phantom-types.readthedocs.io/en/stable/><img src=https://readthedocs.org/projects/phantom-types/badge/?version=main alt="Documentation Build Status"></a>
     <a href=https://codecov.io/gh/antonagestam/phantom-types><img src=https://codecov.io/gh/antonagestam/phantom-types/branch/main/graph/badge.svg?token=UE85B7IA3Q alt="Test coverage report"></a>
     <br>
