@@ -13,4 +13,5 @@ include LICENSE
 include pyproject.toml
 exclude .gitignore
 exclude setup.cfg
+exclude mypy.ini
 exclude *requirements.txt
