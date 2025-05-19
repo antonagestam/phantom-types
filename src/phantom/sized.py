@@ -35,9 +35,8 @@ from typing import Generic
 from typing import Protocol
 from typing import TypeVar
 from typing import _ProtocolMeta
+from typing import get_args
 from typing import runtime_checkable
-
-from typing_extensions import get_args
 
 from . import Phantom
 from . import PhantomMeta

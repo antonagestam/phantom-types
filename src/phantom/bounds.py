@@ -1,15 +1,14 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from collections.abc import Iterable
 from collections.abc import Sequence
 from typing import Any
-from typing import Callable
 from typing import Final
+from typing import TypeAlias
 from typing import TypeVar
 from typing import cast
-
-from typing_extensions import TypeAlias
-from typing_extensions import get_args
+from typing import get_args
 
 from ._utils.misc import is_union
 from .errors import BoundError

@@ -11,8 +11,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Generic
 from typing import TypeVar
-
-from typing_extensions import get_args
+from typing import get_args
 
 from . import Phantom
 from . import _hypothesis

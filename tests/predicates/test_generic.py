@@ -1,5 +1,3 @@
-from typing import Union
-
 import pytest
 
 from phantom.predicates import generic
@@ -44,7 +42,7 @@ class TestOfType:
     def test_returns_true_for_instance_of_types(
         self,
         instance: object,
-        types: Union[type, tuple[type, ...]],
+        types: type | tuple[type, ...],
     ) -> None:
         assert generic.of_type(types)(instance) is True
 
@@ -52,7 +50,7 @@ class TestOfType:
     def test_returns_false_for_instance_of_other_type(
         self,
         instance: object,
-        types: Union[type, tuple[type, ...]],
+        types: type | tuple[type, ...],
     ) -> None:
         assert generic.of_type(types)(instance) is False
 

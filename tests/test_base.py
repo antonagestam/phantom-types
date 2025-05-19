@@ -1,6 +1,6 @@
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 from typing import Union
 
 import pytest
@@ -39,7 +39,7 @@ class TestParseBound:
             parser("2")
 
     def test_raises_for_invalid_union(self):
-        parser: Parser[Union[int, float]] = get_bound_parser(Union[int, float])
+        parser: Parser[int | float] = get_bound_parser(Union[int, float])  # noqa: UP007
         with pytest.raises(
             BoundError,
             match=r"^Value is not within bound of 'typing\.Union\[int, float\]': '3'$",
@@ -48,9 +48,7 @@ class TestParseBound:
 
     @pytest.mark.skipif(sys.version_info < (3, 10), reason="requires 3.10+")
     def test_raises_for_invalid_pep_604_union(self):
-        parser: Parser[int | float] = get_bound_parser(  # type: ignore[syntax]
-            int | float  # type: ignore[operator]
-        )
+        parser: Parser[int | float] = get_bound_parser(int | float)
         with pytest.raises(
             BoundError,
             match=r"^Value is not within bound of 'typing\.Union\[int, float\]': '3'$",
@@ -75,7 +73,7 @@ class TestParseBound:
 
         class C(A, B): ...
 
-        parser: Callable[[object], Union[A, B]] = get_bound_parser(Union[A, B])
+        parser: Callable[[object], A | B] = get_bound_parser(A | B)
         a = A()
         b = B()
         c = C()
@@ -120,7 +118,7 @@ class TestPhantom:
         class A(Phantom, predicate=positive, abstract=True): ...
 
     def test_subclass_with_incompatible_bounds_raises(self):
-        class A(Phantom, bound=Union[int, float], abstract=True): ...
+        class A(Phantom, bound=int | float, abstract=True): ...
 
         with pytest.raises(BoundError):
 

@@ -2,10 +2,10 @@ from dataclasses import dataclass
 from typing import Final
 from typing import Generic
 from typing import TypeVar
+from typing import get_args
+from typing import get_origin
 
 import pytest
-from typing_extensions import get_args
-from typing_extensions import get_origin
 
 from phantom.predicates.numeric import odd
 from phantom.sized import Empty

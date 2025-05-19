@@ -11,10 +11,10 @@ Requires the phonenumbers_ package which can be installed with:
 from __future__ import annotations
 
 from typing import Final
+from typing import TypeGuard
 from typing import cast
 
 import phonenumbers
-from typing_extensions import TypeGuard
 
 from phantom import Phantom
 from phantom.bounds import parse_str

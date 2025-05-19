@@ -1,6 +1,7 @@
+from typing import get_args
+from typing import get_origin
+
 import pytest
-from typing_extensions import get_args
-from typing_extensions import get_origin
 
 from phantom.negated import SequenceNotStr
 

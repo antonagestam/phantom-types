@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import abc
+from collections.abc import Callable
 from collections.abc import Iterable
 from collections.abc import Iterator
 from typing import Any
-from typing import Callable
 from typing import ClassVar
 from typing import Generic
 from typing import Protocol

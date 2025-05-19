@@ -5,12 +5,12 @@ from dataclasses import fields
 from functools import total_ordering
 from typing import Generic
 from typing import TypeVar
+from typing import get_origin
 from typing import get_type_hints
 
 from hypothesis import given
 from hypothesis import settings
 from hypothesis.strategies import builds
-from typing_extensions import get_origin
 
 from phantom.boolean import Falsy
 from phantom.boolean import Truthy

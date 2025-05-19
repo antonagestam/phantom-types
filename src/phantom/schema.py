@@ -1,6 +1,5 @@
 from collections.abc import Sequence
 from typing import Literal
-from typing import Optional
 
 from typing_extensions import TypedDict
 from typing_extensions import final
@@ -12,14 +11,14 @@ class Schema(TypedDict, total=False):
     type: Literal["array", "string", "float", "number"]
     format: str
     examples: Sequence[object]
-    minimum: Optional[float]
-    maximum: Optional[float]
-    exclusiveMinimum: Optional[float]
-    exclusiveMaximum: Optional[float]
-    minItems: Optional[int]
-    maxItems: Optional[int]
-    minLength: Optional[int]
-    maxLength: Optional[int]
+    minimum: float | None
+    maximum: float | None
+    exclusiveMinimum: float | None
+    exclusiveMaximum: float | None
+    minItems: int | None
+    maxItems: int | None
+    minLength: int | None
+    maxLength: int | None
 
 
 class SchemaField:

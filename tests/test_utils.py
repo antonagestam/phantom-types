@@ -27,20 +27,20 @@ class TestIsSubtype:
         "a, b",
         [
             # 1
-            (Union[int, float], Union[int, float]),
+            (int | float, int | float),
             # 2
-            (int, Union[int, float]),
+            (int, int | float),
             # Special case of 3
-            (Union[int], int),
+            (Union[int], int),  # noqa: UP007
             # 4
             (AAndB, (A, B)),
             (AAndB, (A,)),
             # 5
             ((B, SubOfA), A),
             # 6
-            ((SubOfA, C), Union[A, B]),
+            ((SubOfA, C), A | B),
             # Special case of 7
-            (Union[int], (int,)),
+            (Union[int], (int,)),  # noqa: UP007
             # 8
             ((AAndB, SubOfA), (A, B)),
             # 9
@@ -55,21 +55,21 @@ class TestIsSubtype:
         "a, b",
         [
             # 1
-            (Union[int, float], Union[int]),
-            (Union[int, float], Union[A, B]),
+            (int | float, Union[int]),  # noqa: UP007
+            (int | float, A | B),
             # 2
-            (str, Union[int, float]),
+            (str, int | float),
             # 3
-            (Union[int, float], float),
+            (int | float, float),
             # 4
             (SubOfA, (A, B)),
             (SubOfA, (B,)),
             # 5
             ((A, B), SubOfA),
             # 6
-            ((int, C), Union[A, B]),
+            ((int, C), A | B),
             # 7
-            (Union[int, float], (int, float)),
+            (int | float, (int, float)),
             # 8
             ((AAndB, SubOfA), (A, B, C)),
             # 9

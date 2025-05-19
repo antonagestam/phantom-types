@@ -2,20 +2,19 @@
 # https://github.com/pytest-dev/pytest/issues/4386
 from __future__ import annotations
 
-import types
 from collections.abc import MutableMapping
 from collections.abc import MutableSequence
 from collections.abc import MutableSet
 from dataclasses import is_dataclass
 from itertools import product
+from types import UnionType
 from typing import Final
 from typing import NewType
+from typing import TypeAlias
+from typing import TypeGuard
 from typing import Union
-
-from typing_extensions import TypeAlias
-from typing_extensions import TypeGuard
-from typing_extensions import get_args
-from typing_extensions import get_origin
+from typing import get_args
+from typing import get_origin
 
 
 class UnresolvedClassAttribute(NotImplementedError): ...
@@ -37,11 +36,11 @@ def resolve_class_attr(
         )
 
 
-BoundType: TypeAlias = Union[type, tuple[type, ...]]
+BoundType: TypeAlias = type | tuple[type, ...]
 
 
 def _is_union(type_: BoundType) -> bool:
-    return get_origin(type_) is Union
+    return get_origin(type_) in (Union, UnionType)
 
 
 def _is_intersection(type_: BoundType) -> bool:
@@ -140,16 +139,5 @@ def is_not_known_mutable_instance(value: object) -> bool:
     )
 
 
-MaybeUnionType: type | None
-try:
-    MaybeUnionType = types.UnionType  # type: ignore[attr-defined]
-except AttributeError:
-    MaybeUnionType = None
-
-
-def is_union_type(value: object) -> TypeGuard[type]:
-    return MaybeUnionType is not None and isinstance(value, MaybeUnionType)
-
-
 def is_union(value: object) -> TypeGuard[type]:
-    return get_origin(value) == Union or is_union_type(value)
+    return get_origin(value) == Union or isinstance(value, UnionType)

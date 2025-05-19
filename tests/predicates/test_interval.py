@@ -1,5 +1,6 @@
+from typing import TypeAlias
+
 import pytest
-from typing_extensions import TypeAlias
 
 from phantom.predicates import interval
 
