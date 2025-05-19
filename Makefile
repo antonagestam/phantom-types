@@ -48,14 +48,12 @@ clean:
 	rm -rf {**/,}*.egg-info **{/**,}/__pycache__ build dist .coverage coverage.xml
 
 .PHONY: docs-requirements
-docs-requirements: export CUSTOM_COMPILE_COMMAND='make docs-requirements'
+docs-requirements: export UV_CUSTOM_COMPILE_COMMAND='make docs-requirements'
 docs-requirements:
-	@pip install --upgrade pip-tools
-	@pip-compile --output-file=docs-requirements.txt --extra=docs
+	@uv pip compile --generate-hashes --strip-extras --extra=docs --upgrade --output-file=docs-requirements.txt pyproject.toml
 
 
 .PHONY: docs-requirements
-typing-requirements: export CUSTOM_COMPILE_COMMAND='make typing-requirements'
+typing-requirements: export UV_CUSTOM_COMPILE_COMMAND='make typing-requirements'
 typing-requirements:
-	@pip install --upgrade pip-tools
-	@pip-compile --output-file=typing-requirements.txt --extra=type-check
+	@uv pip compile --generate-hashes --strip-extras --extra=type-check --upgrade --output-file=typing-requirements.txt pyproject.toml
