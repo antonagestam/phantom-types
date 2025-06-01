@@ -8,9 +8,9 @@ beartype==0.20.2 \
     --hash=sha256:38c60c065ad99364a8c767e8a0e71ba8263d467b91414ed5dcffb7758a2e8079 \
     --hash=sha256:5171a91ecf01438a59884f0cde37d2d5da2c992198b53d6ba31db3940f47ff04
     # via numerary
-hypothesis==6.131.19 \
-    --hash=sha256:a021c5d0af6ac93d6f84f15644c0619962342c0acb03af583c61de39d88cfafe \
-    --hash=sha256:eadb7d26427a66332dc06f4a6c91a95dbe3827e7618bec4913e3610d74ff76ef
+hypothesis==6.132.0 \
+    --hash=sha256:55868060add41baa6176ed9c3456655678d140c74e3514bdf03381dae6391403 \
+    --hash=sha256:9d11f81664c0688d27d37c871cee8baf4349383cf9ef9938ef6b3ae836962595
     # via phantom-types (pyproject.toml)
 iniconfig==2.1.0 \
     --hash=sha256:3abbd2e30b36733fee78f9c7f7308f2d0050e88f0087fd25c2645f63c773e1c7 \
