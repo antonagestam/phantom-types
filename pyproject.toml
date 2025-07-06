@@ -62,7 +62,7 @@ all = [
   "phantom-types[hypothesis]",
 ]
 test = [
-  "mypy>=0.991",
+  "mypy>=1.16.1",
   "pytest",
   "pytest-mypy-plugins>=1.9.3",
   "coverage",

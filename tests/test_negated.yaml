@@ -30,6 +30,6 @@
 
     seq: Tuple[object, ...] = (1, 2, object())
     assert isinstance(seq, SequenceNotStr)
-    reveal_type(seq)  # N: Revealed type is "main.<subclass of "tuple" and "SequenceNotStr">"
+    reveal_type(seq)  # N: Revealed type is "main.<subclass of "tuple[builtins.object, ...]" and "phantom.negated.SequenceNotStr[Any]">"
     values = fn(seq)
     reveal_type(values)  # N: Revealed type is "phantom.negated.SequenceNotStr[builtins.object]"
