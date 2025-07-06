@@ -29,11 +29,11 @@ typeguard_arg := \
 
 .PHONY: test
 test:
-	pytest $(test)
+	pytest $(test)  -m 'not no_external'
 
 .PHONY: test-runtime
 test-runtime:
-	pytest $(test) -k.py
+	pytest $(test) -k.py -m 'not no_external'
 
 .PHONY: test-typeguard
 test-typeguard:
