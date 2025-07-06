@@ -11,6 +11,8 @@ from typing import Protocol
 from typing import TypeVar
 from typing import runtime_checkable
 
+from typing_extensions import Self
+
 from . import _hypothesis
 from ._utils.misc import BoundType
 from ._utils.misc import UnresolvedClassAttribute
@@ -27,7 +29,18 @@ from .schema import SchemaField
 
 @runtime_checkable
 class InstanceCheckable(Protocol):
-    def __instancecheck__(self, instance: object) -> bool: ...
+    @classmethod
+    @abc.abstractmethod
+    def __instancecheck__(cls, instance: object) -> bool: ...
+
+
+class SupportsParse(Protocol):
+    @classmethod
+    @abc.abstractmethod
+    def parse(cls, instance: object) -> Self: ...
+
+
+V = TypeVar("V", bound=SupportsParse)
 
 
 class PhantomMeta(abc.ABCMeta):
@@ -39,14 +52,10 @@ class PhantomMeta(abc.ABCMeta):
     def __instancecheck__(self, instance: object) -> bool:
         if not issubclass(self, InstanceCheckable):
             return False
-        return self.__instancecheck__(  # type: ignore[no-any-return,attr-defined]
-            instance,
-        )
+        return self.__instancecheck__(instance)
 
-    # With the current level of metaclass support in mypy it's unlikely that we'll be
-    # able to make this context typed, hence the ignores.
-    def __call__(cls, instance):  # type: ignore[no-untyped-def]
-        return cls.parse(instance)  # type: ignore[attr-defined]
+    def __call__(cls: type[V], instance: object) -> V:
+        return cls.parse(instance)
 
 
 T = TypeVar("T", covariant=True)
