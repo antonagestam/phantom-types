@@ -65,9 +65,9 @@ pathspec==0.12.1 \
     --hash=sha256:a0d503e138a4c123b27490a4f7beda6a01c6f288df0e4a8b79c7eb0dc7b4cc08 \
     --hash=sha256:a482d51503a1ab33b1c67a6c3813a26953dbdc71c31dacaef9a838c4e29f5712
     # via mypy
-phonenumbers==9.0.8 \
-    --hash=sha256:16f03f2cf65b5eee99ed25827d810febcab92b5d76f977e425fcd2e4ca6d4865 \
-    --hash=sha256:53d357111c0ead0d6408ae443613b18d3a053431ca1ddf7e881457c0969afcf9
+phonenumbers==9.0.15 \
+    --hash=sha256:269b73bc05258e8fd57582770b9559307099ea677c8f1dc5272476f661344776 \
+    --hash=sha256:345ff7f23768332d866f37732f815cdf1d33c7f0961246562a5c5b78c12c3ff3
     # via phantom-types (pyproject.toml)
 pluggy==1.6.0 \
     --hash=sha256:7dcc130b76258d33b90f61b658791dede3486c3e6bfb003ee5c9bfb396dd22f3 \
