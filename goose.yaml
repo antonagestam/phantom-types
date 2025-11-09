@@ -1,6 +1,5 @@
 environments:
-  - id: python
-    ecosystem:
+  - ecosystem:
       language: python
       version: "3.13"
     dependencies:
@@ -20,10 +19,7 @@ environments:
       - setuptools-scm==8.3.1
       - wheel==0.45.1
 
-  - id: node
-    ecosystem:
-      language: node
-      version: "24.0.2"
+  - ecosystem: node
     dependencies:
       - prettier
 
