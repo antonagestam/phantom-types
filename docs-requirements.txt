@@ -139,9 +139,9 @@ charset-normalizer==3.4.4 \
     --hash=sha256:faa3a41b2b66b6e50f84ae4a68c64fcd0c44355741c6374813a800cd6695db9e \
     --hash=sha256:fd44c878ea55ba351104cb93cc85e74916eb8fa440ca7903e57575e97394f608
     # via requests
-docutils==0.21.2 \
-    --hash=sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f \
-    --hash=sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2
+docutils==0.22.3 \
+    --hash=sha256:21486ae730e4ca9f622677b1412b879af1791efcfba517e4c6f60be543fc8cdd \
+    --hash=sha256:bd772e4aca73aff037958d44f2be5229ded4c09927fcf8690c577b66234d6ceb
     # via sphinx
 furo==2025.9.25 \
     --hash=sha256:2937f68e823b8e37b410c972c371bc2b1d88026709534927158e0cb3fac95afe \
