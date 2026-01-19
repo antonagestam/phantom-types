@@ -9,9 +9,21 @@ sequence.
 from __future__ import annotations
 
 from collections.abc import Sequence
+from typing import TYPE_CHECKING
+from typing import Any
 from typing import Generic
 from typing import TypeVar
 from typing import get_args
+
+from ._utils.compat import require_pydantic
+
+if TYPE_CHECKING:
+    try:
+        from pydantic import GetCoreSchemaHandler
+        from pydantic_core import CoreSchema
+        from pydantic_core.core_schema import ValidatorFunctionWrapHandler
+    except ImportError:
+        pass
 
 from . import Phantom
 from . import _hypothesis
@@ -44,3 +56,34 @@ class SequenceNotStr(
             return tuples(from_type(inner_type))
 
         return create_strategy
+
+    @classmethod
+    def _validate(
+        cls,
+        value: Any,
+        handler: ValidatorFunctionWrapHandler,
+    ) -> Any:
+        """Pydantic V2 wrap validator."""
+        validated = handler(value)
+        if isinstance(validated, list):
+            validated = tuple(validated)
+        return cls.parse(validated)
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source: type[Any], handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
+        """Pydantic V2 hook for core schema generation."""
+        require_pydantic()
+
+        from pydantic_core.core_schema import list_schema
+        from pydantic_core.core_schema import no_info_wrap_validator_function
+
+        args = get_args(source)
+        if args:
+            item_schema = handler.generate_schema(args[0])
+            bound_schema = list_schema(items_schema=item_schema)
+        else:
+            bound_schema = list_schema()
+
+        return no_info_wrap_validator_function(cls._validate, bound_schema)

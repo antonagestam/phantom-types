@@ -27,6 +27,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from collections.abc import Sized
+from typing import TYPE_CHECKING
 
 # This is the closest I could find to documentation of _ProtocolMeta.
 # https://github.com/python/cpython/commit/74d7f76e2c953fbfdb7ce01b7319d91d471cc5ef
@@ -38,10 +39,19 @@ from typing import _ProtocolMeta
 from typing import get_args
 from typing import runtime_checkable
 
+if TYPE_CHECKING:
+    try:
+        from pydantic import GetCoreSchemaHandler
+        from pydantic_core import CoreSchema
+        from pydantic_core.core_schema import ValidatorFunctionWrapHandler
+    except ImportError:
+        pass
+
 from . import Phantom
 from . import PhantomMeta
 from . import Predicate
 from . import _hypothesis
+from ._utils.compat import require_pydantic
 from ._utils.misc import is_not_known_mutable_instance
 from .predicates import boolean
 from .predicates import collection
@@ -97,6 +107,38 @@ class PhantomSized(
             ),
             **kwargs,
         )
+
+    @classmethod
+    def _validate(
+        cls,
+        value: Any,
+        handler: ValidatorFunctionWrapHandler,
+    ) -> Any:
+        """Pydantic V2 wrap validator."""
+        validated = handler(value)
+        if isinstance(validated, list):
+            validated = tuple(validated)
+        return cls.parse(validated)
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source: type[Any], handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
+        """Pydantic V2 hook for core schema generation."""
+        require_pydantic()
+
+        from pydantic_core.core_schema import list_schema
+        from pydantic_core.core_schema import no_info_wrap_validator_function
+
+        args = get_args(source)
+        bound_schema: CoreSchema
+        if args:
+            item_schema = handler.generate_schema(args[0])
+            bound_schema = list_schema(items_schema=item_schema)
+        else:
+            bound_schema = list_schema()
+
+        return no_info_wrap_validator_function(cls._validate, bound_schema)
 
     @classmethod
     def __schema__(cls) -> Schema:
@@ -182,6 +224,44 @@ class PhantomBound(
             abstract=abstract,
             **kwargs,
         )
+
+    @classmethod
+    def _validate(
+        cls,
+        value: Any,
+        handler: ValidatorFunctionWrapHandler,
+    ) -> Any:
+        """Pydantic V2 wrap validator."""
+        validated = handler(value)
+        # Convert list to tuple for immutability check in parse()
+        if isinstance(validated, list):
+            validated = tuple(validated)
+        return cls.parse(validated)
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source: type[Any], handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
+        """Pydantic V2 hook for core schema generation."""
+        require_pydantic()
+
+        from pydantic_core.core_schema import list_schema
+        from pydantic_core.core_schema import no_info_wrap_validator_function
+        from pydantic_core.core_schema import str_schema
+
+        bound_schema: CoreSchema
+        if str in cls.__mro__:
+            bound_schema = str_schema()
+        else:
+            # Collection types: extract generic parameter if present
+            args = get_args(source)
+            if args:
+                item_schema = handler.generate_schema(args[0])
+                bound_schema = list_schema(items_schema=item_schema)
+            else:
+                bound_schema = list_schema()
+
+        return no_info_wrap_validator_function(cls._validate, bound_schema)
 
     @classmethod
     def __schema__(cls) -> Schema:

@@ -125,6 +125,9 @@ support][pydantic-support] out-of-the-box. Subclasses of `Phantom` work with bot
 pydantic's validation and its schema generation.
 
 ```python
+import json
+
+
 class Name(str, Phantom, predicate=contained({"Jane", "Joe"})):
     @classmethod
     def __schema__(cls) -> Schema:
@@ -139,30 +142,30 @@ class Person(BaseModel):
     created: TZAware
 
 
-print(json.dumps(Person.schema(), indent=2))
+print(json.dumps(Person.model_json_schema(), indent=2))
 ```
 
 The code above outputs the following JSONSchema.
 
 ```json
 {
-  "title": "Person",
-  "type": "object",
   "properties": {
     "name": {
-      "title": "Name",
       "description": "Either Jane or Joe",
       "format": "custom-name",
+      "title": "Name",
       "type": "string"
     },
     "created": {
-      "title": "TZAware",
       "description": "A date-time with timezone data.",
-      "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "title": "TZAware",
+      "type": "string"
     }
   },
-  "required": ["name", "created"]
+  "required": ["name", "created"],
+  "title": "Person",
+  "type": "object"
 }
 ```
 
@@ -213,7 +216,7 @@ $ make test-typing
 [typeguard]: https://github.com/agronholm/typeguard
 [beartype]: https://github.com/beartype/beartype
 [dbc]: https://en.wikipedia.org/wiki/Design_by_contract
-[pydantic]: https://pydantic-docs.helpmanual.io/
+[pydantic]: https://docs.pydantic.dev
 [pydantic-support]:
   https://phantom-types.readthedocs.io/en/stable/pages/pydantic-support.html
 [goose]: https://github.com/antonagestam/goose

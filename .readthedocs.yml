@@ -6,7 +6,7 @@ build:
   os: ubuntu-22.04
   tools:
     # Keep in sync with docs build CI job.
-    python: "3.11"
+    python: "3.12"
 python:
   install:
     - requirements: docs-requirements.txt

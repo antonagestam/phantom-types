@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import abc
-from collections.abc import Callable
+from abc import ABCMeta
 from collections.abc import Iterable
-from collections.abc import Iterator
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import ClassVar
 from typing import Generic
@@ -11,9 +11,18 @@ from typing import Protocol
 from typing import TypeVar
 from typing import runtime_checkable
 
+if TYPE_CHECKING:
+    try:
+        from pydantic import GetCoreSchemaHandler
+        from pydantic_core import CoreSchema
+        from pydantic_core.core_schema import ValidatorFunctionWrapHandler
+    except ImportError:
+        pass
+
 from typing_extensions import Self
 
 from . import _hypothesis
+from ._utils.compat import require_pydantic
 from ._utils.misc import BoundType
 from ._utils.misc import UnresolvedClassAttribute
 from ._utils.misc import fully_qualified_name
@@ -41,6 +50,16 @@ class SupportsParse(Protocol):
 
 
 V = TypeVar("V", bound=SupportsParse)
+
+
+def _is_protocol(tp: type) -> bool:
+    """Check if type is a Protocol."""
+    return isinstance(tp, type) and getattr(tp, "_is_protocol", False)
+
+
+def _is_abc(tp: type) -> bool:
+    """Check if type is an ABC."""
+    return isinstance(tp, ABCMeta)
 
 
 class PhantomMeta(abc.ABCMeta):
@@ -84,9 +103,51 @@ class PhantomBase(SchemaField, metaclass=PhantomMeta):
     def __instancecheck__(cls, instance: object) -> bool: ...
 
     @classmethod
-    def __get_validators__(cls: type[Derived]) -> Iterator[Callable[[object], Derived]]:
-        """Hook that makes phantom types compatible with pydantic."""
-        yield cls.parse
+    def _validate(
+        cls: type[Derived],
+        value: Any,
+        handler: ValidatorFunctionWrapHandler,
+    ) -> Derived:
+        """Pydantic V2 wrap validator."""
+        require_pydantic()
+
+        from pydantic_core import PydanticCustomError
+
+        try:
+            validated = handler(value)
+            return cls.parse(validated)
+        except Exception as exc:
+            raise PydanticCustomError(
+                "value_error",
+                f"value is not a valid {cls.__name__}",
+            ) from exc
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls: type[Derived], source: type[Any], handler: GetCoreSchemaHandler
+    ) -> CoreSchema:
+        """Pydantic V2 hook for core schema generation."""
+        require_pydantic()
+
+        from pydantic.errors import PydanticSchemaGenerationError
+        from pydantic_core.core_schema import any_schema
+        from pydantic_core.core_schema import is_instance_schema
+        from pydantic_core.core_schema import no_info_wrap_validator_function
+
+        bound = getattr(cls, "__bound__", object)
+
+        bound_schema: CoreSchema
+        if _is_protocol(bound) or (_is_abc(bound) and bound is not cls):
+            # For protocols and ABCs, use is_instance_schema
+            bound_schema = is_instance_schema(bound)
+        else:
+            # For concrete types, let Pydantic generate the schema
+            try:
+                bound_schema = handler.generate_schema(bound)
+            except PydanticSchemaGenerationError:
+                bound_schema = any_schema()
+
+        return no_info_wrap_validator_function(cls._validate, bound_schema)
 
 
 class AbstractInstanceCheck(TypeError): ...

@@ -1,14 +1,15 @@
 Pydantic Support
 ================
 
-phantom-types supports pydantic_ out of the box by providing a
-:func:`__get_validators__() <phantom.Phantom.__get_validators__>` hook
-on the base :class:`Phantom <phantom.Phantom>` class. Most of the shipped types also
-implements full JSON Schema and OpenAPI support.
+phantom-types supports pydantic_ out of the box by providing
+:func:`__get_pydantic_core_schema__() <phantom.Phantom.__get_pydantic_core_schema__>`
+and :func:`__get_pydantic_json_schema__() <phantom.schema.SchemaField.__get_pydantic_json_schema__>`
+hooks on the base :class:`Phantom <phantom.Phantom>` class. Most of the shipped types also
+implement full JSON Schema and OpenAPI support.
 
-.. _pydantic: https://pydantic-docs.helpmanual.io/
+.. _pydantic: https://docs.pydantic.dev/
 
-To make a phantom type compatible with pydantic, all you need to do is override
+To customize the JSON schema representation of a phantom type, override
 :func:`Phantom.__schema__() <phantom.Phantom.__schema__>`:
 
 .. code-block:: python
@@ -28,3 +29,9 @@ To make a phantom type compatible with pydantic, all you need to do is override
 As can be seen in the example, ``__schema__()`` implementations are expected to return a
 dict extending its ``super().__schema__()``, however this is not a requirement and any
 :class:`Schema <phantom.schema.Schema>`-compatible ``dict`` can be returned.
+
+.. note::
+
+    phantom-types 3.0.2 supported Pydantic v1 via the ``__get_validators__()`` hook.
+    As of phantom-types 3.1.0, only Pydantic v2 is supported. If you need Pydantic v1
+    support, pin to ``phantom-types<3.1``.

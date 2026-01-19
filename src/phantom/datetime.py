@@ -20,38 +20,33 @@ from .predicates.datetime import is_tz_aware
 from .predicates.datetime import is_tz_naive
 from .schema import Schema
 
-try:
-    import dateutil.parser
-
-    parse_datetime_str = dateutil.parser.parse
-    DateutilParseError = dateutil.parser.ParserError
-except ImportError as e:
-    exception = e
-
-    def parse_datetime_str(
-        *_: object,
-        **__: object,
-    ) -> datetime.datetime:
-        raise MissingDependency(
-            "python-dateutil needs to be installed to use this type for parsing. It "
-            "can be installed with the phantom-types[dateutil] extra."
-        ) from exception
-
-    class DateutilParseError(Exception):  # type: ignore[no-redef]
-        ...
-
-
 __all__ = ("TZAware", "TZNaive")
+
+
+def parse_datetime_str(value: str) -> datetime.datetime:
+    try:
+        from dateutil.parser import ParserError
+        from dateutil.parser import parse
+    except ImportError as exc:
+        raise MissingDependency(
+            "python-dateutil needs to be installed to use this type for parsing. "
+            "It can be installed with the phantom-types[dateutil] extra."
+        ) from exc
+
+    try:
+        return parse(value)
+    except ParserError as exc:
+        raise TypeError("Could not parse datetime from given string") from exc
 
 
 def parse_datetime(value: object) -> datetime.datetime:
     if isinstance(value, datetime.datetime):
         return value
+
+    # Do not allow stdlib datetime parsing
+    # All string parsing must go through dateutil
     str_value = parse_str(value)
-    try:
-        return parse_datetime_str(str_value)
-    except DateutilParseError as exc:
-        raise TypeError("Could not parse datetime from given string") from exc
+    return parse_datetime_str(str_value)
 
 
 class TZAware(datetime.datetime, Phantom, predicate=is_tz_aware):
@@ -76,6 +71,8 @@ class TZAware(datetime.datetime, Phantom, predicate=is_tz_aware):
     def __schema__(cls) -> Schema:
         return {
             **super().__schema__(),
+            "type": "string",
+            "format": "date-time",
             "description": "A date-time with timezone data.",
         }
 
@@ -103,6 +100,7 @@ class TZNaive(datetime.datetime, Phantom, predicate=is_tz_naive):
     def __schema__(cls) -> Schema:
         return {
             **super().__schema__(),
+            "type": "string",
             "description": "A date-time without timezone data.",
             "format": "date-time-naive",
         }

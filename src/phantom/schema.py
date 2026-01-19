@@ -1,5 +1,16 @@
+from __future__ import annotations
+
 from collections.abc import Sequence
+from typing import TYPE_CHECKING
 from typing import Literal
+
+if TYPE_CHECKING:
+    try:
+        from pydantic import GetJsonSchemaHandler
+        from pydantic.json_schema import JsonSchemaValue
+        from pydantic_core import CoreSchema
+    except ImportError:
+        pass
 
 from typing_extensions import TypedDict
 from typing_extensions import final
@@ -24,16 +35,21 @@ class Schema(TypedDict, total=False):
 class SchemaField:
     @classmethod
     @final
-    def __modify_schema__(cls, field_schema: dict) -> None:
+    def __get_pydantic_json_schema__(
+        cls, schema: CoreSchema, handler: GetJsonSchemaHandler
+    ) -> JsonSchemaValue:
         """
-        This final method is called by pydantic and collects overrides from
+        Pydantic V2 hook for JSON schema generation. Collects overrides from
         :func:`Phantom.__schema__() <phantom.Phantom.__schema__>`. Override
         :func:`__schema__() <phantom.Phantom.__schema__>` to provide custom schema
         representations for phantom types.
         """
-        field_schema.update(
+        json_schema = handler(schema)
+        json_schema = handler.resolve_ref_schema(json_schema)
+        json_schema.update(
             {key: value for key, value in cls.__schema__().items() if value is not None}
         )
+        return json_schema
 
     @classmethod
     def __schema__(cls) -> Schema:

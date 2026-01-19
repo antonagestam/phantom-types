@@ -163,6 +163,17 @@ class Interval(Phantom[Comparable], bound=Comparable, abstract=True):
             cls.__bound__(instance) if isinstance(instance, str) else instance
         )
 
+    @classmethod
+    def _schema_bound(
+        cls, value: FloatComparable[Any], infinity: float
+    ) -> int | float | None:
+        """Convert interval bound to schema-appropriate numeric type."""
+        if value == infinity:
+            return None
+        if isinstance(cls.__bound__, type) and issubclass(cls.__bound__, int):
+            return int(value)  # type: ignore[call-overload, no-any-return]
+        return float(value)
+
 
 def _format_limit(value: SupportsEq) -> str:
     if value == inf:
@@ -183,8 +194,8 @@ class Exclusive(Interval, check=interval.exclusive, abstract=True):
                 f"A value in the exclusive range ({_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)})."
             ),
-            "exclusiveMinimum": float(cls.__low__) if cls.__low__ != neg_inf else None,
-            "exclusiveMaximum": float(cls.__high__) if cls.__high__ != inf else None,
+            "exclusiveMinimum": cls._schema_bound(cls.__low__, neg_inf),
+            "exclusiveMaximum": cls._schema_bound(cls.__high__, inf),
         }
 
     @classmethod
@@ -215,8 +226,8 @@ class Inclusive(Interval, check=interval.inclusive, abstract=True):
                 f"A value in the inclusive range [{_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)}]."
             ),
-            "minimum": float(cls.__low__) if cls.__low__ != neg_inf else None,
-            "maximum": float(cls.__high__) if cls.__high__ != inf else None,
+            "minimum": cls._schema_bound(cls.__low__, neg_inf),
+            "maximum": cls._schema_bound(cls.__high__, inf),
         }
 
     @classmethod
@@ -243,8 +254,8 @@ class ExclusiveInclusive(Interval, check=interval.exclusive_inclusive, abstract=
                 f"A value in the half-open range ({_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)}]."
             ),
-            "exclusiveMinimum": float(cls.__low__) if cls.__low__ != neg_inf else None,
-            "maximum": float(cls.__high__) if cls.__high__ != inf else None,
+            "exclusiveMinimum": cls._schema_bound(cls.__low__, neg_inf),
+            "maximum": cls._schema_bound(cls.__high__, inf),
         }
 
     @classmethod
@@ -271,8 +282,8 @@ class InclusiveExclusive(Interval, check=interval.inclusive_exclusive, abstract=
                 f"A value in the half-open range [{_format_limit(cls.__low__)}, "
                 f"{_format_limit(cls.__high__)})."
             ),
-            "minimum": float(cls.__low__) if cls.__low__ != neg_inf else None,
-            "exclusiveMaximum": float(cls.__high__) if cls.__high__ != inf else None,
+            "minimum": cls._schema_bound(cls.__low__, neg_inf),
+            "exclusiveMaximum": cls._schema_bound(cls.__high__, inf),
         }
 
     @classmethod
