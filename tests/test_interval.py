@@ -17,8 +17,16 @@ from phantom.predicates import interval
 
 from .types import FloatInc
 from .types import FloatIncExc
+from .types import FractionalIntExc
+from .types import FractionalIntExcInc
+from .types import FractionalIntInc
+from .types import FractionalIntIncExc
 from .types import IntExc
 from .types import IntExcInc
+from .types import NegativeFractionalIntExc
+from .types import NegativeFractionalIntExcInc
+from .types import NegativeFractionalIntInc
+from .types import NegativeFractionalIntIncExc
 
 
 class TestInterval:
@@ -159,6 +167,14 @@ class TestGetScalarIntBounds:
             (FloatIncExc, False, True, 0, 99),
             (Natural, False, False, 0, None),
             (NegativeInt, False, False, None, 0),
+            (FractionalIntInc, False, False, 1, 3),
+            (NegativeFractionalIntInc, False, False, -3, -1),
+            (FractionalIntExc, True, True, 1, 3),
+            (NegativeFractionalIntExc, True, True, -3, -1),
+            (FractionalIntIncExc, False, True, 1, 3),
+            (NegativeFractionalIntIncExc, False, True, -3, -1),
+            (FractionalIntExcInc, True, False, 1, 3),
+            (NegativeFractionalIntExcInc, True, False, -3, -1),
         ),
     )
     def test_returns_correct_bounds(

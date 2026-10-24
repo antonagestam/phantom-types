@@ -67,7 +67,7 @@ def _get_scalar_int_bounds(
         except TypeError as exception:
             raise _NonScalarBounds from exception
 
-        if exclude_min:
+        if scalar_low < low or (exclude_min and scalar_low == low):
             scalar_low += 1
     else:
         scalar_low = None
@@ -78,7 +78,7 @@ def _get_scalar_int_bounds(
         except TypeError as exception:
             raise _NonScalarBounds from exception
 
-        if exclude_max:
+        if scalar_high > high or (exclude_max and scalar_high == high):
             scalar_high -= 1
     else:
         scalar_high = None

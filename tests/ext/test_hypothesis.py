@@ -8,9 +8,13 @@ from typing import TypeVar
 from typing import get_origin
 from typing import get_type_hints
 
+import pytest
 from hypothesis import given
 from hypothesis import settings
+from hypothesis.strategies import DataObject
 from hypothesis.strategies import builds
+from hypothesis.strategies import data
+from hypothesis.strategies import from_type
 
 from phantom.boolean import Falsy
 from phantom.boolean import Truthy
@@ -20,6 +24,7 @@ from phantom.interval import Exclusive
 from phantom.interval import ExclusiveInclusive
 from phantom.interval import Inclusive
 from phantom.interval import InclusiveExclusive
+from phantom.interval import Interval
 from phantom.interval import Natural
 from phantom.interval import NegativeInt
 from phantom.interval import Portion
@@ -34,10 +39,18 @@ from tests.types import FloatExc
 from tests.types import FloatExcInc
 from tests.types import FloatInc
 from tests.types import FloatIncExc
+from tests.types import FractionalIntExc
+from tests.types import FractionalIntExcInc
+from tests.types import FractionalIntInc
+from tests.types import FractionalIntIncExc
 from tests.types import IntExc
 from tests.types import IntExcInc
 from tests.types import IntInc
 from tests.types import IntIncExc
+from tests.types import NegativeFractionalIntExc
+from tests.types import NegativeFractionalIntExcInc
+from tests.types import NegativeFractionalIntInc
+from tests.types import NegativeFractionalIntIncExc
 
 
 class TensFloat(float, InclusiveExclusive, low=10, high=20): ...
@@ -124,3 +137,25 @@ def test_can_generate_hypothesis_values(model: Model) -> None:
         type_ = hints[field.name]
         inner_type = get_origin(type_) or type_
         assert isinstance(getattr(model, field.name), inner_type)
+
+
+@pytest.mark.parametrize(
+    "interval_type",
+    (
+        FractionalIntInc,
+        NegativeFractionalIntInc,
+        FractionalIntExc,
+        NegativeFractionalIntExc,
+        FractionalIntIncExc,
+        NegativeFractionalIntIncExc,
+        FractionalIntExcInc,
+        NegativeFractionalIntExcInc,
+    ),
+)
+@given(data())
+def test_integer_interval_generates_only_valid_examples(
+    interval_type: type[Interval],
+    data: DataObject,
+) -> None:
+    value = data.draw(from_type(interval_type))
+    assert isinstance(value, interval_type)
