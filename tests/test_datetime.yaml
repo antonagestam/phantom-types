@@ -37,5 +37,5 @@
     aware = TZAware.parse(o)
     naive = TZNaive.parse(o)
 
-    reveal_type(aware.month) # N: Revealed type is "builtins.int"
-    reveal_type(naive.month) # N: Revealed type is "builtins.int"
+    reveal_type(aware.month) # N: Revealed type is "int"
+    reveal_type(naive.month) # N: Revealed type is "int"

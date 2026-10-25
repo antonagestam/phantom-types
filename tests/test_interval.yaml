@@ -49,5 +49,5 @@
 
     reveal_type(add(a, a)) # N: Revealed type is "phantom.interval.Natural"
     reveal_type(add(b, b)) # N: Revealed type is "phantom.interval.NegativeInt"
-    reveal_type(add(a, b)) # N: Revealed type is "builtins.int"
-    reveal_type(add(b, a)) # N: Revealed type is "builtins.int"
+    reveal_type(add(a, b)) # N: Revealed type is "int"
+    reveal_type(add(b, a)) # N: Revealed type is "int"

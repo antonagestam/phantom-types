@@ -7,7 +7,7 @@
 
     seq = SequenceNotStr[str].parse(("Jane", "Joe"))
     greeting = greet(seq)
-    reveal_type(greeting)  # N: Revealed type is "builtins.str"
+    reveal_type(greeting)  # N: Revealed type is "str"
 
 - case: test_annotated
   main: |
@@ -18,7 +18,7 @@
 
     seq: SequenceNotStr[str] = SequenceNotStr.parse(("Jane", "Joe"))
     greeting = greet(seq)
-    reveal_type(greeting)  # N: Revealed type is "builtins.str"
+    reveal_type(greeting)  # N: Revealed type is "str"
 
 - case: test_unspecified_inner_type
   main: |
@@ -32,4 +32,4 @@
     assert isinstance(seq, SequenceNotStr)
     reveal_type(seq)  # N: Revealed type is "main.<subclass of "tuple[builtins.object, ...]" and "phantom.negated.SequenceNotStr[Any]">"
     values = fn(seq)
-    reveal_type(values)  # N: Revealed type is "phantom.negated.SequenceNotStr[builtins.object]"
+    reveal_type(values)  # N: Revealed type is "phantom.negated.SequenceNotStr[object]"

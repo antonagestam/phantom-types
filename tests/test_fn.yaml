@@ -22,12 +22,12 @@
     def takes_str_int_composed(fn: Callable[[str], str]) -> None: ...
     takes_str_int_composed(compose2(str, int))
   out: |
-    main:6: note: Revealed type is "def \(builtins\.str\*?\) -> builtins\.bool\*?"
+    main:6: note: Revealed type is "def \(str\) -> bool"
     main:7: error: Argument 1 has incompatible type "int"; expected "str"  \[arg-type\]
     main:8: error: Argument 1 has incompatible type "list\[Never\]"; expected "str"  \[arg-type\]
-    main:9: note: Revealed type is "builtins.bool\*?"
-    main:13: note: Revealed type is "builtins.int\*?"
-    main:17: note: Revealed type is "builtins.str\*?"
+    main:9: note: Revealed type is "bool"
+    main:13: note: Revealed type is "int"
+    main:17: note: Revealed type is "str"
   files:
     - path: predicates.py
       content: |
