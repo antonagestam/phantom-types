@@ -1,6 +1,5 @@
 from collections.abc import Sequence
 from typing import Literal
-from typing import final
 
 from typing_extensions import TypedDict
 
@@ -23,25 +22,12 @@ class Schema(TypedDict, total=False):
 
 class SchemaField:
     @classmethod
-    @final
-    def __modify_schema__(cls, field_schema: dict) -> None:
-        """
-        This final method is called by pydantic and collects overrides from
-        :func:`Phantom.__schema__() <phantom.Phantom.__schema__>`. Override
-        :func:`__schema__() <phantom.Phantom.__schema__>` to provide custom schema
-        representations for phantom types.
-        """
-        field_schema.update(
-            {key: value for key, value in cls.__schema__().items() if value is not None}
-        )
-
-    @classmethod
     def __schema__(cls) -> Schema:
         """
         Hook for providing schema metadata. Override in subclasses to customize a types
-        schema representation. See pydantic's documentation on ``__modify_schema__()``
-        for more information. This hook differs to pydantic's ``__modify_schema__()``
-        and expects subclasses to instantiate new dicts instead of mutating a given one.
+        schema representation. The returned keys extend and override the JSON schema
+        that pydantic generates for what the type decodes into. Keys with a value of
+        ``None`` are left out.
 
         Example:
 

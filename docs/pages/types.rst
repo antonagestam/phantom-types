@@ -13,7 +13,8 @@ Base classes
     :undoc-members:
     :show-inheritance:
     :inherited-members:
-    :special-members: __schema__, __modify_schema__, __get_validators__, __bound__
+    :special-members: __schema__, __get_pydantic_core_schema__,
+        __get_pydantic_json_schema__, __bound__
 
 Boolean
 -------

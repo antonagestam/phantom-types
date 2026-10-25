@@ -1,15 +1,27 @@
 Pydantic Support
 ================
 
-phantom-types supports pydantic_ out of the box by providing a
-:func:`__get_validators__() <phantom.Phantom.__get_validators__>` hook
-on the base :class:`Phantom <phantom.Phantom>` class. Most of the shipped types also
-implements full JSON Schema and OpenAPI support.
+phantom-types supports pydantic_ out of the box by providing
+:func:`__get_pydantic_core_schema__() <phantom.Phantom.__get_pydantic_core_schema__>`
+and
+:func:`__get_pydantic_json_schema__() <phantom.Phantom.__get_pydantic_json_schema__>`
+hooks on the base :class:`Phantom <phantom.Phantom>` class. Most of the shipped types
+also implement full JSON Schema and OpenAPI support.
 
-.. _pydantic: https://pydantic-docs.helpmanual.io/
+.. _pydantic: https://docs.pydantic.dev/
 
-To make a phantom type compatible with pydantic, all you need to do is override
-:func:`Phantom.__schema__() <phantom.Phantom.__schema__>`:
+pydantic first decodes input into the bound of a phantom type, by its own rules and
+respecting its strict mode, and then passes the decoded value to the type's
+:func:`parse() <phantom.Phantom.parse>` method. Every value a field produces is
+therefore a valid instance of the phantom type. A
+:class:`TZAware <phantom.datetime.TZAware>` field, for instance, parses strings with
+pydantic's datetime parser, and doesn't need python-dateutil. Parametrized types like
+``NonEmpty[int]`` decode into a tuple of their type argument. A ``TypeError`` raised by
+``parse()`` is reported as a validation error of type ``type_error``.
+
+The JSON schema of a phantom type is the schema of what it decodes into, extended with
+the keys returned from :func:`Phantom.__schema__() <phantom.Phantom.__schema__>`. To
+customize it, override ``__schema__()``:
 
 .. code-block:: python
 

@@ -1,18 +1,19 @@
 from __future__ import annotations
 
 import abc
-from collections.abc import Callable
 from collections.abc import Iterable
-from collections.abc import Iterator
+from typing import TYPE_CHECKING
 from typing import Any
 from typing import ClassVar
 from typing import Generic
 from typing import Protocol
 from typing import Self
 from typing import TypeVar
+from typing import final
 from typing import runtime_checkable
 
 from . import _hypothesis
+from . import _pydantic
 from ._utils.misc import BoundType
 from ._utils.misc import UnresolvedClassAttribute
 from ._utils.misc import fully_qualified_name
@@ -24,6 +25,12 @@ from .bounds import get_bound_parser
 from .errors import BoundError
 from .predicates import Predicate
 from .schema import SchemaField
+
+if TYPE_CHECKING:
+    from pydantic import GetCoreSchemaHandler
+    from pydantic import GetJsonSchemaHandler
+    from pydantic.json_schema import JsonSchemaValue
+    from pydantic_core.core_schema import AfterValidatorFunctionSchema
 
 
 @runtime_checkable
@@ -77,11 +84,6 @@ class PhantomBase(SchemaField, metaclass=PhantomMeta):
     @classmethod
     @abc.abstractmethod
     def __instancecheck__(cls, instance: object) -> bool: ...
-
-    @classmethod
-    def __get_validators__(cls) -> Iterator[Callable[[object], Self]]:
-        """Hook that makes phantom types compatible with pydantic."""
-        yield cls.parse
 
 
 class AbstractInstanceCheck(TypeError): ...
@@ -199,3 +201,39 @@ class Phantom(PhantomBase, Generic[T_co]):
     @classmethod
     def __register_strategy__(cls) -> _hypothesis.HypothesisStrategy | None:
         return None
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls,
+        source_type: object,
+        handler: GetCoreSchemaHandler,
+    ) -> AfterValidatorFunctionSchema:
+        """
+        Hook that makes pydantic decode input into the bound of the type, and pass the
+        decoded value to :func:`parse`. A ``TypeError`` raised by :func:`parse` is
+        converted to a validation error of type ``type_error``.
+        """
+        if cls.__abstract__:
+            raise AbstractInstanceCheck(
+                "Abstract phantom types cannot be validated by pydantic"
+            )
+
+        return _pydantic.get_core_schema(
+            cls.parse,
+            _pydantic.get_decoding_schema(cls, cls.__bound__, source_type, handler),
+        )
+
+    @classmethod
+    @final
+    def __get_pydantic_json_schema__(
+        cls,
+        core_schema: AfterValidatorFunctionSchema,
+        handler: GetJsonSchemaHandler,
+    ) -> JsonSchemaValue:
+        """
+        This final method is called by pydantic and collects overrides from
+        :func:`Phantom.__schema__() <phantom.Phantom.__schema__>`. Override
+        :func:`__schema__() <phantom.Phantom.__schema__>` to provide custom schema
+        representations for phantom types.
+        """
+        return _pydantic.get_json_schema(cls.__schema__(), core_schema, handler)

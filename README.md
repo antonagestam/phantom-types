@@ -139,30 +139,30 @@ class Person(BaseModel):
     created: TZAware
 
 
-print(json.dumps(Person.schema(), indent=2))
+print(json.dumps(Person.model_json_schema(), indent=2))
 ```
 
 The code above outputs the following JSONSchema.
 
 ```json
 {
-  "title": "Person",
-  "type": "object",
   "properties": {
     "name": {
-      "title": "Name",
       "description": "Either Jane or Joe",
       "format": "custom-name",
+      "title": "Name",
       "type": "string"
     },
     "created": {
-      "title": "TZAware",
       "description": "A date-time with timezone data.",
-      "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "title": "TZAware",
+      "type": "string"
     }
   },
-  "required": ["name", "created"]
+  "required": ["name", "created"],
+  "title": "Person",
+  "type": "object"
 }
 ```
 
