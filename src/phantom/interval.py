@@ -28,6 +28,8 @@ from typing import Final
 from typing import Protocol
 from typing import TypeVar
 
+from typing_extensions import Self
+
 from . import Phantom
 from . import Predicate
 from . import _hypothesis
@@ -39,7 +41,6 @@ from .predicates import interval
 from .schema import Schema
 
 N = TypeVar("N", bound=Comparable)
-Derived = TypeVar("Derived", bound="Interval")
 
 
 class IntervalCheck(Protocol):
@@ -158,7 +159,7 @@ class Interval(Phantom[Comparable], bound=Comparable, abstract=True):
         )
 
     @classmethod
-    def parse(cls: type[Derived], instance: object) -> Derived:
+    def parse(cls, instance: object) -> Self:
         return super().parse(
             cls.__bound__(instance) if isinstance(instance, str) else instance
         )

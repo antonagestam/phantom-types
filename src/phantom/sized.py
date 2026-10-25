@@ -50,20 +50,20 @@ from .predicates import numeric
 from .schema import Schema
 
 __all__ = (
-    "SizedIterable",
-    "PhantomSized",
-    "PhantomBound",
+    "Empty",
     "NonEmpty",
     "NonEmptyStr",
-    "Empty",
+    "PhantomBound",
+    "PhantomSized",
+    "SizedIterable",
 )
 
 
-T = TypeVar("T", bound=object, covariant=True)
+T_co = TypeVar("T_co", bound=object, covariant=True)
 
 
 @runtime_checkable
-class SizedIterable(Sized, Iterable[T], Protocol[T]):
+class SizedIterable(Sized, Iterable[T_co], Protocol[T_co]):
     """Intersection of :py:class:`typing.Sized` and :py:class:`typing.Iterable`."""
 
 
@@ -72,8 +72,8 @@ class SizedIterablePhantomMeta(PhantomMeta, _ProtocolMeta): ...
 
 class PhantomSized(
     Phantom[Sized],
-    SizedIterable[T],
-    Generic[T],
+    SizedIterable[T_co],
+    Generic[T_co],
     metaclass=SizedIterablePhantomMeta,
     bound=SizedIterable,
     abstract=True,
@@ -114,8 +114,8 @@ class LSPViolation(Exception): ...
 
 class PhantomBound(
     Phantom[Sized],
-    SizedIterable[T],
-    Generic[T],
+    SizedIterable[T_co],
+    Generic[T_co],
     metaclass=SizedIterablePhantomMeta,
     bound=SizedIterable,
     abstract=True,
@@ -209,7 +209,9 @@ class PhantomBound(
         from hypothesis.strategies import lists
         from hypothesis.strategies import text
 
-        def create_strategy(type_: type[T]) -> _hypothesis.SearchStrategy[T] | None:
+        def create_strategy(
+            type_: type[T_co],
+        ) -> _hypothesis.SearchStrategy[T_co] | None:
             min_size = cls.__min__ or 0
 
             if cls.__bound__ is str:
@@ -234,7 +236,7 @@ class PhantomBound(
         return create_strategy
 
 
-class NonEmpty(PhantomBound[T], Generic[T], min=1):
+class NonEmpty(PhantomBound[T_co], Generic[T_co], min=1):
     """A sized collection with at least one item."""
 
     @classmethod
@@ -256,7 +258,7 @@ class NonEmptyStr(str, NonEmpty[str]):
         }
 
 
-class Empty(PhantomBound[T], Generic[T], max=0):
+class Empty(PhantomBound[T_co], Generic[T_co], max=0):
     """A sized collection with exactly zero items."""
 
     @classmethod

@@ -24,13 +24,13 @@ from phantom.predicates.collection import contained
 from phantom.schema import Schema
 
 __all__ = (
-    "LiteralAlpha2",
-    "ParsedAlpha2",
     "Alpha2",
     "CountryCode",
+    "InvalidCountryCode",
+    "LiteralAlpha2",
+    "ParsedAlpha2",
     "is_alpha2_country_code",
     "normalize_alpha2_country_code",
-    "InvalidCountryCode",
 )
 
 LiteralAlpha2: TypeAlias = Literal[

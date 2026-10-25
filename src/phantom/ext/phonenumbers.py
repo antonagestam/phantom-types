@@ -22,12 +22,12 @@ from phantom.fn import excepts
 from phantom.schema import Schema
 
 __all__ = (
-    "InvalidPhoneNumber",
-    "normalize_phone_number",
-    "is_phone_number",
-    "is_formatted_phone_number",
-    "PhoneNumber",
     "FormattedPhoneNumber",
+    "InvalidPhoneNumber",
+    "PhoneNumber",
+    "is_formatted_phone_number",
+    "is_phone_number",
+    "normalize_phone_number",
 )
 
 

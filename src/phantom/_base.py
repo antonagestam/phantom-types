@@ -58,16 +58,12 @@ class PhantomMeta(abc.ABCMeta):
         return cls.parse(instance)
 
 
-T = TypeVar("T", covariant=True)
-U = TypeVar("U")
-
-
-Derived = TypeVar("Derived", bound="PhantomBase")
+T_co = TypeVar("T_co", covariant=True)
 
 
 class PhantomBase(SchemaField, metaclass=PhantomMeta):
     @classmethod
-    def parse(cls: type[Derived], instance: object) -> Derived:
+    def parse(cls, instance: object) -> Self:
         """
         Parse an arbitrary value into a phantom type.
 
@@ -84,7 +80,7 @@ class PhantomBase(SchemaField, metaclass=PhantomMeta):
     def __instancecheck__(cls, instance: object) -> bool: ...
 
     @classmethod
-    def __get_validators__(cls: type[Derived]) -> Iterator[Callable[[object], Derived]]:
+    def __get_validators__(cls) -> Iterator[Callable[[object], Self]]:
         """Hook that makes phantom types compatible with pydantic."""
         yield cls.parse
 
@@ -95,7 +91,7 @@ class AbstractInstanceCheck(TypeError): ...
 class MutableType(TypeError): ...
 
 
-class Phantom(PhantomBase, Generic[T]):
+class Phantom(PhantomBase, Generic[T_co]):
     """
     Base class for predicate-based phantom types.
 
@@ -114,7 +110,7 @@ class Phantom(PhantomBase, Generic[T]):
       allows deferring definitions of ``predicate`` and ``bound`` to concrete subtypes.
     """
 
-    __predicate__: Predicate[T]
+    __predicate__: Predicate[T_co]
     # The bound of a phantom type is the type that its values will have at
     # runtime, so when checking if a value is an instance of a phantom type,
     # it's first checked to be within its bounds, so that the value can be
@@ -127,8 +123,8 @@ class Phantom(PhantomBase, Generic[T]):
 
     def __init_subclass__(
         cls,
-        predicate: Predicate[T] | None = None,
-        bound: type[T] | None = None,
+        predicate: Predicate[T_co] | None = None,
+        bound: type[T_co] | None = None,
         abstract: bool = False,
         **kwargs: Any,
     ) -> None:
@@ -194,7 +190,7 @@ class Phantom(PhantomBase, Generic[T]):
             raise AbstractInstanceCheck(
                 "Abstract phantom types cannot be used in instance checks"
             )
-        bound_parser: Parser[T] = get_bound_parser(cls.__bound__)
+        bound_parser: Parser[T_co] = get_bound_parser(cls.__bound__)
         try:
             instance = bound_parser(instance)
         except BoundError:

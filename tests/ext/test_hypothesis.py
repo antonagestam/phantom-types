@@ -65,10 +65,10 @@ class Url(
 ): ...
 
 
-T = TypeVar("T", bound=object, covariant=True)
+T_co = TypeVar("T_co", bound=object, covariant=True)
 
 
-class Few(PhantomBound[T], Generic[T], min=5, max=15): ...
+class Few(PhantomBound[T_co], Generic[T_co], min=5, max=15): ...
 
 
 @total_ordering

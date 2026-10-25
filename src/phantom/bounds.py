@@ -16,10 +16,10 @@ from .predicates.boolean import all_of
 from .predicates.generic import of_complex_type
 from .predicates.generic import of_type
 
-__all__ = ("get_bound_parser", "parse_str", "Parser")
+__all__ = ("Parser", "get_bound_parser", "parse_str")
 
-T = TypeVar("T", covariant=True)
-Parser: TypeAlias = Callable[[object], T]
+T_co = TypeVar("T_co", covariant=True)
+Parser: TypeAlias = Callable[[object], T_co]
 
 
 def display_bound(bound: Any) -> str:
@@ -34,7 +34,7 @@ def display_bound(bound: Any) -> str:
     return str(getattr(bound, "__name__", bound))
 
 
-def get_bound_parser(bound: type[T] | Any) -> Parser[T]:
+def get_bound_parser(bound: type[T_co] | Any) -> Parser[T_co]:
     within_bound = (
         # Interpret sequence as intersection
         all_of(of_type(t) for t in bound)
@@ -42,12 +42,12 @@ def get_bound_parser(bound: type[T] | Any) -> Parser[T]:
         else of_complex_type(bound)
     )
 
-    def parser(instance: object) -> T:
+    def parser(instance: object) -> T_co:
         if not within_bound(instance):
             raise BoundError(
                 f"Value is not within bound of {display_bound(bound)!r}: {instance!r}"
             )
-        return cast(T, instance)
+        return cast(T_co, instance)
 
     return parser
 

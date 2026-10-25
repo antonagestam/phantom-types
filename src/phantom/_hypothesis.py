@@ -11,7 +11,7 @@ else:
     SearchStrategy = None
 
 
-__all__ = ("HypothesisStrategy", "register_type_strategy", "SearchStrategy")
+__all__ = ("HypothesisStrategy", "SearchStrategy", "register_type_strategy")
 
 T = TypeVar("T")
 HypothesisStrategy: TypeAlias = (

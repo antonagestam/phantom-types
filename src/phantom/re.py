@@ -22,7 +22,7 @@ from .predicates.re import is_full_match
 from .predicates.re import is_match
 from .schema import Schema
 
-__all__ = ("Match", "FullMatch")
+__all__ = ("FullMatch", "Match")
 
 
 def _compile(pattern: Pattern[str] | str) -> Pattern[str]:

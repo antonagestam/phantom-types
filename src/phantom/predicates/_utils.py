@@ -8,7 +8,7 @@ def _explode_partial(obj: partial) -> str:
     keyword_args = ", ".join(
         f"{name}={value!r}" for name, value in obj.keywords.items()
     )
-    args = ", ".join((positional_args, keyword_args))
+    args = f"{positional_args}, {keyword_args}"
     return f"{obj.func.__qualname__}({args})"
 
 

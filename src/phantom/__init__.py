@@ -26,12 +26,12 @@ from .errors import BoundError
 from .predicates import Predicate
 
 __all__ = (
-    "__version__",
-    "__version_tuple__",
     "BoundError",
     "Phantom",
     "PhantomBase",
     "PhantomMeta",
-    "get_bound_parser",
     "Predicate",
+    "__version__",
+    "__version_tuple__",
+    "get_bound_parser",
 )
