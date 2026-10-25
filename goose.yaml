@@ -15,9 +15,9 @@ environments:
       version: "3.13"
     dependencies:
       - check-manifest
-      - setuptools==80.9.0
-      - setuptools-scm==8.3.1
-      - wheel==0.45.1
+      - setuptools==84.2.1
+      - setuptools-scm==10.3.4
+      - wheel==0.48.0
 
   - ecosystem: node
     dependencies:
