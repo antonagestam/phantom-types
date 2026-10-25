@@ -26,9 +26,8 @@ from contextlib import suppress
 from typing import Any
 from typing import Final
 from typing import Protocol
+from typing import Self
 from typing import TypeVar
-
-from typing_extensions import Self
 
 from . import Phantom
 from . import Predicate

@@ -8,10 +8,9 @@ from typing import Any
 from typing import ClassVar
 from typing import Generic
 from typing import Protocol
+from typing import Self
 from typing import TypeVar
 from typing import runtime_checkable
-
-from typing_extensions import Self
 
 from . import _hypothesis
 from ._utils.misc import BoundType

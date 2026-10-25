@@ -6,7 +6,7 @@ from phantom.predicates.datetime import is_tz_aware
 from phantom.predicates.datetime import is_tz_naive
 
 parametrize_aware = pytest.mark.parametrize(
-    "dt", (datetime.datetime.now(tz=datetime.timezone.utc),)
+    "dt", (datetime.datetime.now(tz=datetime.UTC),)
 )
 parametrize_naive = pytest.mark.parametrize(
     "dt", (datetime.datetime.now(), datetime.datetime(1969, 12, 23))

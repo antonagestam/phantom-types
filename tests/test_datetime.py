@@ -10,10 +10,10 @@ from phantom.errors import MissingDependency
 parametrize_aware = pytest.mark.parametrize(
     "dt",
     (
-        datetime.datetime.now(tz=datetime.timezone.utc),
-        datetime.datetime(1969, 12, 23, tzinfo=datetime.timezone.utc),
-        datetime.datetime.min.replace(tzinfo=datetime.timezone.utc),
-        datetime.datetime.max.replace(tzinfo=datetime.timezone.utc),
+        datetime.datetime.now(tz=datetime.UTC),
+        datetime.datetime(1969, 12, 23, tzinfo=datetime.UTC),
+        datetime.datetime.min.replace(tzinfo=datetime.UTC),
+        datetime.datetime.max.replace(tzinfo=datetime.UTC),
     ),
 )
 parametrize_naive = pytest.mark.parametrize(
@@ -53,8 +53,8 @@ parametrize_invalid_str = pytest.mark.parametrize(
         "foo",
     ),
 )
-min_utc = datetime.datetime.min.replace(tzinfo=datetime.timezone.utc)
-max_utc = datetime.datetime.max.replace(tzinfo=datetime.timezone.utc)
+min_utc = datetime.datetime.min.replace(tzinfo=datetime.UTC)
+max_utc = datetime.datetime.max.replace(tzinfo=datetime.UTC)
 parametrize_aware_str = pytest.mark.parametrize(
     "value, expected",
     [
@@ -62,13 +62,11 @@ parametrize_aware_str = pytest.mark.parametrize(
         (max_utc.isoformat(), max_utc),
         (
             "2022-09-24T10:40:20+00:00",
-            datetime.datetime(2022, 9, 24, 10, 40, 20, 0, tzinfo=datetime.timezone.utc),
+            datetime.datetime(2022, 9, 24, 10, 40, 20, 0, tzinfo=datetime.UTC),
         ),
         (
             "2022-09-24T10:40:20.779388+00:00",
-            datetime.datetime(
-                2022, 9, 24, 10, 40, 20, 779388, tzinfo=datetime.timezone.utc
-            ),
+            datetime.datetime(2022, 9, 24, 10, 40, 20, 779388, tzinfo=datetime.UTC),
         ),
     ],
 )

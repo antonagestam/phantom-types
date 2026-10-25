@@ -1,4 +1,3 @@
-import sys
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Union
@@ -46,7 +45,6 @@ class TestParseBound:
         ):
             parser("3")
 
-    @pytest.mark.skipif(sys.version_info < (3, 10), reason="requires 3.10+")
     def test_raises_for_invalid_pep_604_union(self):
         parser: Parser[int | float] = get_bound_parser(int | float)
         with pytest.raises(

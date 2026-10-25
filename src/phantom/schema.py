@@ -1,8 +1,8 @@
 from collections.abc import Sequence
 from typing import Literal
+from typing import final
 
 from typing_extensions import TypedDict
-from typing_extensions import final
 
 
 class Schema(TypedDict, total=False):
