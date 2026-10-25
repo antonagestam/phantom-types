@@ -14,7 +14,21 @@ concurrency:
 jobs:
   lint:
     name: Static analysis
-    uses: antonagestam/goose/.github/workflows/run.yaml@0.10.1
+    runs-on: ubuntu-latest
+    env:
+      COLUMNS: "120"
+      FORCE_COLOR: "1"
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+          cache: pip
+          check-latest: true
+      - run: pip install --upgrade git-goose
+      - run: goose run --select=all --delete-orphan-environments
+      - run: git diff
 
   type-check:
     name: Type check
