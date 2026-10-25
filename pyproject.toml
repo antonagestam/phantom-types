@@ -27,7 +27,7 @@ requires-python = ">=3.10"
 authors = [
   { name="Anton Agestam", email="git@antonagestam.se" },
 ]
-license = {text = "BSD-3-Clause"}
+license = "BSD-3-Clause"
 classifiers = [
   "Intended Audience :: Developers",
   "Operating System :: OS Independent",
