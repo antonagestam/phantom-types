@@ -47,13 +47,15 @@ test-typing:
 clean:
 	rm -rf {**/,}*.egg-info **{/**,}/__pycache__ build dist .coverage coverage.xml
 
+# Keep Python versions in sync with the docs and type-check jobs in
+# .github/workflows/ci.yaml.
 .PHONY: docs-requirements
 docs-requirements: export UV_CUSTOM_COMPILE_COMMAND='make docs-requirements'
 docs-requirements:
-	@uv pip compile --generate-hashes --strip-extras --extra=docs --upgrade --output-file=docs-requirements.txt pyproject.toml
+	@uv pip compile --generate-hashes --strip-extras --extra=docs --upgrade --python-version=3.14 --output-file=docs-requirements.txt pyproject.toml
 
 
-.PHONY: docs-requirements
+.PHONY: typing-requirements
 typing-requirements: export UV_CUSTOM_COMPILE_COMMAND='make typing-requirements'
 typing-requirements:
-	@uv pip compile --generate-hashes --strip-extras --extra=type-check --upgrade --output-file=typing-requirements.txt pyproject.toml
+	@uv pip compile --generate-hashes --strip-extras --extra=type-check --upgrade --python-version=3.15 --output-file=typing-requirements.txt pyproject.toml

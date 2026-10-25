@@ -28,7 +28,7 @@ try:
 except ImportError as e:
     exception = e
 
-    def parse_datetime_str(
+    def parse_datetime_str(  # type: ignore[misc]
         *_: object,
         **__: object,
     ) -> datetime.datetime:
