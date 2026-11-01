@@ -539,9 +539,9 @@ typeguard==4.6.0 \
     --hash=sha256:79878165bb86f2cf5d41d159a0ff1792a796cf496882d2fe1b1c6c7049b9cdd7 \
     --hash=sha256:e7414f09111317de3e335de92cd397c5c0ca00b1cc1676de12e1d444a79b3f21
     # via phantom-types (pyproject.toml)
-types-python-dateutil==2.9.0.20261021 \
-    --hash=sha256:12aab3bdfe55e1d9de7f54301e025d6276ce17e6a08e31644f2202d59c8d1fca \
-    --hash=sha256:62d66fcdd293e38745eae644e5da4cb399b98799c0ae61f03a54896fb51b3140
+types-python-dateutil==2.9.0.20261029 \
+    --hash=sha256:3258b491686c441d8074cfc8712308741900c9ff128a06421baec3767c503511 \
+    --hash=sha256:8fd04c6e1722d2523a74d6670596fc0007077651465b686f144ae1d200dcacf5
     # via phantom-types (pyproject.toml)
 typing-extensions==4.16.0 \
     --hash=sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8 \
