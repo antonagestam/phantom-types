@@ -1,7 +1,5 @@
 environments:
-  - ecosystem:
-      language: python
-      version: "3.13"
+  - ecosystem: python
     dependencies:
       - ruff
       - pre-commit-hooks
@@ -10,9 +8,7 @@ environments:
       - check-jsonschema
 
   - id: check-manifest
-    ecosystem:
-      language: python
-      version: "3.13"
+    ecosystem: python
     dependencies:
       - check-manifest
       - setuptools==84.2.1
